@@ -6,10 +6,14 @@ import ReserveTime from '../components/ReserveTime';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AiFillStar } from "react-icons/ai";
 import { BiSolidComment } from "react-icons/bi";
+import moment from 'moment';
 // import { axios } from 'axios';
 
 
 function DetailSelectPage(props) {
+    const [selectedDate, setSelectedDate] = useState(new Date()); // 선택한 날짜
+    const [selectedTime, setSelectedTime] = useState(""); // 선택한 시간
+
     const location = useLocation();
     const selectedBankers = location.state.selectedBankers || [];
 
@@ -29,7 +33,20 @@ function DetailSelectPage(props) {
             
     //     })
     // }
+// 주요 페이지 컴포넌트 내에서
+const filteredBankers = selectedBankers.filter(banker => {
+    // 해당 날짜와 시간에 은행원의 일정이 있는지 확인
+    const hasSchedule = banker.schedule_list.some(schedule => {
+        const scheduleDate = new Date(schedule.date);
+        const scheduleTime = schedule.time;
+        console.log(schedule.date.includes(selectedDate.toISOString().slice(0, 10)))
+                // 선택한 날짜와 스케줄 날짜가 같고, 선택한 시간이 스케줄 시간에 포함되는지 확인
+        return schedule.date.includes(selectedDate.toISOString().slice(0, 10)) &&
+            scheduleTime.includes(selectedTime);
+    });
 
+    return hasSchedule;
+});
 
 
     const navigate = useNavigate();
@@ -42,16 +59,23 @@ function DetailSelectPage(props) {
             navigate('/banker-select', {state: {selectedBanker}});
         }
     }
+    console.log("filteredBankers:", filteredBankers);
 
+    // 예제 2: ReserveDate 컴포넌트에서 선택한 날짜를 콘솔에 출력
+    console.log("selectedDate:", selectedDate);
+    
+    console.log("selectedBankerList",selectedBankers);
+    // 예제 3: ReserveTime 컴포넌트에서 선택한 시간을 콘솔에 출력
+    console.log("selectedTime:", selectedTime);
     return (
         <Container>
             <SubContainer>
                 <LeftContainer>
                     <DateSelect>날짜 선택</DateSelect>
-                    <ReserveDate></ReserveDate>
+                    <ReserveDate selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
                     <TimeSelect>시간 선택</TimeSelect>
-                    <ReserveTime></ReserveTime>
+                    <ReserveTime selectedTime={selectedTime} setSelectedTime={setSelectedTime} />
                 </LeftContainer>
 
                 <RightContainer>

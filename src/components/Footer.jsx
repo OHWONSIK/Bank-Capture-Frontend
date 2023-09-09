@@ -14,7 +14,7 @@ function Footer(props) {
 
 const Container = styled.div`
     height: 100px;
-    /* background-color: yellow; */
+// background-color: yellow; 
     /* border-top: 1px solid #bdb4b4; */
     /* bottom: 0; */
     /* position: fixed; */

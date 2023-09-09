@@ -13,6 +13,7 @@ function BankerSelect(props) {
         {
             banker_task_list: ['개인대출', '적금', '예금'],
             certification_list: ['투자 운용사', '회계사'],
+           
             banker_review_list: [
                 {
                     reservation_date: '2023.09.07',
