@@ -9,6 +9,9 @@ import Navbar from './components/Navbar';
 import WorkSelectPage from './pages/WorkSelectPage';
 import DetailSelectPage from './pages/DetailSelectPage';
 import BankerSelect from './pages/BankerSelect';
+import CustomerMyPage from './pages/mypage/CustomerMyPage';
+import BankerMyPage from './pages/mypage/BankerMyPage';
+
 // import Footer from './components/Footer';
 
 function App() {
@@ -31,6 +34,11 @@ function App() {
         <Route path='/work-select' element={<WorkSelectPage/>}/>
         <Route path='/detail-select' element={<DetailSelectPage/>}/>
         <Route path='/banker-select' element={<BankerSelect/>}/>
+
+        
+        {/* 유저 타입(행원/일반고객)에 따라 라우팅 다르게 수정해야됨 */}
+        <Route path='/customer-mypage' element={<CustomerMyPage/>}/>
+        <Route path='/banker-mypage' element={<BankerMyPage/>}/>
         
       </Routes>
       {/* <Footer/> */}

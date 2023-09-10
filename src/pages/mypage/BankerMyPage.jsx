@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CustomerMyPage(props) {
+function BankerMyPage(props) {
     return (
         <div>
             
@@ -8,4 +8,4 @@ function CustomerMyPage(props) {
     );
 }
 
-export default CustomerMyPage;
+export default BankerMyPage;

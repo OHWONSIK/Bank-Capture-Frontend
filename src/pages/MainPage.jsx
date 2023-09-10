@@ -39,9 +39,9 @@ function MainPage(props) {
             
             <ReservationBtn onClick={moveToReservation}>예약하러가기</ReservationBtn>
             
-            <Footer/>
+            
         </Container>
-        
+        <Footer/>
         </>
     );
 }
