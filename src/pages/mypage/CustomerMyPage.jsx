@@ -202,7 +202,6 @@ const RightContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-
 `;
 
 const Box = styled.div`
