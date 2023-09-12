@@ -184,7 +184,6 @@ const SubContainer = styled.div`
     display: flex;
     padding-top: 50px;
     height: 850px;
-    
 `;
 
 const LeftContainer = styled.div`
