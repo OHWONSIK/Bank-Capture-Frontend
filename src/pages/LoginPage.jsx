@@ -3,7 +3,7 @@ import  { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-// import axios from "axios";
+import axios from "axios";
 /*
 로그인 통신코드 
 import axios from "axios"; // 필요한 경우 axios 라이브러리를 가져옵니다.
@@ -22,7 +22,7 @@ function LoginPage(props) {
         if (userRole === 'customer') {
             try {
                 // Customer 로그인 AJAX 요청
-                const response = await axios.post('/customer-login-endpoint', {
+                const response = await axios.post('/customer-login', {
                     email: email,
                     password: password,
                 });
@@ -36,7 +36,7 @@ function LoginPage(props) {
         } else if (userRole === 'banker') {
             try {
                 // Banker 로그인 AJAX 요청
-                const response = await axios.post('/banker-login-endpoint', {
+                const response = await axios.post('/banker-login', {
                     email: email,
                     password: password,
                 });
@@ -61,7 +61,44 @@ function LoginPage(props) {
     const handleRoleChange = (role) => {
         setUserRole(role);
     };
+    const handleLogin = async () => {
+        // 이메일과 비밀번호를 가져옵니다.
+        const email = document.querySelector('input[type="email"]').value;
+        const password = document.querySelector('input[type="password"]').value;
 
+        // userRole에 따라 다른 AJAX 요청을 보냅니다.
+        if (userRole === 'customer') {
+            try {
+                // Customer 로그인 AJAX 요청
+                const response = await axios.post('http://10.10.221.87:8082/customer-login', {
+                    email: email,
+                    password: password,
+                  
+                });
+
+                // 성공적으로 로그인한 경우, '/'로 이동
+                navigate('/');
+            } catch (error) {
+                // 오류 처리
+                console.error(error);
+            }
+        } else if (userRole === 'banker') {
+            try {
+                // Banker 로그인 AJAX 요청
+                const response = await axios.post('http://10.10.221.87:8082/banker-login', {
+                    email: email,
+                    password: password,
+                },
+                );
+
+                // 성공적으로 로그인한 경우, '/bankermypage'로 이동
+                navigate('/banker-mypage');
+            } catch (error) {
+                // 오류 처리
+                console.error(error);
+            }
+        }
+    };
     const navigate = useNavigate();
 
     return (
@@ -89,7 +126,7 @@ function LoginPage(props) {
             </InputWrapper>
             <BtnWrapper>
                 <SignupBtn onClick={() => navigate('/signup')}>회원가입</SignupBtn>
-                <LoginBtn onClick={() => navigate('/')}>로그인</LoginBtn>
+                <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
             </BtnWrapper>
         </Container>
     );
