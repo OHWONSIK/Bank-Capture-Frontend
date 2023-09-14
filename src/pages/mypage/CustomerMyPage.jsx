@@ -4,6 +4,8 @@ import { FiCalendar, FiClock, FiClipboard, FiBookmark,FiLink, FiBell, FiEdit3 } 
 import kb_img from "../../assets/image/kb_img.png";
 import Swal from "sweetalert2";
 import { useNavigate, useNavigation } from 'react-router-dom';
+import { useState } from 'react';
+import ReviewModal from './ReviewPage';
 function groupDataByYearAndMonth(data) {
     const groupedData = {}; // 그룹화된 데이터를 저장할 객체 생성
   
@@ -23,45 +25,43 @@ function groupDataByYearAndMonth(data) {
   
     return groupedData;
   }
-function cancelReservation(seq){
-    Swal.fire({
-        title: '예약을 취소하시겠습니까?',
-        text: "취소 시 모든 내역이 삭제됩니다",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: 'black',
-        cancelButtonColor: '#696969',
-        cancelButtonText: '뒤로가기',
-        confirmButtonText: '취소하기'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            '취소 완료!',
-            '예약이 취소되었습니다.',
-            'success',
-           
-          )
-        }
-      })
-      //여기에 비동기 ajax 처리 쓰면 될듯
-}
-/*
-private Long reservationId;  // 예약 iD
-    private String bankName; // 지점이름
-    private String bankAddr; // 지점주소
-    private String reservationDate;  // 예약 날짜
-    private String reservationTime;  // 예약 시간
-    private String bankerName;  // 행원이름
-    private String taskName;  //업무 이름
-  //  private String documentLink;  // 필요서류 링크
-    private String bankerReviewComment;  // 행원리뷰 코멘트
-    private String finishFlag; // 고객 방문 여부 플래그
-*/
+
 
 function CustomerMyPage(props) {
 
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+ 
+
     const navigate=useNavigate();
 
+       // 리뷰 작성 버튼을 클릭했을 때 Review 페이지로 이동
+       const handleOpenReviewPage = (reservationId) => {
+        navigate(`/reviewpage/${reservationId}`); // Review 페이지로 이동하면서 reservationId를 전달합니다.
+    };
+    function cancelReservation(seq){
+        Swal.fire({
+            title: '예약을 취소하시겠습니까?',
+            text: "취소 시 모든 내역이 삭제됩니다",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'black',
+            cancelButtonColor: '#696969',
+            cancelButtonText: '뒤로가기',
+            confirmButtonText: '취소하기'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                //여기에 비동기 ajax 처리. 
+              Swal.fire(
+                '취소 완료!',
+                '예약이 취소되었습니다.',
+                'success',
+               
+              )
+            }
+          })
+          
+    }
 
                 // modifyReservation 함수를 클릭 이벤트 핸들러로 사용
         const modifyReservation = ()=> {
@@ -184,38 +184,56 @@ function CustomerMyPage(props) {
     });
 
     const groupedData = groupDataByYearAndMonth(sortedFinishedReservations);
+    const renderUnfinishedReservations = () => {
+        if (unfinishedReservations.length === 0) {
+            return (
+                <NoReservations>
+                    방문전 예약내역이 없습니다.<p></p>
+                    예약하러 가시겠습니까?<p></p>
+                    <ReserveButton onClick={() => navigate('/reservation')}>예약하기</ReserveButton>
+                </NoReservations>
+            );
+        } else {
+            // 예약 내용을 표시하는 코드 (기존 코드 복사)
+            return (
+                <>
+                <NameBankAndBanker>
+                <BankName>{unfinishedReservations[0].bank_name}</BankName>
+                <BankerName>{unfinishedReservations[0].banker_name} 행원</BankerName>
+           </NameBankAndBanker>
+            <Addr><FiBookmark style={{marginRight: '10px'}}/>{unfinishedReservations[0].bank_addr}</Addr>
+            <ADate><FiCalendar style={{marginRight: '10px'}}/>{unfinishedReservations[0].reservation_date} 예약</ADate>
+            <Time><FiClock style={{marginRight: '10px'}}/>{unfinishedReservations[0].reservation_time} 예약</Time>
+            <Task><FiClipboard style={{marginRight: '10px'}}/>{unfinishedReservations[0].task_name}</Task>
+            
+            <Note>
+                <FiBell style={{marginRight: '10px'}}/>필요 서류의 경우, 아래의 이미지를 클릭해주세요.
+            </Note>
+            <Document>
+            <div style={{marginRight: '210px'}}/>
+        <Link href="https://obank.kbstar.com/quics?page=C020003#loading">
+         
+                 <img src={kb_img}
+            alt="kb"  width="200" height="200" align="center" border="0" />
+
+             </Link>  </Document>
+
+            <BtnContainer>
+                <ChangeBtn onClick={modifyReservation}>예약 변경</ChangeBtn>
+                <CancelBtn onClick={cancelReservation}>예약 취소</CancelBtn>
+            </BtnContainer>
+            </>
+            );
+        }
+    };
     
     return (
         <Container>
             <SubContainer>
                 <LeftContainer>
                     <Box>
-                        <NameBankAndBanker>
-                            <BankName>{unfinishedReservations[0].bank_name}</BankName>
-                            <BankerName>{unfinishedReservations[0].banker_name} 행원</BankerName>
-                       </NameBankAndBanker>
-                        <Addr><FiBookmark style={{marginRight: '10px'}}/>{unfinishedReservations[0].bank_addr}</Addr>
-                        <ADate><FiCalendar style={{marginRight: '10px'}}/>{unfinishedReservations[0].reservation_date} 예약</ADate>
-                        <Time><FiClock style={{marginRight: '10px'}}/>{unfinishedReservations[0].reservation_time} 예약</Time>
-                        <Task><FiClipboard style={{marginRight: '10px'}}/>{unfinishedReservations[0].task_name}</Task>
-                        
-                        <Note>
-                            <FiBell style={{marginRight: '10px'}}/>필요 서류의 경우, 아래의 이미지를 클릭해주세요.
-                        </Note>
-                        <Document>
-                        <div style={{marginRight: '210px'}}/>
-                    <Link href="https://obank.kbstar.com/quics?page=C020003#loading">
-                     
-                             <img src={kb_img}
-                        alt="kb"  width="200" height="200" align="center" border="0" />
-
-                         </Link>  </Document>
-
-                        <BtnContainer>
-                            <ChangeBtn onClick={modifyReservation}>예약 변경</ChangeBtn>
-                            <CancelBtn onClick={cancelReservation}>예약 취소</CancelBtn>
-                        </BtnContainer>
-                    </Box> 
+                     {renderUnfinishedReservations()}
+                     </Box>
                 </LeftContainer>
 
                 <RightContainer>
@@ -241,7 +259,9 @@ function CustomerMyPage(props) {
                                                 {item.comment  ? (
                                                     <Review>{item.comment}</Review>
                                                 ) : (
-                                                    <ReviewBtn><FiEdit3 style={{marginRight: '10px', color: '#00c154'}}/>리뷰 쓰기</ReviewBtn>
+                                                    <ReviewBtn onClick={() => handleOpenReviewPage(item.reservation_id)}>   
+               
+                                                  <FiEdit3 style={{marginRight: '10px', color: '#00c154'}}/>리뷰 쓰기</ReviewBtn>
                                                 )}
                                             
                                     </SubInfo>
@@ -261,6 +281,26 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     height: calc(100vh - 120px);
+`;
+
+
+const NoReservations = styled.div`
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+`;
+
+const ReserveButton = styled.button`
+    width: 200px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-top: 20px;
 `;
 
 const SubContainer = styled.div`

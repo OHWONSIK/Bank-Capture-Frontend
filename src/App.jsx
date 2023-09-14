@@ -10,6 +10,7 @@ import WorkSelectPage from './pages/WorkSelectPage';
 import DetailSelectPage from './pages/DetailSelectPage';
 import BankerSelect from './pages/BankerSelect';
 import CustomerMyPage from './pages/mypage/CustomerMyPage';
+import ReviewPage from './pages/mypage/ReviewPage';
 // import Footer from './components/Footer';
 
 function App() {
@@ -32,7 +33,8 @@ function App() {
         <Route path='/work-select' element={<WorkSelectPage/>}/>
         <Route path='/detail-select' element={<DetailSelectPage/>}/>
         <Route path='/banker-select' element={<BankerSelect/>}/>
-        <Route path='/customer-mypage' element={<CustomerMyPage/>}/>
+        <Route path='/customer-mypage' element={<CustomerMyPage/>}/>s
+        <Route path='/reviewpage/:reservationId' element={<ReviewPage/>}/>
         
       </Routes>
       {/* <Footer/> */}
