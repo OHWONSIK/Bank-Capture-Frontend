@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-// import axios from "axios";
+import axios from "axios";
+import { API } from "../config";
 
 function SignupPage(props) {
     const navigate = useNavigate();
@@ -91,24 +92,24 @@ function SignupPage(props) {
             return;
         }
 
-        navigate("/"); // 아래의 통신 코드 작성시엔 지우면 됨
+        //navigate("/"); // 아래의 통신 코드 작성시엔 지우면 됨
 
-        // axios
-        //   .post("백엔드측에서 제시하는 url", {
-        //     name,
-        //     email,
-        //     password,
-        //     phoneNumber,
-        //   })
-        //   .then((response) => {
-        //     console.log("회원가입 성공:", response.data);
+        axios
+          .post(`${API.REGISTER}`, {
+            "customerName": name,
+            "customerEmail": email,
+            "customerPassword": password,
+            "customerPhone": phoneNumber,
+          })
+          .then((response) => {
+            console.log("회원가입 성공:", response.data);
       
-        //     // 회원가입이 성공하면 초기 페이지로 이동합니다.
-        //     navigate("/");
-        //   })
-        //   .catch((error) => {
-        //     console.error("회원가입 에러:", error);
-        //   });
+            // 회원가입이 성공하면 초기 페이지로 이동합니다.
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error("회원가입 에러:", error);
+          });
     };
 
     return (
