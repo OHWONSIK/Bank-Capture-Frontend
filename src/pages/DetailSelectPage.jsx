@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AiFillStar } from "react-icons/ai";
 import { BiSolidComment } from "react-icons/bi";
 import moment from 'moment';
+import Swal from "sweetalert2";
 // import { axios } from 'axios';
 
 
@@ -71,7 +72,13 @@ const filteredBankers = isReserveActive
     const navigate = useNavigate();
 
     const moveToBankerSelect = (selectedBankerId) => {
-
+        if(!isReserveActive)
+            {Swal.fire(
+                '시간이 선택되지 않았습니다',
+                '원하는 시간을 선택해주세요',
+                'error'
+              )
+                return;}
         const selectedBanker = selectedBankers.find(banker =>
             banker.id === selectedBankerId);
         if (selectedBanker) {
