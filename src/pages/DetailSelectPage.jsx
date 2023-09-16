@@ -13,70 +13,100 @@ function DetailSelectPage(props) {
     const [selectedDate, setSelectedDate] = useState(""); // 선택한 날짜
     const [selectedTime, setSelectedTime] = useState(""); // 선택한 시간
     const [isReserveActive, setIsReserveActive] = useState(false); // 예약이 활성화되었는지 여부
-
+    
     const location = useLocation();
 
     const taskId = location.state.taskId; //예약하기를 위해 필요한 업무ID
     const selectedBankers = location.state.selectedBankers || []; //지점, 업무에 맞는 모든 행원들
+    
+    const [filteredBankers, setFilteredBankers] = useState(selectedBankers);
 
-    // 시간&&날짜 만족하는 은행원 박스만 활성화시키는 코드 작성해야함
-    // const [selectedDate, setSelectedDate] = useState(new Date());
-    // const [selectedTime, setSelectedTime] = useState("");
+    const handleTimeSelection = (time) => {
+        setSelectedTime(time);
+        setIsReserveActive(true); // 시간 선택 시 예약 활성화
 
-    // useEffect(() => {
-    //     fetchBankerInfo(selectedDate, selectedTime);
-    // }, [selectedDate, selectedTime]);
+        //시간 매핑 함수
+        const getTimeSlot = (time) => {
+            switch (time) {
+                case "10:00":
+                    return 1;
+                case "11:00":
+                    return 2;
+                case "13:00":
+                    return 3;
+                case "14:00":
+                    return 4;
+                case "15:00":
+                    return 5;
+                case "16:00":
+                    return 6;
+                case "17:00":
+                    return 7;
+                default:
+                    return 0; // 일치하는 시간 슬롯이 없을 경우
+            }
+        };
 
-    // const fetchBankerInfo = (date, time) => {
-    //     axios.get('', {
-    //         params: {date, time,},
-    //     })
-    //     .then(res => {
+        const filtered = selectedBankers.filter((banker) => {
+            const scheduleForDate = banker.scheduleList.find((schedule) => {
+                return (
+                    schedule.scheduleDate ===
+                    moment(selectedDate).format("YYYYMMDD")
+                );
+            });
 
-    //     })
-    // }
+            if (scheduleForDate) {
+                // 선택한 시간에 대한 예약 가능 여부 확인
+                const selectedTimeKey = `time${getTimeSlot(time)}`;
+                return scheduleForDate[selectedTimeKey] === 1;
+            }
 
-    // 날짜를 선택할 때 호출되는 함수
+            return false; 
+        });
+
+        setFilteredBankers(filtered);
+
+        // 예약 가능한 행원이 없을 때 알림창 띄우기
+        if (filtered.length === 0) {
+            Swal.fire(
+                "예약 가능한 행원이 없습니다.",
+                "다른 시간을 선택하세요.",
+                "error"
+            );
+        }
+    };
+
     const handleDateChange = (date) => {
         setSelectedDate(date);
         setSelectedTime(""); // 날짜가 변경되면 시간 선택 초기화
         setIsReserveActive(false); // 날짜 선택 시 예약 비활성화
+
+        const filtered = selectedBankers.filter((banker) => {
+            const scheduleForDate = banker.scheduleList.find((schedule) => {
+                return (
+                    schedule.scheduleDate === moment(date).format("YYYYMMDD")
+                );
+            });
+
+            if (scheduleForDate) {
+                // 선택한 날짜에 예약이 가능한 행원들 표시
+                return scheduleForDate;
+            }
+
+            return false;
+        });
+
+        setFilteredBankers(filtered);
+
+        // 예약 가능한 행원이 없을 때 알림창 띄우기
+        if (filtered.length === 0) {
+            Swal.fire(
+                "예약 가능한 행원이 없습니다.",
+                "다른 날짜를 선택하세요.",
+                "error"
+            );
+        }
     };
-
-    // 시간 선택 후 확인 버튼을 클릭할 때 실행되는 함수
-    const handleTimeSelection = (time) => {
-        setSelectedTime(time);
-        setIsReserveActive(true); // 시간 선택 시 예약 활성화
-    };
-
-    //필터링된 은행원 목록
-    //아직 시간 매핑 구현안해서 10시에 가능한 사람들로만 테스트함
-    const filteredBankers = isReserveActive
-        ? selectedBankers.filter((banker) => {
-              const hasSchedule = banker.scheduleList.some((schedule) => {
-                  return (
-                      schedule.scheduleDate ===
-                          moment(selectedDate).format("YYYYMMDD") &&
-                      (String(schedule.time1 + 9) + ":00").includes(
-                          selectedTime
-                      )
-                  );
-              });
-              return hasSchedule;
-          })
-        : selectedBankers.filter((banker) => {
-              const hasSchedule =
-                  selectedDate === ""
-                      ? banker.scheduleList
-                      : banker.scheduleList.some((schedule) => {
-                            return (
-                                schedule.scheduleDate ===
-                                moment(selectedDate).format("YYYYMMDD")
-                            );
-                        });
-
-              return hasSchedule;
-          });
 
     const navigate = useNavigate();
 
@@ -96,27 +126,21 @@ function DetailSelectPage(props) {
             
             //캘린더 라이브러리 클릭시 선택되는 날짜포맷을 YYYYMMDD형식으로 변경해서 저장
             let reservationDate = moment(selectedDate).format("YYYYMMDD");
+
+            const times = ['10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00']
             
-            //예약시간 time번호로 매핑
-            let reservationTime =
-                selectedTime === "10:00"
-                    ? 1
-                    : selectedTime === "11:00"
-                    ? 2
-                    : selectedTime === "13:00"
-                    ? 3
-                    : selectedTime === "14:00"
-                    ? 4
-                    : selectedTime === "15:00"
-                    ? 5
-                    : selectedTime === "16:00"
-                    ? 6
-                    : selectedTime === "17:00"
-                    ? 7 : "";
+            let reservationTime; //reservationTime 매핑을 위한 변수선언
+
+                for (let i = 0; i < times.length; i++) {
+                    if (times[i] === selectedTime) {
+                        reservationTime = i + 1; // taskId는 1부터 시작하므로 +1
+                        break; //reservationId를 찾으면 루프를 중단합니다.
+                    }
+                }
             
             //행원의 스케줄리스트에 bankId가 있기때문에 가져와서 저장
             //나중에 지점선택할때부터 bankId물고오는걸로 수정해야함
-;           const bankId = selectedBanker.scheduleList[0].bankId;
+            const bankId = selectedBanker.scheduleList[0].bankId;
             
             navigate("/banker-select", {
                 state: {
