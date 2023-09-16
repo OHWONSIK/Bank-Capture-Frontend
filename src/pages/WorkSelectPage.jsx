@@ -243,28 +243,14 @@ function WorkSelectPage(props) {
         //여기서 axios 통신으로 백단에다 지점, 업무 ID 보내주고
         //백에서는 쿼리로 해당하는 행원 SELECT 후 RESPONSE로 해당하는 행원들 정보 반환.
 
-        let taskId; //taskId 매핑을 위한 변수 초기화
+        let taskId; //taskId 매핑을 위한 변수선언
 
         //각 업무에 맞는 taskId 매핑
-        switch (selectedWork) {
-            case "예금":
-                taskId = 1;
-                break;
-            case "적금":
-                taskId = 2;
-                break;
-            case "개인대출":
-                taskId = 3;
-                break;
-            case "자산":
-                taskId = 4;
-                break;
-            case "외환":
-                taskId = 5;
-                break;
-            case "기업대출":
-                taskId = 6;
-                break;
+        for (let i = 0; i < works.length; i++) {
+            if (works[i] === selectedWork) {
+                taskId = i + 1; // taskId는 1부터 시작하므로 +1
+                break; //taskId를 찾으면 루프를 중단합니다.
+            }
         }
 
         //지점, 업무에 해당하는 행원 조회를 위해 통신
