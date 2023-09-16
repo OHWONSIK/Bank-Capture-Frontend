@@ -8,6 +8,7 @@ import StarRatings from "react-star-ratings";
 import { useEffect } from "react";
 import axios from "axios";
 import { API } from "../config";
+import Swal from "sweetalert2";
 
 function BankerSelect(props) {
     //선택된 은행원 주업무 및 자격증, 리뷰 더미데이터
@@ -55,7 +56,6 @@ function BankerSelect(props) {
     //         ],
     //     }
     // ]
-
 
     const [activeFilter, setActiveFilter] = useState("filter1");
     const [sortedReviews, setSortedReviews] = useState([]);
@@ -129,28 +129,58 @@ function BankerSelect(props) {
 
     //예약하기버튼
     const handleReservation = async () => {
-        //
-        axios
-            .post(`${API.RESERVATION_BOOK}`, {
-                bankId: 1,
-                bankerId: selectedBanker.bankerId,
-                customerId: 1,
-                reservationDate: reservationDate,
-                // reservationFinishFlag: "F",
-                reservationId: reservationId,
-                reservationTime: reservationTime,
-                taskId: taskId
-            })
-            .then((response) => {
-                console.log("예약 성공:", response.data);
+        Swal.fire({
+            title: "예약하기",
+            text:
+                "행원 " +
+                selectedBanker.bankerName +
+                "님으로 예약하시겠습니까?",
+            icon: "warning",
 
-                // 예약 성공하면 초기 페이지로 이동합니다.
-                navigate("/");
-            })
-            .catch((error) => {
-                alert("예약 에러:", error);
-            });
-    }
+            showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+            confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+            cancelButtonColor: "#d33", // cancel 버튼 색깔 지정
+            confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+            cancelButtonText: "취소", // cancel 버튼 텍스트 지정
+
+            //reverseButtons: true, // 버튼 순서 거꾸로
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 만약 모달창에서 confirm 버튼을 눌렀다면
+
+                axios
+                    .post(`${API.RESERVATION_BOOK}`, {
+                        bankId: 1,
+                        bankerId: selectedBanker.bankerId,
+                        customerId: 1,
+                        reservationDate: reservationDate,
+                        // reservationFinishFlag: "F",
+                        reservationId: reservationId,
+                        reservationTime: reservationTime,
+                        taskId: taskId,
+                    })
+                    .then((response) => {
+                        console.log("예약 성공:", response.data);
+
+                    })
+                    .catch((error) => {
+                        alert("예약 에러:", error);
+                    });
+
+                Swal.fire({
+                    title: "예약완료",
+                    text: "확인을 누르시면 홈화면으로 돌아갑니다.",
+                    icon: "success",
+
+                    confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+                    confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+                }).then((result) => {
+                    // 예약 성공하면 초기 페이지로 이동합니다.
+                    navigate("/");
+                });
+            }
+        });
+    };
 
     return (
         <Container>
@@ -194,12 +224,18 @@ function BankerSelect(props) {
                     </MainTask>
                     <Title>자격증</Title>
                     <Certification>
-                        {certificationList.map(certification =>
-                        certification.certificationName).join(' / ')}
+                        {certificationList
+                            .map(
+                                (certification) =>
+                                    certification.certificationName
+                            )
+                            .join(" / ")}
                     </Certification>
                     <BtnContainer>
                         <BackBtn onClick={handleGoBack}>뒤로 가기</BackBtn>
-                        <ReserveBtn onClick={handleReservation}>예약하기</ReserveBtn>
+                        <ReserveBtn onClick={handleReservation}>
+                            예약하기
+                        </ReserveBtn>
                     </BtnContainer>
                 </LeftContainer>
 
