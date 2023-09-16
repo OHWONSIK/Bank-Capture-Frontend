@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
-import { isRouteErrorResponse, useNavigate } from 'react-router-dom';
-//import { axios } from 'axios';
+import {isRouteErrorResponse, useNavigate, useLocation,} from "react-router-dom";
 import { API } from '../config';
 import axios from 'axios';
 import cover1 from "../assets/image/cover1.png";
@@ -10,9 +9,11 @@ import cover3 from "../assets/image/cover3.png";
 import cover4 from "../assets/image/cover4.png";
 
 function WorkSelectPage(props) {
-
     //지도 구현하면 bankId useState로 관리해야함
-    const bankId = 1; 
+    const bankId = 1;
+    const location = useLocation();
+    //고객 마이페이지에서 예약변경을 위해 넘어온 해당 예약ID값
+    const reservationId = location.state.reservationId;
 
     // 은행원 더미데이터
     // const bankerAll = [
@@ -191,11 +192,11 @@ function WorkSelectPage(props) {
 
     //        ],
     //       },
-        
+
     // ];
 
     // 은행업무
-    const works = ['예금', '적금', '개인대출', '자산', '외환', '기업대출'];
+    const works = ["예금", "적금", "개인대출", "자산", "외환", "기업대출"];
 
     const [selectedWork, setSelectedWork] = useState("");
 
@@ -238,7 +239,6 @@ function WorkSelectPage(props) {
 
     // }, []);
 
-    
     const moveToDetailSelect = () => {
         //여기서 axios 통신으로 백단에다 지점, 업무 ID 보내주고
         //백에서는 쿼리로 해당하는 행원 SELECT 후 RESPONSE로 해당하는 행원들 정보 반환.
@@ -266,24 +266,25 @@ function WorkSelectPage(props) {
                     state: {
                         selectedBankers: response.data, //지점, 업무에 해당하는 행원들
                         taskId, //예약하기할때 taskId 필요해서 같이 넘겨줌
+                        reservationId, //예약변경일시 해당 예약ID 넘겨줌
                     },
                 });
             })
             .catch((error) => {
                 console.error("조회 에러:", error);
             });
-    }
+    };
 
     const moveToReservation = () => {
-        navigate('/reservation'); 
-    }
+        navigate("/reservation");
+    };
 
     return (
         <Container>
             <SubContainer>
                 <Intro>어떤 업무를 처리하시겠습니까?</Intro>
                 <WorkContainer>
-                {works.map((banker_task, index) => (
+                    {works.map((banker_task, index) => (
                         <WorkBox
                             key={index}
                             onClick={() => handleSelectedWork(banker_task)}
@@ -293,11 +294,10 @@ function WorkSelectPage(props) {
                         </WorkBox>
                     ))}
                 </WorkContainer>
-       
+
                 <CancelBtn onClick={moveToReservation}>취소</CancelBtn>
                 <SelectBtn onClick={moveToDetailSelect}>확인</SelectBtn>
             </SubContainer>
-           
         </Container>
     );
 }

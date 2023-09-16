@@ -16,6 +16,7 @@ function DetailSelectPage(props) {
     
     const location = useLocation();
 
+    const reservationId = location.state.reservationId; //예약변경일시 해당 예약ID
     const taskId = location.state.taskId; //예약하기를 위해 필요한 업무ID
     const selectedBankers = location.state.selectedBankers || []; //지점, 업무에 맞는 모든 행원들
     
@@ -144,6 +145,7 @@ function DetailSelectPage(props) {
             
             navigate("/banker-select", {
                 state: {
+                    reservationId,
                     selectedBanker,
                     reservationDate,
                     reservationTime,
