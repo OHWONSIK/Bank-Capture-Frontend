@@ -1,4 +1,4 @@
-export const BASE_URL = "http://10.10.221.87:8082"
+export const BASE_URL = "https://localhost:8082"
 
 export const API = {
 
