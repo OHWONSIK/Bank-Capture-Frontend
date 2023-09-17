@@ -17,6 +17,8 @@ function Navbar(props) {
     const handleLogout = () => {
         // 로그아웃 로직 -> 다른 파일에
         setIsLoggendIn(false);
+        // 로그아웃시 sessionStorage 초기화
+        sessionStorage.clear();
     };
 
 
