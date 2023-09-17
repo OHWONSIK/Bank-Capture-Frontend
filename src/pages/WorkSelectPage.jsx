@@ -12,9 +12,10 @@ function WorkSelectPage(props) {
     //지도 구현하면 bankId useState로 관리해야함
     const bankId = 1;
     const location = useLocation();
-    //고객 마이페이지에서 예약변경을 위해 넘어온 해당 예약ID값
-    const reservationId = location.state.reservationId;
 
+    //고객 마이페이지에서 예약변경을 위해 넘어온 해당 예약ID값
+    const reservationId = location.state?.reservationId || "";
+    
     // 은행원 더미데이터
     // const bankerAll = [
     //     {
@@ -266,7 +267,7 @@ function WorkSelectPage(props) {
                     state: {
                         selectedBankers: response.data, //지점, 업무에 해당하는 행원들
                         taskId, //예약하기할때 taskId 필요해서 같이 넘겨줌
-                        reservationId, //예약변경일시 해당 예약ID 넘겨줌
+                        reservationId //예약변경일시 해당 예약ID 넘겨줌
                     },
                 });
             })

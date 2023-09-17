@@ -22,31 +22,18 @@ function DetailSelectPage(props) {
     
     const [filteredBankers, setFilteredBankers] = useState(selectedBankers);
 
+    //시간매핑 배열
+    const times = ["10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+
+    //시간변환 함수
+    const getTimeSlot = (time) => {
+        const index = times.indexOf(time);
+        return index !== -1 ? index + 1 : 0;
+    };
+
     const handleTimeSelection = (time) => {
         setSelectedTime(time);
         setIsReserveActive(true); // 시간 선택 시 예약 활성화
-
-        //시간 매핑 함수
-        const getTimeSlot = (time) => {
-            switch (time) {
-                case "10:00":
-                    return 1;
-                case "11:00":
-                    return 2;
-                case "13:00":
-                    return 3;
-                case "14:00":
-                    return 4;
-                case "15:00":
-                    return 5;
-                case "16:00":
-                    return 6;
-                case "17:00":
-                    return 7;
-                default:
-                    return 0; // 일치하는 시간 슬롯이 없을 경우
-            }
-        };
 
         const filtered = selectedBankers.filter((banker) => {
             const scheduleForDate = banker.scheduleList.find((schedule) => {
@@ -127,17 +114,7 @@ function DetailSelectPage(props) {
             
             //캘린더 라이브러리 클릭시 선택되는 날짜포맷을 YYYYMMDD형식으로 변경해서 저장
             let reservationDate = moment(selectedDate).format("YYYYMMDD");
-
-            const times = ['10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00']
-            
-            let reservationTime; //reservationTime 매핑을 위한 변수선언
-
-                for (let i = 0; i < times.length; i++) {
-                    if (times[i] === selectedTime) {
-                        reservationTime = i + 1; // taskId는 1부터 시작하므로 +1
-                        break; //reservationId를 찾으면 루프를 중단합니다.
-                    }
-                }
+            let reservationTime = getTimeSlot(selectedTime);
             
             //행원의 스케줄리스트에 bankId가 있기때문에 가져와서 저장
             //나중에 지점선택할때부터 bankId물고오는걸로 수정해야함

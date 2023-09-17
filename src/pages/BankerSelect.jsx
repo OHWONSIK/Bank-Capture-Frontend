@@ -10,6 +10,14 @@ import axios from "axios";
 import { API } from "../config";
 import Swal from "sweetalert2";
 
+function formatDateString(inputString) {
+    const year = inputString.substring(0, 4);
+    const month = inputString.substring(4, 6);
+    const day = inputString.substring(6, 8);
+
+    return `${year}.${month}.${day}`;
+}
+
 function BankerSelect(props) {
     //선택된 은행원 주업무 및 자격증, 리뷰 더미데이터
     // const bankerinfo = [
@@ -135,7 +143,7 @@ function BankerSelect(props) {
                 "행원 " +
                 selectedBanker.bankerName +
                 "님으로 예약하시겠습니까?",
-            icon: "warning",
+            icon: "info",
 
             showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
             confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
@@ -272,7 +280,7 @@ function BankerSelect(props) {
                                 ></ReviewProfile>
                                 <Text>
                                     <ReviewDate>
-                                        {review.bankerReviewDate}
+                                        {formatDateString(review.reservationDate)}
                                     </ReviewDate>
                                     <ReviewRating>
                                         <StarRatings
@@ -285,7 +293,7 @@ function BankerSelect(props) {
                                     </ReviewRating>
 
                                     <ReviewComment>
-                                        {review.bankerReviewComment}
+                                        {review.comment}
                                     </ReviewComment>
                                 </Text>
                             </ReviewBox>
