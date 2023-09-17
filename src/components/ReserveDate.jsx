@@ -1,24 +1,28 @@
+import moment from 'moment';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { styled } from 'styled-components';
-function ReserveDate(props) {
 
-    const [date, setDate] = useState(new Date());
+function ReserveDate(props) {
+    const { selectedDate, setSelectedDate } = props;
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+
     return (
         <div>
             <ReserveCalendar
-                onChange={setDate}
-                value={date}
+                onChange={handleDateChange}
+                value={selectedDate}
                 formatDay={(locale, date) =>
                     date.toLocaleString('en', { day: 'numeric' })
-                    }
+                }
             />
         </div>
     );
-    
 }
-
 const ReserveCalendar = styled(Calendar)`
     font-size: 24px;
     width: 600px;

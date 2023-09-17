@@ -5,27 +5,29 @@ import { AiFillStar } from "react-icons/ai";
 import { BiSolidComment } from "react-icons/bi";
 import reviewProfile from "../assets/image/review_profile.png";
 import StarRatings from 'react-star-ratings';
+import { useEffect } from 'react';
 
 function BankerSelect(props) {
-
+  
    // 선택된 은행원 주업무 및 자격증, 리뷰 더미데이터
     const bankerinfo = [
         {
             banker_task_list: ['개인대출', '적금', '예금'],
             certification_list: ['투자 운용사', '회계사'],
+           
             banker_review_list: [
                 {
-                    reservation_date: '2023.09.07',
+                    reservation_date: '2023.09.04',
                     rating: 5,
                     comment: '서비스가 매우 만족스러웠습니다.'
                 },
                 {
-                    reservation_date: '2023.09.10',
-                    rating: 4,
+                    reservation_date: '2023.09.01',
+                    rating: 2.3,
                     comment: '친절하고 빠른 응대가 좋았습니다.'
                 },
                 {
-                    reservation_date: '2023.09.10',
+                    reservation_date: '2023.09.20',
                     rating: 4.5,
                     comment: '필요한 서류를 미리 안내해주셨고, 친절하셨습니다.'
                 },
@@ -35,23 +37,29 @@ function BankerSelect(props) {
                     comment: '좋아요~'
                 },
                 {
-                    reservation_date: '2023.09.14',
+                    reservation_date: '2023.07.14',
+                    rating: 4.0,
+                    comment: '좋아요~'
+                },
+                {
+                    reservation_date: '2023.09.11',
                     rating: 4.3,
                     comment: '좋아요~'
                 },
                 {
-                    reservation_date: '2023.09.14',
-                    rating: 4.3,
-                    comment: '좋아요~'
-                },
-                {
-                    reservation_date: '2023.09.14',
-                    rating: 4.3,
+                    reservation_date: '2023.08.20',
+                    rating: 1.0,
                     comment: '좋아요~'
                 },
             ],
         }
     ]
+
+    const [activeFilter, setActiveFilter] = useState('filter1');
+    const [sortedReviews, setSortedReviews] = useState([]);
+    useEffect(() => {
+        setSortedReviews(bankerinfo[0].banker_review_list);
+    }, []);
 
     const location = useLocation();
     const selectedBanker = location.state.selectedBanker || [];
@@ -61,10 +69,37 @@ function BankerSelect(props) {
         navigate(-1);
     };
 
-    const [activeFilter, setActiveFilter] = useState('filter1');
+    // '예약하기' 버튼 눌렀을 때, 업무에 따라 폼 나누기
+    // const handleForm = () => {
+       
+    // }
+
+    // 일단 다 예금폼으로만 넘어가도록
+    const handleForm = () => {
+        navigate('/deposit-form');
+    }
 
     const handleFilterClick = (filterName) => {
-      setActiveFilter(filterName === activeFilter ? '' : filterName);
+      setActiveFilter(filterName);
+      let sortedList = [...sortedReviews];
+        switch (filterName) {
+            case 'filter2':
+                // 별점 높은 순 정렬
+                sortedList.sort((a, b) => b.rating - a.rating);
+                break;
+            case 'filter3':
+                // 별점 낮은 순 정렬
+                sortedList.sort((a, b) => a.rating - b.rating);
+                break;
+            case 'filter1':
+            default:
+                // 최신 순 정렬 (기본)
+                sortedList.sort((a, b) => new Date(b.reservation_date) - new Date(a.reservation_date));
+                break;
+        }
+        console.log(sortedList);
+
+        setSortedReviews(sortedList);
     };
 
     return (
@@ -91,7 +126,7 @@ function BankerSelect(props) {
                     <Certification>{bankerinfo[0].certification_list.join(' / ')}</Certification>
                     <BtnContainer>
                         <BackBtn onClick={handleGoBack}>뒤로 가기</BackBtn>
-                        <ReserveBtn>예약하기</ReserveBtn>
+                        <ReserveBtn onClick={handleForm}>예약하기</ReserveBtn>
                     </BtnContainer>
                     
                 </LeftContainer>
@@ -112,7 +147,7 @@ function BankerSelect(props) {
                             ><Dot active={activeFilter === 'filter3'}></Dot> 별점 낮은 순</Filter3>
                     </FilterContainer>
                     <ReviewContainer>
-                        {bankerinfo[0].banker_review_list.map((review, i) => (
+                        {sortedReviews.map((review, i) => (
                             <ReviewBox key={i}>
                                 <ReviewProfile src={reviewProfile} alt={"리뷰 프로필 이미지"}></ReviewProfile>
                                 <Text>

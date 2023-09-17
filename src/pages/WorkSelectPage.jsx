@@ -19,9 +19,16 @@ function WorkSelectPage(props) {
           banker_avg_star: 4.9,
           banker_cnt_comment: 2,
           banker_info: '감사합니다. 잘 부탁드립니다~',
-        //   schedule_list: [
-
-        //   ]
+          schedule_list:[
+            {
+                    date: "2023-09-11",
+                    time: ['9:00','10:00','11:00']
+                    }, 
+                    {
+                    date: "2023-09-13",
+                    time: ['9:00','10:00','14:00']
+                    }
+               ],
         },
         {
           id: 2,
@@ -31,7 +38,18 @@ function WorkSelectPage(props) {
           banker_task: ['투자', '기업대출', '예금', '적금'],
           banker_avg_star: 4.0,
           banker_cnt_comment: 2,
-          banker_info: '한줄소개입니다'
+          banker_info: '한줄소개입니다',
+          schedule_list:[
+            {
+                    date: "2023-09-11",
+                    time: ['9:00','10:00','11:00','14:00']
+                    }, 
+                    {
+                    date: "2023-09-13",
+                    time: ['10:00','11:00','14:00'],
+                    }
+               ],
+
         },
         {
           id: 3,
@@ -41,7 +59,17 @@ function WorkSelectPage(props) {
           banker_task: ['개인대출', '기업대출'],
           banker_avg_star: 4.9,
           banker_cnt_comment: 0,
-          banker_info: '잘 부탁드립니다다당'
+          banker_info: '잘 부탁드립니다다당',
+          schedule_list:[
+            {
+                    date: "2023-09-12",
+                    time: ['10:00','11:00','14:00'],
+                    }, 
+                    {
+                    date: "2023-09-13",
+                    time: ['10:00','11:00']
+                    }
+               ],
         },
         {
             id: 4,
@@ -51,7 +79,21 @@ function WorkSelectPage(props) {
             banker_task: ['자산', '적금'],
             banker_avg_star: 3.7,
             banker_cnt_comment: 4,
-            banker_info: '감사합니다. 잘 부탁드립니다!'
+            banker_info: '감사합니다. 잘 부탁드립니다!',
+            schedule_list:[
+                {
+                        date: "2023-09-11",
+                        time: ['11:00']
+                        }, 
+                        {
+                        date: "2023-09-13",
+                        time: ['10:00','11:00','14:00']
+                        },
+                        {
+                            date: "2023-09-15",
+                            time: ['10:00','14:00','15:00','16:00']
+                            }
+                   ],
           },
            {
             id: 5,
@@ -61,7 +103,17 @@ function WorkSelectPage(props) {
             banker_task: ['자산', '적금'],
             banker_avg_star: 3.7,
             banker_cnt_comment: 4,
-            banker_info: '감사합니다. 잘 부탁드립니다!'
+            banker_info: '감사합니다. 잘 부탁드립니다!',
+            schedule_list:[
+                        {
+                        date: "2023-09-13",
+                        time: ['14:00','15:00','16:00']
+                        },
+                        {
+                            date: "2023-09-15",
+                            time: ['10:00','11:00','13:00','16:00']
+                            }
+                   ],
           },
            {
             id: 6,
@@ -71,7 +123,17 @@ function WorkSelectPage(props) {
             banker_task: ['자산', '적금'],
             banker_avg_star: 3.7,
             banker_cnt_comment: 4,
-            banker_info: '감사합니다. 잘 부탁드립니다!'
+            banker_info: '감사합니다. 잘 부탁드립니다!',
+            schedule_list:[
+                {
+                date: "2023-09-14",
+                time: ['10:00','13:00','16:00']
+                },
+                {
+                    date: "2023-09-15",
+                    time: ['13:00','16:00']
+                    }
+           ],
           },
            {
             id: 7,
@@ -81,7 +143,22 @@ function WorkSelectPage(props) {
             banker_task: ['자산', '적금'],
             banker_avg_star: 3.7,
             banker_cnt_comment: 4,
-            banker_info: '감사합니다. 잘 부탁드립니다!'
+            banker_info: '감사합니다. 잘 부탁드립니다!',
+            schedule_list:[
+                {
+                date: "2023-09-14",
+                time: ['13:00','16:00']
+                },
+                {
+                    date: "2023-09-15",
+                    time: ['10:00','13:00','16:00']
+                    },
+                    {
+                        date: "2023-09-16",
+                        time: ['10:00','13:00','14:00']
+                        }
+
+           ],
           },
            {
             id: 8,
@@ -91,7 +168,22 @@ function WorkSelectPage(props) {
             banker_task: ['자산', '적금'],
             banker_avg_star: 3.7,
             banker_cnt_comment: 4,
-            banker_info: '감사합니다. 잘 부탁드립니다!'
+            banker_info: '감사합니다. 잘 부탁드립니다!',
+            schedule_list:[
+                {
+                date: "2023-09-14",
+                time: ['10:00','13:00']
+                },
+                {
+                    date: "2023-09-15",
+                    time: ['10:00']
+                    },
+                    {
+                        date: "2023-09-17",
+                        time: ['11:00','13:00','15:00']
+                        }
+
+           ],
           },
         
     ];
@@ -118,7 +210,7 @@ function WorkSelectPage(props) {
             // console.log(selectedEmployees);
 
             // DetailSelectPage로 필터링된 정보를 전달
-            navigate('/detail-select', { state: { selectedBankers } });
+            navigate('/detail-select', { state: { selectedBankers} });
         }   
     }
 

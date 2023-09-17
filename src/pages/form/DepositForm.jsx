@@ -12,6 +12,7 @@ function DepositForm(props) {
     const [investAmount, setInvestAmount] = useState(''); // 투자 금액
     const [investPeriod, setInvestPeriod] = useState(''); // 투자 기간
     const [targetReturn, setTargetReturn] = useState(''); // 목표수익률
+    const [consent, setConsent] = useState(false); // 개인정보활용 동의 항목
 
     // 입력 여부 체크
     const [monthlyIncomeError, setMonthlyIncomeError] = useState(''); // 월 소득수준
@@ -20,6 +21,7 @@ function DepositForm(props) {
     const [investAmountError, setInvestAmountError] = useState(''); // 투자 금액
     const [investPeriodError, setInvestPeriodError] = useState(''); // 투자 기간
     const [targetReturnError, setTargetReturnError] = useState(''); // 목표수익률
+    const [consentError, setConsentError] = useState(''); // 개인정보활용 동의 항목
 
     const handleMonthlyIncomeChange = (e) => {
         const newMonthlyIncome = e.target.value;
@@ -69,11 +71,19 @@ function DepositForm(props) {
         setTargetReturnError('');
     };
 
+    const handleConsentChange = (e) => {
+        const newConsent = e.target.checked;
+        setConsent(newConsent);
+
+        // 입력되면 에러 메시지 초기화
+        setConsentError('');
+    }
+
     // 폼 제출 버튼 눌렀을 때 실행될 함수
     const handleForm = () => {
 
         // 하나라도 입력되지 않은 경우 에러 메시지 표시
-        if (!monthlyIncome || !job || !investjoinFlag || !investAmount || !investPeriod || !targetReturn) {
+        if (!monthlyIncome || !job || !investjoinFlag || !investAmount || !investPeriod || !targetReturn || !consent) {
             if (!monthlyIncome) {
                 setMonthlyIncomeError('월 소득수준을 입력해주세요.');
             }
@@ -92,15 +102,18 @@ function DepositForm(props) {
             if (!targetReturn) {
                 setTargetReturnError('목표수익률을 입력해주세요.');
             }
+            if (!consent) {
+                setConsentError('동의해주세요.');
+            }
             return;
         }
 
-        //navigate("");
+        navigate('/customer-mypage');
 
     };
 
     
-    return (
+    return (// 방문고객->디비에서 / 상담직원, 방문예약일, 상담내용->다른 페이지에서 물고와야함
         <Container>
             <Title>영업점 방문예약 신청</Title>
             <Table>
@@ -170,20 +183,18 @@ function DepositForm(props) {
                         <TableCellInput>
                             <InputCheck
                                 type="radio"
-                                id="btn1"
                                 name="investExperience"
                                 value="예"
                                 checked={investjoinFlag === '예'}
-                                onChange={() => setInvestjoinFlag('예')}
+                                onChange={handleInvestjoinFlagChange}
                             />
                             예
                             <InputCheck
                                 type="radio"
-                                id="btn2"
                                 name="investExperience"
                                 value="아니오"
                                 checked={investjoinFlag === '아니오'}
-                                onChange={() => setInvestjoinFlag('아니오')}
+                                onChange={handleInvestjoinFlagChange}
                             />
                             아니오
                         </TableCellInput>
@@ -243,10 +254,15 @@ function DepositForm(props) {
                     <ConsentRowLast>
                         <InputCheck
                             type="checkbox"
+                            checked={consent}
+                            onChange={handleConsentChange}
                         />
                         본인은 귀 행이 개인(신용)정보 수집·이용 동의 상의 개인정보 수집 및 이용에 동의합니다.
+                        {consentError && <ConsentErrorMessage>{consentError}</ConsentErrorMessage>}
                     </ConsentRowLast>
+                    
                 </tbody>
+                
             </ConsentTable>
 
             <BtnWrapper>
@@ -272,6 +288,12 @@ const ErrorMessage = styled.div`
     margin-top: 5px;
 `;
 
+const ConsentErrorMessage = styled.div`
+    color: red;
+    font-size: 14px;
+    margin-left: auto;
+`;
+
 const Title = styled.div`
 font-size: 28px;
 font-weight: 700;
@@ -290,6 +312,7 @@ const TableRow = styled.tr`
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #b0b0b0;
+    
 `;
 
 const TableRowLast = styled.tr`
@@ -385,6 +408,7 @@ const ConsentRow = styled.tr`
 const ConsentRowLast = styled.tr`
     display: flex;
     padding: 20px;
+    align-items: center;
 
 `;
 

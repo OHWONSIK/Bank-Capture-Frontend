@@ -7,7 +7,7 @@ function ReserveTime(props) {
         '15:00', '16:00', '17:00',
     ];
 
-    const [selectedTime, setSelectedTime] = useState("");
+    const { selectedTime, setSelectedTime } = props;
 
     const handleSelectedTime = (time) => {
         setSelectedTime(time);
@@ -23,6 +23,7 @@ function ReserveTime(props) {
                             isSelected={selectedTime === time}
                         >
                             {time}
+                          
                         </TimeButton>
                     </TimeItem>
                 ))}
