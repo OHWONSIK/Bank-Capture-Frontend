@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { FiCalendar, FiClock, FiClipboard, FiLink, FiBell, FiEdit3 } from "react-icons/fi";
+import { useNavigate } from 'react-router-dom';
 
 function groupDataByYearAndMonth(data) {
     const groupedData = {}; // 그룹화된 데이터를 저장할 객체 생성
@@ -20,9 +21,15 @@ function groupDataByYearAndMonth(data) {
     });
   
     return groupedData;
-  }
+}
 
 function CustomerMyPage(props) {
+
+    const navigate = useNavigate();
+
+    const moveToReview = () => {
+        navigate('/review');
+    }
 
     // 방문 전 예약 더미데이터
     const beforeVisit = [
@@ -156,7 +163,7 @@ function CustomerMyPage(props) {
                                                 {item.comment ? (
                                                     <Review>{item.comment}</Review>
                                                 ) : (
-                                                    <ReviewBtn><FiEdit3 style={{marginRight: '10px', color: '#00c154'}}/>리뷰 쓰기</ReviewBtn>
+                                                    <ReviewBtn onClick={moveToReview}><FiEdit3 style={{marginRight: '10px', color: '#00c154'}}/>리뷰 쓰기</ReviewBtn>
                                                 )}
                                             
                                     </SubInfo>
@@ -193,11 +200,13 @@ const LeftContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center; 
+
 `;
 
 const RightContainer = styled.div`
-    flex: 1;
+    flex: 1.5;
     /* border: 1px solid black; */
+
     overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -275,28 +284,28 @@ const ChangeBtn = styled.button`
     width: 200px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 700;
     cursor: pointer;
     background-color: white;
     border: 2px solid black;
     border-radius: 10px;
     margin-right: 20px;
-    margin-top: 200px;
+    margin-top: 50px;
 `;
 
 const CancelBtn = styled.button`
     width: 200px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 700;
     color: white;
     cursor: pointer;
     background-color: black;
     border: 2px solid black;
     border-radius: 10px;
-    margin-top: 200px;
+    margin-top: 50px;
 `;
 
 const Wrapper = styled.div`
@@ -317,10 +326,11 @@ const DayInfo = styled.div`
   display: flex;
   justify-content: center;
   padding: 40px;
+
 `;
 
 const SubInfo = styled.div`
-width: 70%;
+width: 77%;
 border: 1px solid #b0b0b0;
     border-radius: 20px;
     padding: 40px;

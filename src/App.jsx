@@ -11,6 +11,8 @@ import DetailSelectPage from './pages/DetailSelectPage';
 import BankerSelect from './pages/BankerSelect';
 import CustomerMyPage from './pages/mypage/CustomerMyPage';
 import BankerMyPage from './pages/mypage/BankerMyPage';
+import Review from './pages/Review';
+import DepositForm from './pages/form/DepositForm';
 
 // import Footer from './components/Footer';
 
@@ -35,8 +37,11 @@ function App() {
         <Route path='/detail-select' element={<DetailSelectPage/>}/>
         <Route path='/banker-select' element={<BankerSelect/>}/>
 
-        
-        {/* 유저 타입(행원/일반고객)에 따라 라우팅 다르게 수정해야됨 */}
+        <Route path='/review' element={<Review/>}/>
+        <Route path='/deposit-form' element={<DepositForm/>}/>
+
+
+        {/* 유저 타입(행원/일반고객)에 따라 조건문으로 라우팅 다르게 수정해야됨 */}
         <Route path='/customer-mypage' element={<CustomerMyPage/>}/>
         <Route path='/banker-mypage' element={<BankerMyPage/>}/>
         
