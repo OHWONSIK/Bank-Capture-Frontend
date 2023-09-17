@@ -13,7 +13,6 @@ import CustomerMyPage from './pages/mypage/CustomerMyPage';
 import BankerMyPage from './pages/mypage/BankerMyPage';
 import DepositForm from './pages/form/DepositForm';
 import ReviewPage from './pages/mypage/ReviewPage';
-// import Footer from './components/Footer';
 
 function App() {
 
@@ -41,11 +40,10 @@ function App() {
 
         {/* 유저 타입(행원/일반고객)에 따라 조건문으로 라우팅 다르게 수정해야됨 */}
         <Route path='/customer-mypage' element={<CustomerMyPage/>}/>
-        <Route path='/banker-mypage' element={<BankerMyPage/>}/>
         <Route path='/reviewpage/:reservationId' element={<ReviewPage/>}/>
+        <Route path='/banker-mypage' element={<BankerMyPage/>}/>
         
       </Routes>
-      {/* <Footer/> */}
     </>
   );
 }

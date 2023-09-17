@@ -30,16 +30,14 @@ function groupDataByYearAndMonth(data) {
 
 function CustomerMyPage(props) {
 
-    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-
  
 
     const navigate=useNavigate();
 
        // 리뷰 작성 버튼을 클릭했을 때 Review 페이지로 이동
-       const handleOpenReviewPage = (reservationId) => {
-        navigate(`/reviewpage/${reservationId}`); // Review 페이지로 이동하면서 reservationId를 전달합니다.
-    };
+       const handleOpenReviewPage = (reservationId, bank_name, banker_name) => {
+        navigate(`/reviewpage/${reservationId}`, { state: { bank_name, banker_name } });
+      };
     function cancelReservation(seq){
         Swal.fire({
             title: '예약을 취소하시겠습니까?',
@@ -162,7 +160,7 @@ function CustomerMyPage(props) {
         },
         {
             reservation_id: 6,
-            bank_name: '선릉역 지점',
+            bank_name: '군자역 지점',
             bank_addr: '서울시 논현동',
             reservation_date: '2023-09-03',
             reservation_time: '15:00',
@@ -260,7 +258,7 @@ function CustomerMyPage(props) {
                                                 {item.comment  ? (
                                                     <Review>{item.comment}</Review>
                                                 ) : (
-                                                    <ReviewBtn onClick={() => handleOpenReviewPage(item.reservation_id)}>   
+                                                    <ReviewBtn onClick={() => handleOpenReviewPage(item.reservation_id,item.bank_name,item.banker_name)}>   
                
                                                   <FiEdit3 style={{marginRight: '10px', color: '#00c154'}}/>리뷰 쓰기</ReviewBtn>
                                                 )}
