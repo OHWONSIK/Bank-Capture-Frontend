@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
 import axios from "axios";
 import { API } from "../config";
+import Swal from "sweetalert2";
 
 function SignupPage(props) {
     const navigate = useNavigate();
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
 
     // 이메일 형식 체크
-    const [emailError, setEmailError] = useState('');
+    const [emailError, setEmailError] = useState("");
 
     // 전화번호 형식 체크
-    const [phoneNumberError, setPhoneNumberError] = useState('');
-    
+    const [phoneNumberError, setPhoneNumberError] = useState("");
+
     // 그 외(이름, 비밀번호) 입력 여부 체크
-    const [nameError, setNameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+    const [nameError, setNameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
     // 이메일 정규식
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -31,9 +32,9 @@ function SignupPage(props) {
         setEmail(newEmail);
 
         if (!emailRegex.test(newEmail)) {
-            setEmailError('이메일 형식이 잘못되었습니다.');
+            setEmailError("이메일 형식이 잘못되었습니다.");
         } else {
-            setEmailError('');
+            setEmailError("");
         }
     };
 
@@ -41,15 +42,15 @@ function SignupPage(props) {
     const handlePhoneNumberChange = (e) => {
         const newPhoneNumber = e.target.value;
 
-         // 입력값이 11자리를 초과하는 경우 아무 작업도 수행하지 않음
+        // 입력값이 11자리를 초과하는 경우 아무 작업도 수행하지 않음
         if (newPhoneNumber.length > 11) {
             return;
         }
 
         if (!/^\d+$/.test(newPhoneNumber)) {
-            setPhoneNumberError('숫자만 입력 가능합니다.');
+            setPhoneNumberError("숫자만 입력 가능합니다.");
         } else {
-            setPhoneNumberError('');
+            setPhoneNumberError("");
         }
 
         setPhoneNumber(newPhoneNumber);
@@ -61,7 +62,7 @@ function SignupPage(props) {
         setName(newName);
 
         // 이름이 입력되면 에러 메시지 초기화
-        setNameError('');
+        setNameError("");
     };
 
     const handlePasswordChange = (e) => {
@@ -69,47 +70,73 @@ function SignupPage(props) {
         setPassword(newPassword);
 
         // 비밀번호가 입력되면 에러 메시지 초기화
-        setPasswordError('');
+        setPasswordError("");
     };
 
     // 회원가입 버튼을 눌렀을 때 실행될 함수
     const handleSignup = () => {
-
         // 이름, 이메일, 비밀번호, 전화번호 중 하나라도 입력되지 않은 경우 에러 메시지 표시
         if (!name || !email || !password || !phoneNumber) {
             if (!name) {
-                setNameError('이름을 입력해주세요.');
+                setNameError("이름을 입력해주세요.");
             }
             if (!email) {
-                setEmailError('이메일을 입력해주세요.');
+                setEmailError("이메일을 입력해주세요.");
             }
             if (!password) {
-                setPasswordError('비밀번호를 입력해주세요.');
+                setPasswordError("비밀번호를 입력해주세요.");
             }
             if (!phoneNumber) {
-                setPhoneNumberError('전화번호를 입력해주세요.');
+                setPhoneNumberError("전화번호를 입력해주세요.");
             }
+            return;
+        }
+
+        //회원가입버튼을 눌렀을 때 이메일 형식 체크
+        if (!emailRegex.test(email)) {
+            setEmailError("이메일 형식이 잘못되었습니다.");
+            return;
+        }
+
+        //회원가입버튼을 눌렀을 때 전화번호 형식 체크
+        if (!/^\d{11}$/.test(phoneNumber)) {
+            setPhoneNumberError("올바른 전화번호 형식이 아닙니다.");
             return;
         }
 
         //navigate("/"); // 아래의 통신 코드 작성시엔 지우면 됨
 
         axios
-          .post(`${API.REGISTER}`, {
-            "customerName": name,
-            "customerEmail": email,
-            "customerPassword": password,
-            "customerPhone": phoneNumber,
-          })
-          .then((response) => {
-            console.log("회원가입 성공:", response.data);
-      
-            // 회원가입이 성공하면 초기 페이지로 이동합니다.
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("회원가입 에러:", error);
-          });
+            .post(`${API.REGISTER}`, {
+                customerName: name,
+                customerEmail: email,
+                customerPassword: password,
+                customerPhone: phoneNumber,
+            })
+            .then((response) => {
+                console.log("회원가입 성공:", response.data);
+
+                Swal.fire({
+                    title: "회원가입 완료",
+                    text: "확인을 누르시면 로그인 페이지로 이동합니다.",
+                    icon: "success",
+
+                    confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+                    confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+                }).then((result) => {
+                    // 회원가입이 성공하면 로그인 페이지로 이동
+                    navigate("/login");
+                });
+            })
+            .catch((error) => {
+                console.error("회원가입 에러:", error);
+                // 회원가입 실패시 에러메시지 출력
+                Swal.fire(
+                    "회원가입 실패",
+                    error.response.data.message,
+                    "error"
+                );
+            });
     };
 
     return (
@@ -150,13 +177,14 @@ function SignupPage(props) {
                     onChange={handlePhoneNumberChange}
                     value={phoneNumber}
                 />
-                {phoneNumberError && <ErrorMessage>{phoneNumberError}</ErrorMessage>}
+                {phoneNumberError && (
+                    <ErrorMessage>{phoneNumberError}</ErrorMessage>
+                )}
             </InputWrapper>
             <SignupBtn onClick={handleSignup}>회원가입</SignupBtn>
         </Container>
     );
 }
-
 
 const Container = styled.div`
     height: 100vh;
@@ -175,7 +203,6 @@ const InputWrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 30px;
-
 `;
 
 const SubTitle = styled.div`
