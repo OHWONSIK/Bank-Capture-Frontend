@@ -78,8 +78,14 @@ function BankerSelect(props) {
                 },
             })
             .then((response) => {
+                //default로 최신순정렬
+                const sortedReviews = response.data.bankerReviewList.sort(
+                    (a, b) =>
+                        new Date(formatDateString(b.reservationDate)) -
+                        new Date(formatDateString(a.reservationDate))
+                );
                 //리뷰리스트 저장
-                setSortedReviews(response.data.bankerReviewList);
+                setSortedReviews(sortedReviews);
                 //자격증리스트 저장
                 setCertificationList(response.data.certificationList);
             })
@@ -103,7 +109,6 @@ function BankerSelect(props) {
         navigate(-1);
     };
 
-    //현재 백엔드 로직이 변경되지않아 코멘트만 출력되고 별점이 출력되지않아서 필터확인불가
     const handleFilterClick = (filterName) => {
         setActiveFilter(filterName);
         let sortedList = [...sortedReviews];
@@ -117,7 +122,8 @@ function BankerSelect(props) {
             case "filter3":
                 // 별점 낮은 순 정렬
                 sortedList.sort(
-                    (a, b) => a.bankerStarRating - b.bankerStarRating
+                    (a, b) =>
+                        a.bankerStarRating -b.bankerStarRating
                 );
                 break;
             case "filter1":
@@ -125,8 +131,8 @@ function BankerSelect(props) {
                 // 최신 순 정렬 (기본)
                 sortedList.sort(
                     (a, b) =>
-                        new Date(b.bankerReviewDate) -
-                        new Date(a.bankerReviewDate)
+                        new Date(formatDateString((b.reservationDate))) -
+                        new Date(formatDateString((a.reservationDate)))
                 );
                 break;
         }
