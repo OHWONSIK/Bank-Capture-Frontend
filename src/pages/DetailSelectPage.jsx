@@ -174,18 +174,70 @@ function DetailSelectPage(props) {
                                     <Career>({banker.bankerCareer})</Career>
                                 </PrAndCareer>
                                 <RatingAndComment>
-                                    <Rating>
+
+                                    {/* 별점 없을시 0.00 코멘트 없을시 0출력*/}
+                                    {/* <Rating>
                                         <AiFillStar
                                             style={{ marginRight: "5px" }}
                                         />
-                                        {banker.bankerAvgStar}
+                                        {banker.bankerAvgStar.toFixed(2)}
                                     </Rating>
+                                    
                                     <Comment>
                                         <BiSolidComment
                                             style={{ marginRight: "5px" }}
                                         />
-                                        {banker.bankerCommentCnt}
-                                    </Comment>
+                                        {banker.bankerCommentCnt === null
+                                            ? "0"
+                                            : banker.bankerCommentCnt}
+                                    </Comment> */}
+                                    
+                                    {/*별점 코멘트 없을 시 아이콘만 표시*/}
+                                    <RatingAndComment>
+                                        {banker.bankerAvgStar > 0 && (
+                                            <Rating>
+                                                <AiFillStar
+                                                    style={{
+                                                        marginRight: "5px",
+                                                    }}
+                                                />
+                                                {banker.bankerAvgStar.toFixed(
+                                                    2
+                                                )}
+                                            </Rating>
+                                        )}
+
+                                        {banker.bankerAvgStar === 0 && (
+                                            <Rating>
+                                                <AiFillStar
+                                                    style={{
+                                                        marginRight: "5px",
+                                                    }}
+                                                />
+                                            </Rating>
+                                        )}
+
+                                        {banker.bankerCommentCnt !== null && (
+                                            <Comment>
+                                                <BiSolidComment
+                                                    style={{
+                                                        marginRight: "5px",
+                                                    }}
+                                                />
+                                                {banker.bankerCommentCnt}
+                                            </Comment>
+                                        )}
+
+                                        {banker.bankerCommentCnt === null && (
+                                            <Comment>
+                                                <BiSolidComment
+                                                    style={{
+                                                        marginRight: "5px",
+                                                    }}
+                                                />
+                                            </Comment>
+                                        )}
+                                    </RatingAndComment>
                                 </RatingAndComment>
                             </Text>
                         </BankerInfo>
