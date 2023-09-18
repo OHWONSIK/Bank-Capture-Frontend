@@ -216,14 +216,32 @@ function BankerSelect(props) {
                                     <AiFillStar
                                         style={{ marginRight: "5px" }}
                                     />
-                                    {selectedBanker.bankerAvgStar.toFixed(1)}
+                                    {selectedBanker.bankerAvgStar.toFixed(2)}
                                 </Rating>
-                                <Comment>
+                                {/* {selectedBanker.bankerAvgStar > 0 && (
+                                    <Rating>
+                                        <AiFillStar
+                                            style={{ marginRight: "5px" }}
+                                        />
+                                        {selectedBanker.bankerAvgStar.toFixed(
+                                            2
+                                        )}
+                                    </Rating>
+                                )} */}
+                                {/* <Comment>
                                     <BiSolidComment
                                         style={{ marginRight: "5px" }}
                                     />
                                     {selectedBanker.bankerCommentCnt}
-                                </Comment>
+                                </Comment> */}
+                                {selectedBanker.bankerCommentCnt > 0 && (
+                                    <Comment>
+                                        <BiSolidComment
+                                            style={{ marginRight: "5px" }}
+                                        />
+                                        {selectedBanker.bankerCommentCnt}
+                                    </Comment>
+                                )}
                             </RatingAndComment>
                         </Text>
                     </BankerInfo>
@@ -286,7 +304,9 @@ function BankerSelect(props) {
                                 ></ReviewProfile>
                                 <Text>
                                     <ReviewDate>
-                                        {formatDateString(review.reservationDate)}
+                                        {formatDateString(
+                                            review.reservationDate
+                                        )}
                                     </ReviewDate>
                                     <ReviewRating>
                                         <StarRatings
