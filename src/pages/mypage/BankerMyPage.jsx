@@ -1,19 +1,16 @@
 import React from "react";
 import { styled } from "styled-components";
 import {
-    FiCalendar,
     FiClock,
     FiClipboard,
-    FiBookmark,
     FiPhone,
-    FiBell,
-    FiEdit3,
 } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { useNavigate, useNavigation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../../config";
+import Modal from 'react-modal';
 
 function groupDataByYearAndMonth(data) {
     const groupedData = {}; // 그룹화된 데이터를 저장할 객체 생성
@@ -80,9 +77,40 @@ function BankerMyPage(props) {
 
     const [Visit, setVisit] = useState([]);
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
+    const [isModalOpen, setIsModalOpen] = useState(true);
 
+    // useEffect(() => {
+    //     if (isModalOpen) {
+    //         const closeModal = () => {
+    //             setIsModalOpen(false);
+    //         };
+    //       // Axios를 사용하여 banker_top_3 데이터 가져오기
+    //       axios
+    //         .get(`${API.BANKER_TOP3}`, {
+    //             params: {
+    //                 bankerId: 1,
+    //             },
+    //         })
+    //         .then((response) => {
+    //           // 데이터를 성공적으로 받아왔을 때 수행할 작업
+    //           console.log('banker_top_3 데이터:', response.data);
+    //         })
+    //         .catch((error) => {
+    //           // 에러 처리
+    //           console.error('banker_top_3 조회 에러:', error);
+    //         });
+    //         return (
+    //             <div className={ModalContainer}>
+    //                 <button className={Modalclose} onClick={closeModal}>
+    //                     X
+    //                 </button>
+    //                 <p>모달창입니다.</p>
+    //             </div>
+    //         );
+    //     }
+    //   }, [isModalOpen]); // isModalOpen 상태가 변경될 때만 호출
     useEffect(() => {
-        
+
         // 행원Id로 해당 행원 예약조회
         axios
             .get(`${API.BANKER_SCHEDULE_INQUIRY}`, {
@@ -314,6 +342,27 @@ function BankerMyPage(props) {
     );
 }
 
+/* 모달창을 화면 중앙. 최상단에 노출 */
+const ModalContainer = styled.div`
+    width: 300px;
+    height: 200px;
+    z-index: 999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: gray;
+    border: 1px solid black;
+    border-radius: 8px;
+    `;
+  
+  
+  /* 모달창 내부 X버튼 */
+  const Modalclose  = styled.button`
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    `;
 const Container = styled.div`
     margin-left: 100px;
     margin-right: 100px;
