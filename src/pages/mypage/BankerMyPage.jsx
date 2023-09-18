@@ -82,6 +82,7 @@ function BankerMyPage(props) {
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
 
     useEffect(() => {
+        
         // 행원Id로 해당 행원 예약조회
         axios
             .get(`${API.BANKER_SCHEDULE_INQUIRY}`, {

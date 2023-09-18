@@ -136,7 +136,7 @@ function LoginPage(props) {
                 );
 
                 // 성공적으로 로그인한 경우, '/'로 이동
-                navigate("/");
+                navigate("/banker-mypage");
             } catch (error) {
                 // 오류 처리
                 console.error(error);

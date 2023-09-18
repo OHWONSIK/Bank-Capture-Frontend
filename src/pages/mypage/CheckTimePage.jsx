@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
-import ReserveDate from "../components/ReserveDate";
-import ReserveTime from "../components/ReserveTime";
+import ScheduleDate from "../../components/ScheduleDate";
+import ScheduleTime from "../../components/ScheduleTime";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import { BiSolidComment } from "react-icons/bi";
 import moment from "moment";
 import Swal from "sweetalert2";
+import { API } from "../../config";
+import axios from "axios";
 
-function DetailSelectPage(props) {
+
+function CheckTimePage(props) {
     const [selectedDate, setSelectedDate] = useState(""); // 선택한 날짜
     const [selectedTime, setSelectedTime] = useState(""); // 선택한 시간
     const [isReserveActive, setIsReserveActive] = useState(false); // 예약이 활성화되었는지 여부
     
     const location = useLocation();
 
-    const reservationId = location.state.reservationId; //예약변경일시 해당 예약ID
-    const taskId = location.state.taskId; //예약하기를 위해 필요한 업무ID
+    const bankerId = sessionStorage.getItem('bankerId')
+
     const selectedBankers = location.state.selectedBankers || []; //지점, 업무에 맞는 모든 행원들
     
     const [filteredBankers, setFilteredBankers] = useState(selectedBankers);
@@ -145,13 +148,13 @@ function DetailSelectPage(props) {
             <SubContainer>
                 <LeftContainer>
                     <DateSelect>날짜 선택</DateSelect>
-                    <ReserveDate
+                    <ScheduleDate
                         selectedDate={selectedDate}
                         setSelectedDate={handleDateChange}
                     />
 
                     <TimeSelect>시간 선택</TimeSelect>
-                    <ReserveTime
+                    <ScheduleTime
                         selectedTime={selectedTime}
                         setSelectedTime={handleTimeSelection}
                     />
@@ -374,4 +377,4 @@ const Comment = styled.div`
     align-items: center;
     justify-content: space-between;
 `;
-export default DetailSelectPage;
+export default CheckTimePage;

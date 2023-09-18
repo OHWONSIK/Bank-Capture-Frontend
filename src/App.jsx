@@ -12,6 +12,7 @@ import BankerSelect from './pages/BankerSelect';
 import CustomerMyPage from './pages/mypage/CustomerMyPage';
 import BankerMyPage from './pages/mypage/BankerMyPage';
 import ReviewPage from './pages/mypage/ReviewPage';
+import CheckTimePage from './pages/mypage/CheckTimePage';
 // import Footer from './components/Footer';
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
         <Route path='/customer-mypage' element={<CustomerMyPage/>}/>
         <Route path='/banker-mypage' element={<BankerMyPage/>}/>
         <Route path='/reviewpage/:reservationId' element={<ReviewPage/>}/>
-        
+        <Route path='/check-time' element={<CheckTimePage/>}/>
       </Routes>
       {/* <Footer/> */}
     </>
