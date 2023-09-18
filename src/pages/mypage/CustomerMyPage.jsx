@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { useNavigate, useNavigation } from 'react-router-dom';
 import { useState } from 'react';
 import ReviewModal from './ReviewPage';
+
 function groupDataByYearAndMonth(data) {
     const groupedData = {}; // 그룹화된 데이터를 저장할 객체 생성
   
@@ -82,7 +83,7 @@ function CustomerMyPage(props) {
   }
 
   
-    // 방문 전 예약 더미데이터
+    // 방문 전/후 예약 더미데이터
     const Visit = [
         {
             reservation_id: 1,
@@ -257,7 +258,7 @@ function CustomerMyPage(props) {
                                                 {item.comment  ? (
                                                     <Review>{item.comment}</Review>
                                                 ) : (
-                                                    <ReviewBtn onClick={() => handleOpenReviewPage(item.reservation_id,item.banker_name,item.bank_name)}>   
+                                                    <ReviewBtn onClick={() => handleOpenReviewPage(item.reservation_id,item.bank_name,item.banker_name)}>   
                
                                                   <FiEdit3 style={{marginRight: '10px', color: '#00c154'}}/>리뷰 쓰기</ReviewBtn>
                                                 )}
@@ -352,7 +353,7 @@ const BankName = styled.div`
 const BankerName = styled.div`
 font-size: 15px;
 color: #888888;
-font-wieght : 300;
+font-weight : 300;
 `;
 
 
@@ -396,14 +397,12 @@ const Document = styled.div`
 font-size: 23px;
 display: flex;
 align-items: center;
-
 `;
 
 const BtnContainer = styled.div`
 /* background-color: yellow; */
 display: flex;
 justify-content: center;
-
 `;
 
 const ChangeBtn = styled.button`

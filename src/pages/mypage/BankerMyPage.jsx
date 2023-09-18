@@ -5,7 +5,7 @@ import kb_img from "../../assets/image/kb_img.png";
 import Swal from "sweetalert2";
 import { useNavigate, useNavigation } from 'react-router-dom';
 import { useState } from 'react';
-import ReviewModal from './ReviewPage';
+
 function groupDataByYearAndMonth(data) {
     const groupedData = {}; // 그룹화된 데이터를 저장할 객체 생성
   

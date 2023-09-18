@@ -108,6 +108,7 @@ function LoginPage(props) {
             }
         }
     };
+
     const navigate = useNavigate();
 
     return (

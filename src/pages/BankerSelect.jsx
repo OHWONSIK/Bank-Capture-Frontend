@@ -69,7 +69,15 @@ function BankerSelect(props) {
         navigate(-1);
     };
 
- 
+    // '예약하기' 버튼 눌렀을 때, 업무에 따라 폼 나누기
+    // const handleForm = () => {
+       
+    // }
+
+    // 일단 다 예금폼으로만 넘어가도록
+    const handleForm = () => {
+        navigate('/deposit-form');
+    }
 
     const handleFilterClick = (filterName) => {
       setActiveFilter(filterName);
@@ -118,7 +126,7 @@ function BankerSelect(props) {
                     <Certification>{bankerinfo[0].certification_list.join(' / ')}</Certification>
                     <BtnContainer>
                         <BackBtn onClick={handleGoBack}>뒤로 가기</BackBtn>
-                        <ReserveBtn>예약하기</ReserveBtn>
+                        <ReserveBtn onClick={handleForm}>예약하기</ReserveBtn>
                     </BtnContainer>
                     
                 </LeftContainer>
@@ -189,6 +197,7 @@ const LeftContainer = styled.div`
     margin-right: 20px;
     /* display: flex;  */
     /* flex-direction: column; */
+    padding-top: 100px;
 `;
 
 const RightContainer = styled.div`
@@ -368,28 +377,28 @@ const BackBtn = styled.button`
     width: 200px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 700;
     cursor: pointer;
     background-color: white;
     border: 2px solid black;
     border-radius: 10px;
     margin-right: 20px;
-    margin-top: 200px;
+    margin-top: 100px;
 `;
 
 const ReserveBtn = styled.button`
     width: 200px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 700;
     color: white;
     cursor: pointer;
     background-color: black;
     border: 2px solid black;
     border-radius: 10px;
-    margin-top: 200px;
+    margin-top: 100px;
 `;
 
 export default BankerSelect;

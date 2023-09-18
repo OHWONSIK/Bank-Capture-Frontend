@@ -210,7 +210,7 @@ function WorkSelectPage(props) {
             // console.log(selectedEmployees);
 
             // DetailSelectPage로 필터링된 정보를 전달
-            navigate('/detail-select', { state: { selectedBankers } });
+            navigate('/detail-select', { state: { selectedBankers} });
         }   
     }
 

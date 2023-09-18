@@ -19,23 +19,6 @@ function DetailSelectPage(props) {
     const location = useLocation();
     const selectedBankers = location.state.selectedBankers || [];
 
-    // 시간&&날짜 만족하는 은행원 박스만 활성화시키는 코드 작성해야함
-    // const [selectedDate, setSelectedDate] = useState(new Date());
-    // const [selectedTime, setSelectedTime] = useState("");
-
-    // useEffect(() => {
-    //     fetchBankerInfo(selectedDate, selectedTime);
-    // }, [selectedDate, selectedTime]);
-
-    // const fetchBankerInfo = (date, time) => {
-    //     axios.get('', {
-    //         params: {date, time,},
-    //     })
-    //     .then(res => {
-            
-    //     })
-    // }
-
     // 날짜를 선택할 때 호출되는 함수
     const handleDateChange = (date) => {
         setSelectedDate(date);
