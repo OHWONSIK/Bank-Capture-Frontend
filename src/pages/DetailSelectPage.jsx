@@ -19,10 +19,15 @@ function DetailSelectPage(props) {
 
     // 날짜를 선택할 때 호출되는 함수
 
-    const reservationId = location.state.reservationId; //예약변경일시 해당 예약ID
-    const taskId = location.state.taskId; //예약하기를 위해 필요한 업무ID
+    const reservationId = location.state.reservationId || ""; //예약변경일시 해당 예약ID
+    const taskId = location.state.taskId || "";//예약하기를 위해 필요한 업무ID
     const selectedBankers = location.state.selectedBankers || []; //지점, 업무에 맞는 모든 행원들
-    
+    const selectedWork = location.state.selectedWork || "";
+    const bankId = location.state.bankId || "";
+    const time = location.state.time || "";
+    const date = location.state.date || "";
+
+
     const [filteredBankers, setFilteredBankers] = useState(selectedBankers);
 
     //시간매핑 배열
@@ -118,31 +123,24 @@ function DetailSelectPage(props) {
             //캘린더 라이브러리 클릭시 선택되는 날짜포맷을 YYYYMMDD형식으로 변경해서 저장
             let reservationDate = moment(selectedDate).format("YYYYMMDD");
             let reservationTime = getTimeSlot(selectedTime);
-            
-            //행원의 스케줄리스트에 bankId가 있기때문에 가져와서 저장
-            //나중에 지점선택할때부터 bankId물고오는걸로 수정해야함
-            const bankId = selectedBanker.scheduleList[0].bankId;
+            let bankerName = selectedBanker.bankerName;
             
             navigate("/banker-select", {
                 state: {
-                    reservationId,
-                    selectedBanker,
-                    reservationDate,
-                    reservationTime,
+                    reservationId: reservationId,
+                    selectedBanker: selectedBanker,
+                    reservationDate: reservationDate,
+                    reservationTime: reservationTime,
                     bankId: bankId,
-                    taskId,
+                    taskId: taskId,
+                    bankerName: bankerName,
+                    selectedWork: selectedWork,
+                    selectedTime: selectedTime
                 },
             });
         }
     };
-    //console.log("filteredBankers:", filteredBankers);
 
-    // 예제 2: ReserveDate 컴포넌트에서 선택한 날짜를 콘솔에 출력
-    //console.log("selectedDate:", selectedDate);
-
-    //console.log("selectedBankerList", selectedBankers);
-    // 예제 3: ReserveTime 컴포넌트에서 선택한 시간을 콘솔에 출력
-    //console.log("selectedTime:", selectedTime);
     return (
         <Container>
             <SubContainer>
@@ -152,7 +150,6 @@ function DetailSelectPage(props) {
                         selectedDate={selectedDate}
                         setSelectedDate={handleDateChange}
                     />
-
                     <TimeSelect>시간 선택</TimeSelect>
                     <ReserveTime
                         selectedTime={selectedTime}
@@ -176,10 +173,8 @@ function DetailSelectPage(props) {
                                     <Pr>{banker.bankerInfo}</Pr>
                                     <Career>({banker.bankerCareer})</Career>
                                 </PrAndCareer>
-                                <RatingAndComment>
-
-                                    {/* 별점 없을시 0.00 코멘트 없을시 0출력*/}
-                                    {/* <Rating>
+                                {/* 별점 없을시 0.00 코멘트 없을시 0출력*/}
+                                {/* <Rating>
                                         <AiFillStar
                                             style={{ marginRight: "5px" }}
                                         />
@@ -194,9 +189,8 @@ function DetailSelectPage(props) {
                                             ? "0"
                                             : banker.bankerCommentCnt}
                                     </Comment> */}
-                                    
-                                    {/*별점 코멘트 없을 시 아이콘만 표시*/}
-                                    <RatingAndComment>
+                                {/*별점 코멘트 없을 시 아이콘만 표시*/}
+                                <RatingAndComment>
                                         {banker.bankerAvgStar > 0 && (
                                             <Rating>
                                                 <AiFillStar
@@ -209,7 +203,6 @@ function DetailSelectPage(props) {
                                                 )}
                                             </Rating>
                                         )}
-
                                         {banker.bankerAvgStar === 0 && (
                                             <Rating>
                                                 <AiFillStar
@@ -219,7 +212,6 @@ function DetailSelectPage(props) {
                                                 />
                                             </Rating>
                                         )}
-
                                         {banker.bankerCommentCnt !== null && (
                                             <Comment>
                                                 <BiSolidComment
@@ -230,7 +222,6 @@ function DetailSelectPage(props) {
                                                 {banker.bankerCommentCnt}
                                             </Comment>
                                         )}
-
                                         {banker.bankerCommentCnt === null && (
                                             <Comment>
                                                 <BiSolidComment
@@ -241,7 +232,6 @@ function DetailSelectPage(props) {
                                             </Comment>
                                         )}
                                     </RatingAndComment>
-                                </RatingAndComment>
                             </Text>
                         </BankerInfo>
                     ))}
@@ -378,3 +368,5 @@ const Comment = styled.div`
     justify-content: space-between;
 `;
 export default DetailSelectPage;
+
+
