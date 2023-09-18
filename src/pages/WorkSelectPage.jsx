@@ -9,10 +9,10 @@ import cover3 from "../assets/image/cover3.png";
 import cover4 from "../assets/image/cover4.png";
 
 function WorkSelectPage(props) {
-    //지도 구현하면 bankId useState로 관리해야함
-    const bankId = 1;
     const location = useLocation();
 
+    //고객 마이페이지에서 예약변경을 위해 넘어온 해당 은행ID값
+    const bankId = location.state.bankId || "";
     //고객 마이페이지에서 예약변경을 위해 넘어온 해당 예약ID값
     const reservationId = location.state?.reservationId || "";
 
@@ -56,7 +56,7 @@ function WorkSelectPage(props) {
                         taskId: taskId, //예약하기할때 taskId 필요해서 같이 넘겨줌
                         reservationId: reservationId, //예약변경일시 해당 예약ID 넘겨줌
                         selectedWork: selectedWork,
-                        bankId: bankId
+                        bankId: bankId,
                     },
                 });
             })
@@ -64,7 +64,6 @@ function WorkSelectPage(props) {
                 console.error("조회 에러:", error);
             });
     };
-
 
     const moveToReservation = () => {
         navigate("/reservation");

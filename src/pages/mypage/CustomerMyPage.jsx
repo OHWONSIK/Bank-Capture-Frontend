@@ -85,6 +85,7 @@ function CustomerMyPage(props) {
     const [Visit, setVisit] = useState([]);
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
 
+
     useEffect(() => {
         //고객Id로 해당 고객 예약조회
         axios
@@ -94,6 +95,7 @@ function CustomerMyPage(props) {
                 },
             })
             .then((response) => {
+                console.log(response.data)
                 setVisit(response.data);
                 console.log(response.data);
             })
@@ -157,6 +159,7 @@ function CustomerMyPage(props) {
     // modifyReservation 함수를 클릭 이벤트 핸들러로 사용
     const modifyReservation = () => {
         const reservationId = unfinishedReservations[0].reservationId;
+        const bankId = unfinishedReservations[0].bankId;
 
         Swal.fire({
             title: "예약을 변경하시겠습니까?",
@@ -169,7 +172,12 @@ function CustomerMyPage(props) {
             confirmButtonText: "변경하기",
         }).then((result) => {
             if (result.isConfirmed) {
-                navigate("/work-select", { state: { reservationId } });
+                navigate("/work-select", {
+                    state: {
+                        reservationId: reservationId,
+                        bankId: bankId
+                    }
+                });
             }
         });
     };
@@ -210,6 +218,8 @@ function CustomerMyPage(props) {
                 unfinishedReservations[0].reservationDate.substring(4, 6),
                 unfinishedReservations[0].reservationDate.substring(6, 8)
             );
+
+            
 
             return (
                 <>

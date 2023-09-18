@@ -1,62 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import axios from "axios";
 import { API } from "../config";
 import Swal from "sweetalert2";
-
-/*
-로그인 통신코드 
-import axios from "axios"; // 필요한 경우 axios 라이브러리를 가져옵니다.
-
-// ...
-
-function LoginPage(props) {
-    // ...
-
-    const handleLogin = async () => {
-        // 이메일과 비밀번호를 가져옵니다.
-        const email = document.querySelector('input[type="email"]').value;
-        const password = document.querySelector('input[type="password"]').value;
-
-        // userRole에 따라 다른 AJAX 요청을 보냅니다.
-        if (userRole === 'customer') {
-            try {
-                // Customer 로그인 AJAX 요청
-                const response = await axios.post('/customer-login', {
-                    email: email,
-                    password: password,
-                });
-
-                // 성공적으로 로그인한 경우, '/'로 이동
-                navigate('/');
-            } catch (error) {
-                // 오류 처리
-                console.error(error);
-            }
-        } else if (userRole === 'banker') {
-            try {
-                // Banker 로그인 AJAX 요청
-                const response = await axios.post('/banker-login', {
-                    email: email,
-                    password: password,
-                });
-
-                // 성공적으로 로그인한 경우, '/bankermypage'로 이동
-                navigate('/banker-mypage');
-            } catch (error) {
-                // 오류 처리
-                console.error(error);
-            }
-        }
-    };
-
-    // ...
-return에서 loginbtn onclick시 {handleLogin} 실행
-
-*/
 
 function LoginPage(props) {
     const [userRole, setUserRole] = useState("고객"); // 기본값은 customer로 설정
@@ -155,6 +103,7 @@ function LoginPage(props) {
                 //성공적으로 로그인한 경우 sessionStorage에 아이디, 이름 저장
                 sessionStorage.setItem("bankerId", response.data.bankerId);
                 sessionStorage.setItem("bankerName", response.data.bankerName);
+                sessionStorage.setItem("bankId", response.data.bankId);
 
                 // 성공적으로 로그인한 경우, '/bankermypage'로 이동
                 navigate("/banker-mypage");

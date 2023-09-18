@@ -11,8 +11,8 @@
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  /* overflow-y: hidden; */
+  /* overflow-x: hidden;
+  overflow-y: hidden; */
   &::-webkit-scrollbar {
     display: none;
   }
