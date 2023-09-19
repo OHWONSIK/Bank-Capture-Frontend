@@ -120,7 +120,11 @@ function LoanForm(props) {
         // 입력되면 에러 메시지 초기화
         setConsentError("");
     };
-
+      // "내용 보기" 버튼 클릭 시 실행되는 함수
+      const handleConsentBtnClick = () => {
+        // 여기에 링크로 이동하는 코드를 작성합니다.
+        window.open("https://chocolate-guppy-308.notion.site/58b2b34f59784aee81af47b69d2c9958?pvs=4", '_blank');
+    };
     // 폼 제출 버튼 눌렀을 때 실행될 함수
     const handleForm = () => {
         // 하나라도 입력되지 않은 경우 에러 메시지 표시
@@ -175,8 +179,8 @@ function LoanForm(props) {
             text: "정말로 예약하시겠습니까?",
             icon: "info",
             showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-            confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
-            cancelButtonColor: "#d33", // cancel 버튼 색깔 지정
+            confirmButtonColor: "black", // confrim 버튼 색깔 지정
+            cancelButtonColor: "#696969", // cancel 버튼 색깔 지정
             confirmButtonText: "확인", // confirm 버튼 텍스트 지정
             cancelButtonText: "취소", // cancel 버튼 텍스트 지정
             //reverseButtons: true, // 버튼 순서 거꾸로
@@ -437,7 +441,7 @@ function LoanForm(props) {
                     <ConsentRow>
                         개인(신용)정보 수집·이용 동의서 (필수) (영업점
                         방문예약(개인대출))
-                        <ConsentBtn>내용 보기</ConsentBtn>
+                        <ConsentBtn onClick={handleConsentBtnClick}>내용 보기</ConsentBtn>
                     </ConsentRow>
                     <ConsentRowLast>
                         <InputCheck

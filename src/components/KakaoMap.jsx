@@ -4,6 +4,8 @@ import { markerdata } from "./markerdata";
 import "./Maps.css";
 import axios from "axios";
 import { API } from "../config";
+import marker_img from "../assets/image/marker_img.png";
+import bank_img from "../assets/image/location.png";
 
 const { kakao } = window;
 
@@ -43,10 +45,8 @@ const Map = () => {
         setKakaoMap(map);
     }, [container]);
 
-    const imageSrc = [
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-    ]; // 마커이미지의 주소입니다
-    const imageSize = new kakao.maps.Size(48, 48);
+    const imageSrc = bank_img; // 마커이미지의 주소입니다
+    const imageSize = new kakao.maps.Size(58, 58);
   const imageOption = { offset: new kakao.maps.Point(10, 48) };
   
 
