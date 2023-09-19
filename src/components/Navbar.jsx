@@ -30,15 +30,22 @@ function Navbar(props) {
     const moveToLogin = () => {
         navigate('/login');
     }
+    const isCheckTimePage = window.location.pathname === '/check-time';
 
     return (
         <Container>
             <Logo onClick={moveToMain}>로고자리</Logo>
             <SubContainer>
-                {/* <Menu to={isLoggedIn ? '/mypage' : '/login'}>나의 예약 관리</Menu> */}
-                <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
+                {sessionStorage.getItem('bankerId') === null && (
+                    <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
+                )}
+                {sessionStorage.getItem('bankerId') !== null && (
+                    <Menu to={isCheckTimePage ? '/banker-mypage' : '/check-time'}>
+                        {isCheckTimePage ? '나의 방문 관리' : '나의 스케줄 관리'}
+                    </Menu>
+                )}
                 <LoginBtn onClick={isLoggedIn ? handleLogout : moveToLogin}>
-                    {isLoggedIn ? "로그아웃" : "로그인"}
+                    {isLoggedIn ? '로그아웃' : '로그인'}
                 </LoginBtn>
             </SubContainer>
         </Container>
@@ -65,6 +72,7 @@ const SubContainer = styled.div`
     margin-right: 100px;
 `;
 
+
 const Logo = styled.div`
     cursor: pointer;
     margin-left: 100px;
@@ -78,5 +86,6 @@ const Menu = styled(NavLink)`
 const LoginBtn = styled.div`
     cursor: pointer;
 `;
+
 
 export default Navbar;

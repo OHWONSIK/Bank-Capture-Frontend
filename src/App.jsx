@@ -10,11 +10,12 @@ import WorkSelectPage from './pages/WorkSelectPage';
 import DetailSelectPage from './pages/DetailSelectPage';
 import BankerSelect from './pages/BankerSelect';
 import CustomerMyPage from './pages/mypage/CustomerMyPage';
-import ReviewPage from './pages/mypage/ReviewPage';
 import BankerMyPage from './pages/mypage/BankerMyPage';
+import ReviewPage from './pages/mypage/ReviewPage';
 import DepositForm from './pages/form/DepositForm';
 import LoanForm from "./pages/form/LoanForm";
 
+import CheckTimePage from './pages/mypage/CheckTimePage';
 // import Footer from './components/Footer';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
               <Route path="/detail-select" element={<DetailSelectPage />} />
               <Route path="/banker-select" element={<BankerSelect />} />
               <Route path="/customer-mypage" element={<CustomerMyPage />} />
+              <Route path='/check-time' element={<CheckTimePage/>}/>
               <Route
                   path="/reviewpage/:reservationId"
                   element={<ReviewPage />}
