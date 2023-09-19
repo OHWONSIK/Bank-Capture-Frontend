@@ -83,7 +83,7 @@ function BankerMyPage(props) {
           axios
             .get(`${API.BANKER_TOP3}`, {
                 params: {
-                    bankId: 1,
+                    bankId: sessionStorage.getItem('bankId'),
                 },
             })
             .then((response) => {                
@@ -91,6 +91,7 @@ function BankerMyPage(props) {
               console.log('banker_top_3 데이터:', response.data);
               const bankerName1 = response.data.content[0].bankerName;
               const bankerImgPath1 = response.data.content[0].bankerImgPath;
+              console.log(bankerImgPath1);
               const bankerName2 = response.data.content[1].bankerName;
               const bankerImgPath2 = response.data.content[1].bankerImgPath;
               const bankerName3 = response.data.content[2].bankerName;

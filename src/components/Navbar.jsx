@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import logoImage from '../assets/image/kblogo.png'; // 로고 이미지 경로를 추가
 
 function Navbar(props) {
 
@@ -34,7 +35,7 @@ function Navbar(props) {
 
     return (
         <Container>
-            <Logo onClick={moveToMain}>로고자리</Logo>
+            <Logo onClick={moveToMain}><img src={logoImage} alt="로고" /></Logo>
             <SubContainer>
                 {sessionStorage.getItem('bankerId') === null && (
                     <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
@@ -73,10 +74,7 @@ const SubContainer = styled.div`
 `;
 
 
-const Logo = styled.div`
-    cursor: pointer;
-    margin-left: 100px;
-`;
+
 
 const Menu = styled(NavLink)`
     text-decoration: none;
@@ -85,6 +83,16 @@ const Menu = styled(NavLink)`
 
 const LoginBtn = styled.div`
     cursor: pointer;
+`;
+const Logo = styled.div`
+    cursor: pointer;
+    margin-left: 50px;
+
+    // 로고 이미지 스타일 추가
+    img {
+        width: 350px; // 원하는 너비로 조절
+        height: auto; // 높이 자동 조절
+    }
 `;
 
 
