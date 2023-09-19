@@ -76,7 +76,7 @@ function BankerMyPage(props) {
 
     const [Visit, setVisit] = useState([]);
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
-    const bankId = 1;
+    const bankId = sessionStorage.getItem('bankId');
     useEffect(() => {
         
           // Axios를 사용하여 banker_top_3 데이터 가져오기
@@ -146,7 +146,7 @@ function BankerMyPage(props) {
         axios
             .get(`${API.BANKER_SCHEDULE_INQUIRY}`, {
                 params: {
-                    bankerId: 1,
+                    bankerId: sessionStorage.getItem('bankerId'),
                 },
             })
             .then((response) => {
