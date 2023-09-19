@@ -19,52 +19,7 @@ function formatDateString(inputString) {
 }
 
 function BankerSelect(props) {
-    //선택된 은행원 주업무 및 자격증, 리뷰 더미데이터
-    // const bankerinfo = [
-    //     {
-    //         banker_task_list: ['개인대출', '적금', '예금'],
-    //         certification_list: ['투자 운용사', '회계사'],
-
-    //         banker_review_list: [
-    //             {
-    //                 reservation_date: '2023.09.04',
-    //                 rating: 5,
-    //                 comment: '서비스가 매우 만족스러웠습니다.'
-    //             },
-    //             {
-    //                 reservation_date: '2023.09.01',
-    //                 rating: 2.3,
-    //                 comment: '친절하고 빠른 응대가 좋았습니다.'
-    //             },
-    //             {
-    //                 reservation_date: '2023.09.20',
-    //                 rating: 4.5,
-    //                 comment: '필요한 서류를 미리 안내해주셨고, 친절하셨습니다.'
-    //             },
-    //             {
-    //                 reservation_date: '2023.09.14',
-    //                 rating: 4.3,
-    //                 comment: '좋아요~'
-    //             },
-    //             {
-    //                 reservation_date: '2023.07.14',
-    //                 rating: 4.0,
-    //                 comment: '좋아요~'
-    //             },
-    //             {
-    //                 reservation_date: '2023.09.11',
-    //                 rating: 4.3,
-    //                 comment: '좋아요~'
-    //             },
-    //             {
-    //                 reservation_date: '2023.08.20',
-    //                 rating: 1.0,
-    //                 comment: '좋아요~'
-    //             },
-    //         ],
-    //     }
-    // ]
-
+    
     const [activeFilter, setActiveFilter] = useState("filter1");
     const [sortedReviews, setSortedReviews] = useState([]);
     const [certificationList, setCertificationList] = useState([]);
@@ -97,10 +52,13 @@ function BankerSelect(props) {
     const location = useLocation();
     const selectedBanker = location.state.selectedBanker || [];
     const reservationId = location.state.reservationId || "";
-    const reservationDate = location.state.reservationDate;
-    const reservationTime = location.state.reservationTime;
-    const taskId = location.state.taskId;
-    const bankId = location.state.bankId;
+    const reservationDate = location.state.reservationDate || "";
+    const reservationTime = location.state.reservationTime || "";
+    const taskId = location.state.taskId || "";
+    const bankId = location.state.bankId || "";
+    const selectedWork = location.state.selectedWork || "";
+    const bankerName = location.state.bankerName || "";
+    const selectedTime = location.state.selectedTime || "";
 
     const navigate = useNavigate();
 
@@ -144,56 +102,44 @@ function BankerSelect(props) {
     //예약하기버튼
     const handleReservation = async () => {
         Swal.fire({
-            title: "예약하기",
-            text:
-                "행원 " +
-                selectedBanker.bankerName +
-                "님으로 예약하시겠습니까?",
+            title: "사전서류 작성하기",
+            text: "사전서류 작성페이지로 이동하시겠습니까?",
             icon: "info",
-
             showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
             confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
             cancelButtonColor: "#d33", // cancel 버튼 색깔 지정
             confirmButtonText: "확인", // confirm 버튼 텍스트 지정
             cancelButtonText: "취소", // cancel 버튼 텍스트 지정
-
             //reverseButtons: true, // 버튼 순서 거꾸로
         }).then((result) => {
+
             if (result.isConfirmed) {
-                // 만약 모달창에서 confirm 버튼을 눌렀다면
+                const commonParams = {
+                    bankId: bankId,
+                    bankerId: selectedBanker.bankerId,
+                    reservationDate: reservationDate,
+                    reservationId: reservationId,
+                    reservationTime: reservationTime,
+                    taskId: taskId,
+                    selectedWork: selectedWork,
+                    bankerName: bankerName,
+                    time: selectedTime,
+                    date: formatDateString(reservationDate)
+                };
 
-                axios
-                    .post(`${API.RESERVATION_BOOK}`, {
-                        bankId: 1,
-                        bankerId: selectedBanker.bankerId,
-                        customerId: 1,
-                        reservationDate: reservationDate,
-                        // reservationFinishFlag: "F",
-                        reservationId: reservationId,
-                        reservationTime: reservationTime,
-                        taskId: taskId,
-                    })
-                    .then((response) => {
-                        console.log("예약 성공:", response.data);
-
-                    })
-                    .catch((error) => {
-                        alert("예약 에러:", error);
+                if (selectedWork === "예금") {
+                    navigate("/deposit-form", {
+                        state: commonParams,
                     });
-
-                Swal.fire({
-                    title: "예약완료",
-                    text: "확인을 누르시면 홈화면으로 돌아갑니다.",
-                    icon: "success",
-
-                    confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
-                    confirmButtonText: "확인", // confirm 버튼 텍스트 지정
-                }).then((result) => {
-                    // 예약 성공하면 초기 페이지로 이동합니다.
-                    navigate("/");
-                });
+                } else if (selectedWork === "개인대출") {
+                    navigate("/loan-form", {
+                        state: commonParams,
+                    });
+                }
             }
-        });
+            });
+    
+        
     };
 
     return (
@@ -212,34 +158,47 @@ function BankerSelect(props) {
                                 <Career>({selectedBanker.bankerCareer})</Career>
                             </PrAndCareer>
                             <RatingAndComment>
-                                <Rating>
-                                    <AiFillStar
-                                        style={{ marginRight: "5px" }}
-                                    />
-                                    {selectedBanker.bankerAvgStar.toFixed(2)}
-                                </Rating>
-                                {/* {selectedBanker.bankerAvgStar > 0 && (
+                                {selectedBanker.bankerAvgStar > 0 && (
                                     <Rating>
                                         <AiFillStar
-                                            style={{ marginRight: "5px" }}
+                                            style={{
+                                                marginRight: "5px",
+                                            }}
                                         />
                                         {selectedBanker.bankerAvgStar.toFixed(
                                             2
                                         )}
                                     </Rating>
-                                )} */}
-                                {/* <Comment>
-                                    <BiSolidComment
-                                        style={{ marginRight: "5px" }}
-                                    />
-                                    {selectedBanker.bankerCommentCnt}
-                                </Comment> */}
-                                {selectedBanker.bankerCommentCnt > 0 && (
+                                )}
+
+                                {selectedBanker.bankerAvgStar === 0 && (
+                                    <Rating>
+                                        <AiFillStar
+                                            style={{
+                                                marginRight: "5px",
+                                            }}
+                                        />
+                                    </Rating>
+                                )}
+
+                                {selectedBanker.bankerCommentCnt !== null && (
                                     <Comment>
                                         <BiSolidComment
-                                            style={{ marginRight: "5px" }}
+                                            style={{
+                                                marginRight: "5px",
+                                            }}
                                         />
                                         {selectedBanker.bankerCommentCnt}
+                                    </Comment>
+                                )}
+
+                                {selectedBanker.bankerCommentCnt === null && (
+                                    <Comment>
+                                        <BiSolidComment
+                                            style={{
+                                                marginRight: "5px",
+                                            }}
+                                        />
                                     </Comment>
                                 )}
                             </RatingAndComment>
@@ -265,6 +224,7 @@ function BankerSelect(props) {
                     </Certification>
                     <BtnContainer>
                         <BackBtn onClick={handleGoBack}>뒤로 가기</BackBtn>
+
                         <ReserveBtn onClick={handleReservation}>
                             예약하기
                         </ReserveBtn>
@@ -296,34 +256,42 @@ function BankerSelect(props) {
                         </Filter3>
                     </FilterContainer>
                     <ReviewContainer>
-                        {sortedReviews.map((review, i) => (
-                            <ReviewBox key={i}>
-                                <ReviewProfile
-                                    src={reviewProfile}
-                                    alt={"리뷰 프로필 이미지"}
-                                ></ReviewProfile>
-                                <Text>
-                                    <ReviewDate>
-                                        {formatDateString(
-                                            review.reservationDate
-                                        )}
-                                    </ReviewDate>
-                                    <ReviewRating>
-                                        <StarRatings
-                                            rating={review.bankerStarRating}
-                                            starRatedColor="#FF5151"
-                                            starEmptyColor="#c4c4c4"
-                                            starDimension="20px"
-                                            starSpacing="2px"
-                                        />
-                                    </ReviewRating>
+                        {sortedReviews.length === 0 ? (
+                            <NoReviewContainer>
+                                <NoReviewMessage>
+                                    해당 행원의 리뷰가 없습니다.
+                                </NoReviewMessage>
+                            </NoReviewContainer>
+                        ) : (
+                            sortedReviews.map((review, i) => (
+                                <ReviewBox key={i}>
+                                    <ReviewProfile
+                                        src={reviewProfile}
+                                        alt={"리뷰 프로필 이미지"}
+                                    ></ReviewProfile>
+                                    <Text>
+                                        <ReviewDate>
+                                            {formatDateString(
+                                                review.reservationDate
+                                            )}
+                                        </ReviewDate>
+                                        <ReviewRating>
+                                            <StarRatings
+                                                rating={review.bankerStarRating}
+                                                starRatedColor="#FF5151"
+                                                starEmptyColor="#c4c4c4"
+                                                starDimension="20px"
+                                                starSpacing="2px"
+                                            />
+                                        </ReviewRating>
 
-                                    <ReviewComment>
-                                        {review.comment}
-                                    </ReviewComment>
-                                </Text>
-                            </ReviewBox>
-                        ))}
+                                        <ReviewComment>
+                                            {review.comment}
+                                        </ReviewComment>
+                                    </Text>
+                                </ReviewBox>
+                            ))
+                        )}
                     </ReviewContainer>
                 </RightContainer>
             </SubContainer>
@@ -353,6 +321,7 @@ const LeftContainer = styled.div`
     margin-right: 20px;
     /* display: flex;  */
     /* flex-direction: column; */
+    padding-top: 100px;
 `;
 
 const RightContainer = styled.div`
@@ -523,28 +492,47 @@ const BackBtn = styled.button`
     width: 200px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 700;
     cursor: pointer;
     background-color: white;
     border: 2px solid black;
     border-radius: 10px;
     margin-right: 20px;
-    margin-top: 200px;
+    margin-top: 100px;
 `;
 
 const ReserveBtn = styled.button`
     width: 200px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 700;
     color: white;
     cursor: pointer;
     background-color: black;
     border: 2px solid black;
     border-radius: 10px;
-    margin-top: 200px;
+    margin-top: 100px;
 `;
+
+const NoReviewContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 500px); /* 페이지 전체 높이에 맞게 조절 */
+`;
+
+const NoReviewMessage = styled.div`
+    text-align: center;
+    font-size: 28px;
+    color: #888888;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 600px;
+`;
+
 
 export default BankerSelect;

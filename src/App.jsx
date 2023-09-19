@@ -12,6 +12,10 @@ import BankerSelect from './pages/BankerSelect';
 import CustomerMyPage from './pages/mypage/CustomerMyPage';
 import BankerMyPage from './pages/mypage/BankerMyPage';
 import ReviewPage from './pages/mypage/ReviewPage';
+import BankerMyPage from './pages/mypage/BankerMyPage';
+import DepositForm from './pages/form/DepositForm';
+import LoanForm from "./pages/form/LoanForm";
+
 import CheckTimePage from './pages/mypage/CheckTimePage';
 // import Footer from './components/Footer';
 
@@ -24,24 +28,29 @@ function App() {
   const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
-    <>
-      {!hideNavbar && <Navbar/>}
-      <Routes>
-        <Route path='/' element={<MainPage/>}/>
-        <Route path='/login' element={<LoginPage/>}/>
-        <Route path='/signup' element={<SignupPage/>}/>
-        {/* <Route path='/mypage' element={<MyPage/>}/> */}
-        <Route path='/reservation' element={<ReservationPage/>}/>
-        <Route path='/work-select' element={<WorkSelectPage/>}/>
-        <Route path='/detail-select' element={<DetailSelectPage/>}/>
-        <Route path='/banker-select' element={<BankerSelect/>}/>
-        <Route path='/customer-mypage' element={<CustomerMyPage/>}/>
-        <Route path='/banker-mypage' element={<BankerMyPage/>}/>
-        <Route path='/reviewpage/:reservationId' element={<ReviewPage/>}/>
-        <Route path='/check-time' element={<CheckTimePage/>}/>
-      </Routes>
-      {/* <Footer/> */}
-    </>
+      <>
+          {!hideNavbar && <Navbar />}
+          <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              {/* <Route path='/mypage' element={<MyPage/>}/> */}
+              <Route path="/reservation" element={<ReservationPage />} />
+              <Route path="/work-select" element={<WorkSelectPage />} />
+              <Route path="/detail-select" element={<DetailSelectPage />} />
+              <Route path="/banker-select" element={<BankerSelect />} />
+              <Route path="/customer-mypage" element={<CustomerMyPage />} />
+              <Route path='/check-time' element={<CheckTimePage/>}/>
+              <Route
+                  path="/reviewpage/:reservationId"
+                  element={<ReviewPage />}
+              />
+              <Route path="/banker-mypage" element={<BankerMyPage />} />
+              <Route path="/deposit-form" element={<DepositForm />} />
+              <Route path="/loan-form" element={<LoanForm />} />
+          </Routes>
+          {/* <Footer/> */}
+      </>
   );
 }
 

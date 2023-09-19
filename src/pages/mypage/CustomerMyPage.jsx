@@ -11,11 +11,13 @@ import {
 } from "react-icons/fi";
 import kb_img from "../../assets/image/kb_img.png";
 import Swal from "sweetalert2";
+
 import { useNavigate, useNavigation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ReviewModal from "./ReviewPage";
 import axios from "axios";
 import { API } from "../../config";
+
 
 function groupDataByYearAndMonth(data) {
     const groupedData = {}; // 그룹화된 데이터를 저장할 객체 생성
@@ -83,15 +85,17 @@ function CustomerMyPage(props) {
     const [Visit, setVisit] = useState([]);
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
 
+
     useEffect(() => {
         //고객Id로 해당 고객 예약조회
         axios
             .get(`${API.CUSTOMER_SCHEDULE_INQUIRY}`, {
                 params: {
-                    customerId: 1,
+                    customerId: sessionStorage.getItem("customerId"),
                 },
             })
             .then((response) => {
+                console.log(response.data)
                 setVisit(response.data);
                 console.log(response.data);
             })
@@ -100,17 +104,20 @@ function CustomerMyPage(props) {
             });
     }, [shouldRerender]); // 랜더링 상태가 바뀔때마다 새로 조회함
 
-    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-    const navigate = useNavigate();
+ 
 
-    // 리뷰 작성 버튼을 클릭했을 때 Review 페이지로 이동
-    const handleOpenReviewPage = (reservationId) => {
-        navigate(`/reviewpage/${reservationId}`); // Review 페이지로 이동하면서 reservationId를 전달합니다.
-    };
+    const navigate=useNavigate();
+
+       // 리뷰 작성 버튼을 클릭했을 때 Review 페이지로 이동
+       const handleOpenReviewPage = (reservationId, bankName, bankerName) => {
+        navigate(`/reviewpage/${reservationId}`, { state: { bankName, bankerName } });
+      };
+
 
     function cancelReservation() {
         const reservationId = unfinishedReservations[0].reservationId;
+
         Swal.fire({
             title: "예약을 취소하시겠습니까?",
             text: "취소 시 모든 내역이 삭제됩니다",
@@ -152,6 +159,7 @@ function CustomerMyPage(props) {
     // modifyReservation 함수를 클릭 이벤트 핸들러로 사용
     const modifyReservation = () => {
         const reservationId = unfinishedReservations[0].reservationId;
+        const bankId = unfinishedReservations[0].bankId;
 
         Swal.fire({
             title: "예약을 변경하시겠습니까?",
@@ -164,97 +172,15 @@ function CustomerMyPage(props) {
             confirmButtonText: "변경하기",
         }).then((result) => {
             if (result.isConfirmed) {
-                navigate("/work-select", { state: { reservationId } });
+                navigate("/work-select", {
+                    state: {
+                        reservationId: reservationId,
+                        bankId: bankId
+                    }
+                });
             }
         });
     };
-
-    // 방문 전 예약 더미데이터
-    // const Visit = [
-    //     {
-    //         reservation_id: 1,
-    //         bank_name: '삼성역 지점',
-    //         bank_addr: '서울시 신사동',
-    //         reservation_date: '2023-09-23',
-    //         reservation_time: '10:00',
-    //         banker_name:'신동렬',
-    //         task_name: '예금',
-    //         comment: null,
-
-    //         finish_flag:'F'
-
-    //     },
-    //     {
-    //         reservation_id: 2,
-    //         bank_name: '선릉역 지점',
-    //         bank_addr: '서울시 논현동',
-    //         reservation_date: '2023-09-14',
-    //         reservation_time: '16:00',
-    //         task_name: '개인대출',
-    //         comment: null,
-    //         banker_name: "전민형",
-    //         finish_flag:'T'
-
-    //     },
-    //     {
-    //         reservation_id: 3,
-    //         bank_name: '선릉역 지점',
-    //         bank_addr: '서울시 논현동',
-    //         reservation_date: '2023-08-27',
-    //         reservation_time: '14:00',
-    //         task_name: '적금',
-    //         banker_name: "신동렬",
-    //         comment: '신동렬 행원 별로입니다',
-    //         finish_flag:'T'
-
-    //     },
-    //     {
-    //         reservation_id: 4,
-    //         bank_name: '군자역 지점',
-    //         bank_addr: '서울시 능동',
-    //         reservation_date: '2023-07-05',
-    //         reservation_time: '14:00',
-    //         task_name: '적금',
-    //         comment: '빨리됐어여',
-    //         banker_name: "오원식",
-    //         finish_flag:'T'
-
-    //     },
-    //     {  reservation_id: 5,
-    //         bank_name: '군자역 지점',
-    //         bank_addr: '서울시 능동',
-    //         reservation_date: '2023-07-03',
-    //         reservation_time: '14:00',
-    //         task_name: '적금',
-    //         comment: '오늘은 날이 좋았다',
-    //         banker_name: "전민형",
-    //         finish_flag:'T'
-    //     },
-    //     {
-    //         reservation_id: 5,
-    //         bank_name: '선릉역 지점',
-    //         bank_addr: '서울시 논현동',
-    //         reservation_date: '2023-07-03',
-    //         reservation_time: '15:00',
-    //         task_name: '외환',
-    //         comment: '',
-    //         banker_name: "송봉섭",
-    //         finish_flag:'T'
-
-    //     },
-    //     {
-    //         reservation_id: 6,
-    //         bank_name: '선릉역 지점',
-    //         bank_addr: '서울시 논현동',
-    //         reservation_date: '2023-09-03',
-    //         reservation_time: '15:00',
-    //         task_name: '외환',
-    //         comment: '',
-    //         banker_name: "오원식",
-    //         finish_flag:'T'
-
-    //     }
-    // ];
 
     // flag 기준으로 분리
     const unfinishedReservations = Visit.filter(
@@ -292,6 +218,8 @@ function CustomerMyPage(props) {
                 unfinishedReservations[0].reservationDate.substring(4, 6),
                 unfinishedReservations[0].reservationDate.substring(6, 8)
             );
+
+            
 
             return (
                 <>
@@ -411,11 +339,7 @@ function CustomerMyPage(props) {
                                             </Review>
                                         ) : (
                                             <ReviewBtn
-                                                onClick={() =>
-                                                    handleOpenReviewPage(
-                                                        item.reservationId
-                                                    )
-                                                }
+                                                onClick={() => handleOpenReviewPage(item.reservationId,item.bankName,item.bankerName)}
                                             >
                                                 <FiEdit3
                                                     style={{
@@ -424,7 +348,7 @@ function CustomerMyPage(props) {
                                                     }}
                                                 />
                                                 리뷰 쓰기
-                                            </ReviewBtn>
+                                            </ReviewBtn >
                                         )}
                                     </SubInfo>
                                 </SubWrapper>

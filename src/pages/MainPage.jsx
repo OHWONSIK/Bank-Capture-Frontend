@@ -38,10 +38,10 @@ function MainPage(props) {
             </ImgContainer>
             
             <ReservationBtn onClick={moveToReservation}>예약하러가기</ReservationBtn>
-            </Container>     
-            <Footer/>
-       
-        
+            
+            
+        </Container>
+        <Footer/>
         </>
     );
 }
