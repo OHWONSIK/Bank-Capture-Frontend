@@ -10,7 +10,6 @@ import { useNavigate, useNavigation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../../config";
-import Modal from 'react-modal';
 
 function groupDataByYearAndMonth(data) {
     const groupedData = {}; // 그룹화된 데이터를 저장할 객체 생성
@@ -77,38 +76,70 @@ function BankerMyPage(props) {
 
     const [Visit, setVisit] = useState([]);
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const bankId = 1;
+    useEffect(() => {
+        
+          // Axios를 사용하여 banker_top_3 데이터 가져오기
+          axios
+            .get(`${API.BANKER_TOP3}`, {
+                params: {
+                    bankId: 1,
+                },
+            })
+            .then((response) => {                
+              // 랭킹 순위의 뱅커이름과 이미지경로 저장
+              console.log('banker_top_3 데이터:', response.data);
+              const bankerName1 = response.data.content[0].bankerName;
+              const bankerImgPath1 = response.data.content[0].bankerImgPath;
+              const bankerName2 = response.data.content[1].bankerName;
+              const bankerImgPath2 = response.data.content[1].bankerImgPath;
+              const bankerName3 = response.data.content[2].bankerName;
+              const bankerImgPath3 = response.data.content[2].bankerImgPath;
+            
+              Swal.fire({
+                title: `<div style="margin-bottom: 20px; font-szie :24px"> 이달의 행원</div>`,
+                html:
+                    `<div style="display: flex; justify-content: space-between;">`+
+                    `<div style="flex: 1; margin-right: 10px; text-align: center;">`+
+                    `<div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">`+
+                    ` <img src="${bankerImgPath1}" alt="Custom image" width="200" height="200 style="object-fit: cover; object-position: center center;">`+
+                    `</div>`+
+                    `<div style="margin-top: 10px;" >${bankerName1} 행원</div>`+
+                    `</div>` +
+                    `<div style="flex: 1; margin-right: 10px; text-align: center;">`+
+                    ` <div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">`+
+                    ` <img src="${bankerImgPath1}" alt="Custom image" width="200" height="200" style="object-fit: cover; object-position: center center;">`+
+                    `</div>`+
+                    `<div style="margin-top: 10px;">${bankerName2} 행원</div>`+
+                    `</div>`+
+                    `<div style="flex: 1; margin-right: 10px; text-align: center;">`+
+                    ` <div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">`+
+                    ` <img src="${bankerImgPath1}" alt="Custom image" width="200" height="200" style="object-fit: cover; object-position: center center;">`+
+                    `</div>`+
+                    `<div style="margin-top: 10px;">${bankerName3} 행원</div>`+
+                    `</div>` +
+                    `</div>`,
+                width :"800px",
+                padding: '3em',
+                backdrop: `
+                    url(../../../public/logo192.png)
+                    rgba(5,5,5,0.2)
+                    
+                    `
+                
+                
+                
 
-    // useEffect(() => {
-    //     if (isModalOpen) {
-    //         const closeModal = () => {
-    //             setIsModalOpen(false);
-    //         };
-    //       // Axios를 사용하여 banker_top_3 데이터 가져오기
-    //       axios
-    //         .get(`${API.BANKER_TOP3}`, {
-    //             params: {
-    //                 bankerId: 1,
-    //             },
-    //         })
-    //         .then((response) => {
-    //           // 데이터를 성공적으로 받아왔을 때 수행할 작업
-    //           console.log('banker_top_3 데이터:', response.data);
-    //         })
-    //         .catch((error) => {
-    //           // 에러 처리
-    //           console.error('banker_top_3 조회 에러:', error);
-    //         });
-    //         return (
-    //             <div className={ModalContainer}>
-    //                 <button className={Modalclose} onClick={closeModal}>
-    //                     X
-    //                 </button>
-    //                 <p>모달창입니다.</p>
-    //             </div>
-    //         );
-    //     }
-    //   }, [isModalOpen]); // isModalOpen 상태가 변경될 때만 호출
+              })
+            })
+            .catch((error) => {
+              // 에러 처리
+              console.error('banker_top_3 조회 에러:', error);
+            });
+
+        },[shouldRerender]);
+
+
     useEffect(() => {
 
         // 행원Id로 해당 행원 예약조회

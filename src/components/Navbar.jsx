@@ -35,7 +35,7 @@ function Navbar(props) {
         <Container>
             <Logo onClick={moveToMain}>로고자리</Logo>
             <SubContainer>
-                {sessionStorage.getItem('bankerId') == null && (
+                {sessionStorage.getItem('bankerId') === null && (
                 <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>)}
                 {sessionStorage.getItem('bankerId') != null && (
                 <Menu to={isLoggedIn ? '/check-time' : '/login'}>나의 스케줄 관리</Menu>)}

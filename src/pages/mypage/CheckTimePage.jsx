@@ -263,6 +263,7 @@ const ReviewBtn = styled.div`
     border: 1px solid #b0b0b0;
     border-radius: 10px;
     margin-top :15px;
+    margin-bottom :40px;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
