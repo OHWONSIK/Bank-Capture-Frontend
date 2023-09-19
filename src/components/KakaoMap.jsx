@@ -1,3 +1,8 @@
+
+
+
+  
+
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { markerdata } from "./markerdata";
@@ -7,22 +12,14 @@ import { API } from "../config";
 
 const { kakao } = window;
 
-
 const Map = () => {
-    const [bankList, setBankList] = useState([]);
-    const [kakaoMap, setKakaoMap] = useState(null);
-    const container = useRef();
-  const navigate = useNavigate(); // useNavigate 훅 추가
-  
+  const [bankList, setBankList] = useState([]);
+  const [kakaoMap, setKakaoMap] = useState(null);
+  const container = useRef();
+    const navigate = useNavigate();
+    
 
-  
-
-  useEffect(() => {
-      
-    // function closeOverlay() {
-    //     infowindow.setMap(null); // 인포윈도우 닫기
-    // }
-
+    useEffect(() => {
         axios
             .get(`${API.BANK_INQUIRY}`)
             .then((response) => {
@@ -31,26 +28,66 @@ const Map = () => {
             })
             .catch((error) => {
                 console.error("지점조회 에러:", error);
-                // 지점조회 실패시 에러메시지 출력
             });
 
-        const options = {
-            center: new kakao.maps.LatLng(37.503946, 127.048527),
-            level: 1,
-        };
+    }, []) 
 
-        const map = new kakao.maps.Map(container.current, options);
-        setKakaoMap(map);
-    }, [container]);
+  // 위치 정보를 가져와서 지도를 생성
+    useEffect(() => {
+    //     axios
+    //         .get(`${API.BANK_INQUIRY}`)
+    //         .then((response) => {
+    //             console.log("지점조회 성공:", response.data);
+    //             setBankList(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error("지점조회 에러:", error);
+    //         });
 
-    const imageSrc = [
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-    ]; // 마커이미지의 주소입니다
-    const imageSize = new kakao.maps.Size(48, 48);
-  const imageOption = { offset: new kakao.maps.Point(10, 48) };
-  
+        if (navigator.geolocation) {
+            // 브라우저에서 geolocation을 지원하는지 확인
+            console.log("지원함");
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    console.log("현위치 함수진입");
+
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    const options = {
+                        center: new kakao.maps.LatLng(latitude, longitude), // 현위치 좌표로 설정
+                        level: 4,
+                    };
+
+                    const map = new kakao.maps.Map(container.current, options);
+                    setKakaoMap(map);
+                    
+                },
+                (error) => {
+                    console.error("Error getting geolocation:", error);
+                }
+            );
+        } else {
+            console.error("Geolocation is not available in this browser.");
+        }
+        
+
+        // 나머지 코드를 이어서 작성하세요.
+
+
+    }, []);
+
+
+    
 
     useEffect(() => {
+
+        const imageSrc = [
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+        ]; // 마커이미지의 주소입니다
+        const imageSize = new kakao.maps.Size(48, 48);
+        const imageOption = { offset: new kakao.maps.Point(10, 48) };
+
         if (kakaoMap === null) {
             return;
         }
@@ -182,7 +219,7 @@ const Map = () => {
               navigate("/work-select", { state: { bankId: bankId } });
             };
         }
-    }, [kakaoMap, bankList]);
+    }, [kakaoMap]);
 
     return (
         <div>
@@ -190,7 +227,8 @@ const Map = () => {
                 id="map"
                 style={{
                     width: "100vw",
-                    height: "calc(100vh - 48px)",
+                    // height: "calc(100vh - 48px)",
+                    height: "calc(100vh - 122px)"
                 }}
                 ref={container}
             ></div>
