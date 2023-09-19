@@ -1,4 +1,4 @@
-export const BASE_URL = "https://localhost:8082"
+export const BASE_URL = "http://localhost:8081"
 
 export const API = {
 
@@ -23,7 +23,7 @@ export const API = {
     SCHEDULE_INSERT: `${BASE_URL}/myPage/banker/checkTime`,
     BANKER_TOP3: `${BASE_URL}/myPage/banker/ranking`,
     SCHEDULE_INQUIRY: `${BASE_URL}/myPage/banker/ranking`,
-    BANKER_SCHEDULE_INQUIRY: `${BASE_URL}/myPage/banker/ranking`,
+    BANKER_SCHEDULE_INQUIRY: `${BASE_URL}/myPage/banker/schedule`,
     SCHEDULE_DONE: `${BASE_URL}/myPage/banker/schedule/done`
 
 }
