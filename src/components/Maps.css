@@ -1,26 +1,114 @@
-    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
-    .wrap * {padding: 0;margin: 0;}
-    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
-    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
-    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
-    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
-    .info .close:hover {cursor: pointer;}
-    .info .body {position: relative;overflow: hidden;}
-    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
-    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
-    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
-    .info:after {content: ¯ࡇ¯¯ࡇ¯;position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-    .info .link {color: #5085BB;}.stars {
-        display: flex;
-        gap: 4px; /* 별 아이콘 간격 조절 */
-      }
-      
-      .star {
-        font-size: 24px; /* 별 아이콘 크기 조절 */
-        color: red; /* 빨간색 별 아이콘 색상 */
-      }
-      
-      .star.inactive {
-        color: gray; /* 회색 별 아이콘 색상 */
-      }
+.wrap {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 400px; /* 원하는 크기로 조정 */
+  margin-left: -200px;
+  text-align: left;
+  overflow: visible; /* overflow 속성을 visible로 변경 */
+  font-size: 12px;
+  font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+  line-height: 1.5;
+}
+
+.info {
+  width: 100%; /* 부모 요소 크기에 맞추기 위해 100% 설정 */
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* 내부 요소의 크기 역시 자동으로 조절되도록 설정 */
+.info .title {
+  padding: 5px 0 0 10px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: bold;
+  height: auto; /* 높이 자동 조절 */
+}
+
+.info .img {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 73px;
+  height: 71px;
+  border: 1px solid #ddd;
+  color: #888;
+  overflow: hidden;
+  height: auto; /* 높이 자동 조절 */
+}
+
+.info .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+  background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+  height: auto; /* 높이 자동 조절 */
+}
+
+.info .body {
+  position: relative;
+  overflow: hidden;
+  height: auto; /* 높이 자동 조절 */
+}
+
+.info .desc {
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
+  
+}
+
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+
+}
+
+.desc .jibun {
+  font-size: 16px;
+  color: #888;
+  margin-top: -2px;
+
+}
+.desc .phone {
+  font-size: 16px;
+  color: #288756;
+  margin-top: -2px;
+  
+}
+
+.info .link {
+  color: #5085BB;
+  font-size: 16px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  white-space: nowrap; /* 링크 텍스트가 넘칠 경우 줄 바꿈 방지 */
+}
+
+.stars {
+  display: flex;
+  gap: 4px; /* 별 아이콘 간격 조절 */
+  height: auto; /* 높이 자동 조절 */
+}
+
+.star {
+  font-size: 24px; /* 별 아이콘 크기 조절 */
+  color: red; /* 빨간색 별 아이콘 색상 */
+  height: auto; /* 높이 자동 조절 */
+}
+
+.star.inactive {
+  color: gray; /* 회색 별 아이콘 색상 */
+  height: auto; /* 높이 자동 조절 */
+}

@@ -8,6 +8,8 @@ import marker_img from "../assets/image/marker_img.png";
 import bank_img from "../assets/image/location.png";
 import woorie_img from "../assets/image/location_woorie.png";
 import hana_img from "../assets/image/location_hanah.png";
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 const { kakao } = window;
 
 
@@ -144,15 +146,15 @@ const Map = () => {
                                 '                <div class="ellipsis">' +
                                 bankData.bankAddr +
                                 "</div>" +
-                                '                <div class="jibun ellipsis">' +
+                                '                <div class="jibun phone">' +
                                 bankData.bankPhone +
                                 "</div>" +
                                 '                  <div class="jibun ellipsis">' +
                                 starRating.join("") +
                                 "</div>" +
-                                '               <div><a href="work-select" class="link" onclick="handleReservationClick(\'' +
+                                '               <button><a href="work-select" class="link" onclick="handleReservationClick(\'' +
                                 bankData.bankId +
-                                "')\">예약하기</a></div>" +
+                                "')\">예약하기</a></button>" +
                                 "</div>" +
                                 "        </div>" +
                                 "    </div>" +
