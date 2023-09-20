@@ -4,7 +4,12 @@ import { markerdata } from "./markerdata";
 import "./Maps.css";
 import axios from "axios";
 import { API } from "../config";
-
+import marker_img from "../assets/image/marker_img.png";
+import bank_img from "../assets/image/location.png";
+import woorie_img from "../assets/image/location_woorie.png";
+import hana_img from "../assets/image/location_hanah.png";
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 const { kakao } = window;
 
 
@@ -43,9 +48,6 @@ const Map = () => {
         setKakaoMap(map);
     }, [container]);
 
-    const imageSrc = [
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
-    ]; // 마커이미지의 주소입니다
     const imageSize = new kakao.maps.Size(48, 48);
   const imageOption = { offset: new kakao.maps.Point(10, 48) };
   
@@ -69,11 +71,23 @@ const Map = () => {
                 bankList[i].locationX
             );
 
+            var imageSrc;
+            if (bankList[i].bankName.startsWith('우리')) {
+              imageSrc = woorie_img;
+            } else if (bankList[i].bankName.startsWith('하나')) {
+              imageSrc = hana_img;
+            } else if (bankList[i].bankName.startsWith('KB'))
+            {
+              imageSrc = bank_img;
+            }
+
             var markerImage = new kakao.maps.MarkerImage(
-                imageSrc,
-                imageSize,
-                imageOption
+              imageSrc,
+              imageSize,
+              imageOption
             );
+
+        
             var marker = new kakao.maps.Marker({
                 map: kakaoMap,
                 position: markerpos,
@@ -132,15 +146,15 @@ const Map = () => {
                                 '                <div class="ellipsis">' +
                                 bankData.bankAddr +
                                 "</div>" +
-                                '                <div class="jibun ellipsis">' +
+                                '                <div class="jibun phone">' +
                                 bankData.bankPhone +
                                 "</div>" +
                                 '                  <div class="jibun ellipsis">' +
                                 starRating.join("") +
                                 "</div>" +
-                                '               <div><a href="work-select" class="link" onclick="handleReservationClick(\'' +
+                                '               <button><a href="work-select" class="link" onclick="handleReservationClick(\'' +
                                 bankData.bankId +
-                                "')\">예약하기</a></div>" +
+                                "')\">예약하기</a></button>" +
                                 "</div>" +
                                 "        </div>" +
                                 "    </div>" +

@@ -171,7 +171,7 @@ function DetailSelectPage(props) {
                                 <Name>행원 {banker.bankerName}</Name>
                                 <PrAndCareer>
                                     <Pr>{banker.bankerInfo}</Pr>
-                                    <Career>({banker.bankerCareer}년)</Career>
+                                    <Career>({banker.bankerCareer}년차)</Career>
                                 </PrAndCareer>
                                 {/* 별점 없을시 0.00 코멘트 없을시 0출력*/}
                                 {/* <Rating>
@@ -345,8 +345,9 @@ const Pr = styled.div`
 `;
 
 const Career = styled.div`
-    font-size: 18px;
+    font-size: 13px;
     margin-left: 5px;
+    color:#696969;   
 `;
 
 const RatingAndComment = styled.div`
