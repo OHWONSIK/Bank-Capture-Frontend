@@ -123,7 +123,7 @@ const Map = () => {
                         for (let i = 1; i <= 5; i++) {
                             if (i <= avgStar) {
                                 // 빨간색 별 아이콘
-                                starRating.push("⭐️");
+                                starRating.push();
                             } else {
                                 // 회색 별 아이콘
                                 starRating.push("☆");
@@ -204,7 +204,7 @@ const Map = () => {
                 id="map"
                 style={{
                     width: "100vw",
-                    height: "calc(100vh - 48px)",
+                    height: "calc(100vh - 98px)",
                 }}
                 ref={container}
             ></div>

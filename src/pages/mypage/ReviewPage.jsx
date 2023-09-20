@@ -110,7 +110,7 @@ function ReviewPage(props) {
 
   return (
       <Container>
-          <BankName>{bankName}은 어떠셨나요?</BankName>
+          <BankName>{bankName.substr(7)}은 어떠셨나요?</BankName>
           <ReviewRating>
               <StarRatings
                   rating={bankRating}
@@ -118,8 +118,9 @@ function ReviewPage(props) {
                   starHoverColor="#ffb516"
                   starEmptyColor="#c4c4c4"
                   changeRating={handleBankRatingChange}
-                  starDimension="80px"
+                  starDimension="60px"
                   starSpacing="2px"
+                  
               />
           </ReviewRating>
 
@@ -131,7 +132,7 @@ function ReviewPage(props) {
                   starHoverColor="#ffb516"
                   starEmptyColor="#c4c4c4"
                   changeRating={handleBankerRatingChange}
-                  starDimension="80px"
+                  starDimension="60px"
                   starSpacing="2px"
               />
           </ReviewRating>
@@ -160,17 +161,22 @@ align-items: center;
 margin-top: 100px;
 `;
 const ReviewRating = styled.div`
-    margin-bottom: 50px;
+    margin-top: 100px;
+    margin-bottom: 200px;
+    padding: 20px;
+    background-color: white; // 원하는 배경색으로 변경 가능. 좀 더 연한 회색으로 설정했습니다.
+    border-radius: 50px; // 둥근 테두리를 위한 속성, 값은 필요에 따라 조절 가능합니다.
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.16); // 그림자 효과 추가
 `;
 const BankName = styled.div`
-    font-size: 55px;
+    font-size: 45px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 `;
 const BankerName = styled.div`
-    font-size: 55px;
+    font-size: 45px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 `;
 const ReviewText = styled.textarea`
     display: inline-flex;
@@ -191,6 +197,7 @@ const ReviewText = styled.textarea`
 `;
 
 const BtnContainer = styled.div`
+    margin-bottom: 50px;
 
 `;
 
