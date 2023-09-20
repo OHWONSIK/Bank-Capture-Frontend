@@ -1,17 +1,21 @@
 import React, {useState} from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import StarRatings from 'react-star-ratings';
 import { styled } from 'styled-components';
+import axios from "axios";
+import { API } from "../../config";
+import Swal from "sweetalert2";
 
 function ReviewPage(props) {
   const location = useLocation();
+  const navigate = useNavigate();
   
   const { reservationId } = useParams();
 
   // 이전 페이지에서 전달된 예약 정보를 가져옵니다.
   const { state } = location;
-  const bankName = state ? state.bank_name : "Bank Name Not Found";
-  const bankerName = state ? state.banker_name : "Banker Name Not Found";
+  const bankName = state ? state.bankName : "Bank Name Not Found";
+  const bankerName = state ? state.bankerName : "Banker Name Not Found";
 
   console.log(state)
   console.log(bankName);
@@ -19,6 +23,11 @@ function ReviewPage(props) {
 
   const [bankRating, setBankRating] = useState(0);
   const [bankerRating, setBankerRating] = useState(0);
+  const [comment, setComment] = useState("");
+
+  // const [bankRatingError, setBankRatingError] = useState("");
+  // const [bankerRatingError, setBankerRatingError] = useState("");
+  // const [commentError, setCommentError] = useState("");
 
   // 별점을 클릭할 때 호출될 함수
   const handleBankRatingChange = (newBankRating) => {
@@ -28,44 +37,117 @@ function ReviewPage(props) {
     setBankerRating(newBankerRating);
   };
 
+  const handleCancle = () => {
+    navigate(-1);
+  }
+
+  const handleReview = () => {
+
+    //은행별점, 행원별점, 코멘트 하나라도 입력되지 않은 경우 에러 메시지 표시
+   
+      if (bankRating === 0) {
+        Swal.fire("리뷰작성 실패", "은행 별점을 선택해주세요.", "error");
+        return;
+      }
+      if (bankerRating === 0) {
+        Swal.fire("리뷰작성 실패", "행원 별점을 선택해주세요.", "error");
+        return;
+      }
+      if (!comment) {
+        Swal.fire("리뷰작성 실패", "코멘트를 작성해주세요.", "error");
+        return;
+      }
+    
+    Swal.fire({
+        title: "리뷰작성",
+        text: "리뷰를 작성하시겠습니까?",
+        icon: "info",
+
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+        cancelButtonColor: "#d33", // cancel 버튼 색깔 지정
+        confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+        cancelButtonText: "취소", // cancel 버튼 텍스트 지정
+
+        //reverseButtons: true, // 버튼 순서 거꾸로
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // 만약 모달창에서 confirm 버튼을 눌렀다면
+
+            axios
+                .post(`${API.REVIEW_INSERT}`, {
+                    bankStarRating: bankRating,
+                    bankerReviewComment: comment,
+                    bankerStarRating: bankerRating,
+                    reservationId: reservationId,
+                })
+                .then((response) => {
+                    console.log("리뷰 작성 성공:", response.data);
+                })
+                .catch((error) => {
+                    alert("리뷰 작성 에러:", error);
+                });
+
+            Swal.fire({
+                title: "리뷰작성완료",
+                text: "확인을 누르시면 마이페이지로 돌아갑니다.",
+                icon: "success",
+
+                confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+                confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+            }).then((result) => {
+                // 리뷰작성 성공하면 고객 마이페이지로 이동합니다.
+                navigate("/customer-mypage");
+            });
+        }
+    });
+
+    
+
+    
+
+  }
+
   return (
-    <Container>
-      <BankName>{bankName}은 어떠셨나요?</BankName>
-      <ReviewRating>
-        <StarRatings
-          rating={bankRating}
-          starRatedColor="#ffb516"
-          starHoverColor="#ffb516"
-          starEmptyColor="#c4c4c4"
-          changeRating={handleBankRatingChange}
-          starDimension="80px"
-          starSpacing="2px"
-        />
-      </ReviewRating>
+      <Container>
+          <BankName>{bankName}은 어떠셨나요?</BankName>
+          <ReviewRating>
+              <StarRatings
+                  rating={bankRating}
+                  starRatedColor="#ffb516"
+                  starHoverColor="#ffb516"
+                  starEmptyColor="#c4c4c4"
+                  changeRating={handleBankRatingChange}
+                  starDimension="80px"
+                  starSpacing="2px"
+              />
+          </ReviewRating>
 
-      <BankerName>{bankerName} 행원은 어떠셨나요?</BankerName>
-      <ReviewRating>
-        <StarRatings
-          rating={bankerRating}
-          starRatedColor="#ffb516"
-          starHoverColor="#ffb516"
-          starEmptyColor="#c4c4c4"
-          changeRating={handleBankerRatingChange}
-          starDimension="80px"
-          starSpacing="2px"
-        />
-      </ReviewRating>
+          <BankerName>{bankerName} 행원은 어떠셨나요?</BankerName>
+          <ReviewRating>
+              <StarRatings
+                  rating={bankerRating}
+                  starRatedColor="#ffb516"
+                  starHoverColor="#ffb516"
+                  starEmptyColor="#c4c4c4"
+                  changeRating={handleBankerRatingChange}
+                  starDimension="80px"
+                  starSpacing="2px"
+              />
+          </ReviewRating>
 
-      <ReviewText
-        type="text"
-        placeholder="리뷰를 작성해주세요."
-      />
+          <ReviewText
+              type="text"
+              placeholder="리뷰를 작성해주세요."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+          />
 
-      <BtnContainer>
-        <CancelBtn>작성 취소</CancelBtn>
-        <WriteBtn>작성 완료</WriteBtn>
-      </BtnContainer>
-    </Container>
+          <BtnContainer>
+              <CancelBtn onClick={handleCancle}>작성 취소</CancelBtn>
+              <WriteBtn onClick={handleReview}>작성 완료 </WriteBtn>
+          </BtnContainer>
+      </Container>
   );
 }
 
@@ -139,4 +221,11 @@ const WriteBtn = styled.button`
     border-radius: 10px;
     margin-top: 50px;
 `;
+
+// const ErrorMessage = styled.div`
+//     color: red;
+//     font-size: 14px;
+//     margin-top: 5px;
+// `;
+
 export default ReviewPage;

@@ -11,9 +11,12 @@ import DetailSelectPage from './pages/DetailSelectPage';
 import BankerSelect from './pages/BankerSelect';
 import CustomerMyPage from './pages/mypage/CustomerMyPage';
 import BankerMyPage from './pages/mypage/BankerMyPage';
-import DepositForm from './pages/form/DepositForm';
 import ReviewPage from './pages/mypage/ReviewPage';
-import LoanForm from './pages/form/LoanForm';
+import DepositForm from './pages/form/DepositForm';
+import LoanForm from "./pages/form/LoanForm";
+
+import CheckTimePage from './pages/mypage/CheckTimePage';
+// import Footer from './components/Footer';
 
 function App() {
 
@@ -24,28 +27,29 @@ function App() {
   const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
-    <>
-      {!hideNavbar && <Navbar/>}
-      <Routes>
-        <Route path='/' element={<MainPage/>}/>
-        <Route path='/login' element={<LoginPage/>}/>
-        <Route path='/signup' element={<SignupPage/>}/>
-        {/* <Route path='/mypage' element={<MyPage/>}/> */}
-        <Route path='/reservation' element={<ReservationPage/>}/>
-        <Route path='/work-select' element={<WorkSelectPage/>}/>
-        <Route path='/detail-select' element={<DetailSelectPage/>}/>
-        <Route path='/banker-select' element={<BankerSelect/>}/>
-
-        <Route path='/deposit-form' element={<DepositForm/>}/>
-        <Route path='/loan-form' element={<LoanForm/>}/>
-
-        {/* 유저 타입(행원/일반고객)에 따라 조건문으로 라우팅 다르게 수정해야됨 */}
-        <Route path='/customer-mypage' element={<CustomerMyPage/>}/>
-        <Route path='/reviewpage/:reservationId' element={<ReviewPage/>}/>
-        <Route path='/banker-mypage' element={<BankerMyPage/>}/>
-        
-      </Routes>
-    </>
+      <>
+          {!hideNavbar && <Navbar />}
+          <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              {/* <Route path='/mypage' element={<MyPage/>}/> */}
+              <Route path="/reservation" element={<ReservationPage />} />
+              <Route path="/work-select" element={<WorkSelectPage />} />
+              <Route path="/detail-select" element={<DetailSelectPage />} />
+              <Route path="/banker-select" element={<BankerSelect />} />
+              <Route path="/customer-mypage" element={<CustomerMyPage />} />
+              <Route path='/check-time' element={<CheckTimePage/>}/>
+              <Route
+                  path="/reviewpage/:reservationId"
+                  element={<ReviewPage />}
+              />
+              <Route path="/banker-mypage" element={<BankerMyPage />} />
+              <Route path="/deposit-form" element={<DepositForm />} />
+              <Route path="/loan-form" element={<LoanForm />} />
+          </Routes>
+          {/* <Footer/> */}
+      </>
   );
 }
 

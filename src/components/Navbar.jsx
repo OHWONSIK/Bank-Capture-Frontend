@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import logo from '../assets/image/logo.png';
 
+
 function Navbar(props) {
 
     // 로그인 상태변수 -> 상태관리툴 써서 전역관리 해주자
@@ -18,6 +19,8 @@ function Navbar(props) {
     const handleLogout = () => {
         // 로그아웃 로직 -> 다른 파일에
         setIsLoggendIn(false);
+        // 로그아웃시 sessionStorage 초기화
+        sessionStorage.clear();
     };
 
 
@@ -29,15 +32,22 @@ function Navbar(props) {
     const moveToLogin = () => {
         navigate('/login');
     }
+    const isCheckTimePage = window.location.pathname === '/check-time';
 
     return (
         <Container>
             <Logo onClick={moveToMain}><img src={logo} alt={'로고'}/></Logo>
             <SubContainer>
-                {/* <Menu to={isLoggedIn ? '/mypage' : '/login'}>나의 예약 관리</Menu> */}
-                <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
+                {sessionStorage.getItem('bankerId') === null && (
+                    <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
+                )}
+                {sessionStorage.getItem('bankerId') !== null && (
+                    <Menu to={isCheckTimePage ? '/banker-mypage' : '/check-time'}>
+                        {isCheckTimePage ? '나의 방문 관리' : '나의 스케줄 관리'}
+                    </Menu>
+                )}
                 <LoginBtn onClick={isLoggedIn ? handleLogout : moveToLogin}>
-                    {isLoggedIn ? "로그아웃" : "로그인"}
+                    {isLoggedIn ? '로그아웃' : '로그인'}
                 </LoginBtn>
             </SubContainer>
         </Container>
@@ -64,6 +74,7 @@ const SubContainer = styled.div`
     margin-right: 200px;
 `;
 
+
 const Logo = styled.div`
     cursor: pointer;
     margin-left: 100px;
@@ -74,6 +85,7 @@ const Logo = styled.div`
     }
 `;
 
+
 const Menu = styled(NavLink)`
     text-decoration: none;
     color: #4e5968;
@@ -83,5 +95,6 @@ const LoginBtn = styled.div`
     cursor: pointer;
     color: #4e5968;
 `;
+
 
 export default Navbar;

@@ -1,11 +1,13 @@
 import React from 'react';
-import KakaoMap from '../components/KakaoMap';
+import Map from '../components/KakaoMap';
 
 
 function ReservationPage(props) {
     return (
-        <KakaoMap/>
+        <Map/>
     );
 }
+
+
 
 export default ReservationPage;
