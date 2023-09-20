@@ -13,33 +13,32 @@ function Footer(props) {
 }
 
 const Container = styled.div`
-    height: 100px;
-// background-color: yellow; 
-    /* border-top: 1px solid #bdb4b4; */
-    /* bottom: 0; */
-    /* position: fixed; */
-    /* width: 100vw; */
-    /* background-color: pink; */
+    height: 200px;
+    background-color: black;
     display: flex;
     justify-content: space-between;
     align-items: center;
 `;
 
 const Text1= styled.div`
-margin-left: 400px;
-font-size: 15px;
+margin-left: 500px;
+font-size: 18px;
+color: white;
 `;
 
 const Text2= styled.div`
-font-size: 15px;
+font-size: 18px;
+color: white;
 `;
 
 const Text3= styled.div`
-font-size: 15px;
+font-size: 18px;
+color: white;
 `;
 
 const Text4= styled.div`
-margin-right: 400px;
-font-size: 15px;
+margin-right: 500px;
+font-size: 18px;
+color: white;
 `;
 export default Footer;

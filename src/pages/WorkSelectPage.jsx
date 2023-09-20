@@ -193,6 +193,15 @@ function WorkSelectPage(props) {
 
     const [selectedWork, setSelectedWork] = useState("");
 
+    const [isHovered, setIsHovered] = useState(false);
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+      };
+    
+      const handleMouseLeave = () => {
+        setIsHovered(false);
+      };
+
     const handleSelectedWork = (banker_task) => {
         setSelectedWork(banker_task);
     };
@@ -228,6 +237,10 @@ function WorkSelectPage(props) {
                             key={index}
                             onClick={() => handleSelectedWork(banker_task)}
                             isSelected={selectedWork === banker_task}
+
+                            onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      isHovered={isHovered}
                         >
                             {banker_task}
                         </WorkBox>
@@ -251,17 +264,19 @@ const SubContainer = styled.div`
 `;
 
 const Container = styled.div`
-margin-left: 200px;
-    margin-right: 200px;
+padding-left: 200px;
+    padding-right: 200px;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 120px);
+    /* background-color: black; */
 `;
 
 const Intro = styled.div`
     font-size: 45px;
-    font-weight: 700;
+    font-weight: 900;
     margin-bottom: 60px;
+    /* color: white; */
 `;
 
 const WorkContainer = styled.div`
@@ -275,37 +290,44 @@ const WorkContainer = styled.div`
 
 const WorkBox = styled.div`
     font-size: 45px;
-    border: 2px solid black;
-    background-color: ${(props) => (props.isSelected ? 'black' : 'white')};;
-    color: ${(props) => (props.isSelected ? 'white' : 'black')};
+    border: 5px solid ${(props) => (props.isSelected ? '#F2B418' : '#d8d8d8')};
+    background-color: ${(props) => (props.isSelected ? '#F2B418' : 'white')};
+    color: ${(props) => (props.isSelected ? 'black' : 'black')};
+    font-weight:  ${(props) => (props.isSelected ? '700' : '500')};;
     border-radius: 20px;
     height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: background-color 0.1s;
+
+    &:hover { // 호버 시 배경색 변경
+        border: 5px solid #F2B418;
+    }
 `;
 
 const CancelBtn = styled.button`
-    width: 200px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    width: 150px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     font-size: 25px;
     font-weight: 700;
     cursor: pointer;
+    color: black;
     background-color: white;
-    border: 2px solid black;
+    border: 3px solid black;
     border-radius: 10px;
     margin-right: 20px;
     margin-top: 50px;
 `;
 
 const SelectBtn = styled.button`
-    width: 200px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    width: 150px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     font-size: 25px;
-    font-weight: 700;
+    font-weight: 900;
     color: white;
     cursor: pointer;
     background-color: black;
