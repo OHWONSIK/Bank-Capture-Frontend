@@ -87,7 +87,7 @@ function CheckTimePage(props) {
                             title: "저장완료",
                             text: "스케줄이 저장되었습니다.",
                             icon: "success",
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "black",
                             confirmButtonText: "확인",
                         });
                     })

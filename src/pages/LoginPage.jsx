@@ -89,8 +89,9 @@ function LoginPage(props) {
                 // 오류 처리
                 console.error(error);
 
+                
                 // 로그인 실패시 에러메시지 출력
-                Swal.fire("로그인 실패", error.response.data.message, "error");
+                Swal.fire({title: "로그인 실패", text: error.response.data.message, icon: "error",confirmButtonColor: "black", confirmButtonText: "확인"});
             }
         } else if (userRole === "행원") {
             try {
@@ -112,7 +113,7 @@ function LoginPage(props) {
                 console.error(error);
 
                 // 로그인 실패시 에러메시지 출력
-                Swal.fire("로그인 실패", error.response.data.message, "error");
+                Swal.fire({title: "로그인 실패", text: error.response.data.message, icon: "error",confirmButtonColor: "black", confirmButtonText: "확인"});
             }
         }
     };

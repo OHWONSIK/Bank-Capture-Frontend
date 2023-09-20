@@ -123,7 +123,7 @@ const Map = () => {
                         for (let i = 1; i <= 5; i++) {
                             if (i <= avgStar) {
                                 // 빨간색 별 아이콘
-                                starRating.push();
+                                starRating.push("⭐");
                             } else {
                                 // 회색 별 아이콘
                                 starRating.push("☆");
@@ -152,9 +152,9 @@ const Map = () => {
                                 '                  <div class="jibun ellipsis">' +
                                 starRating.join("") +
                                 "</div>" +
-                                '               <button><a href="work-select" class="link" onclick="handleReservationClick(\'' +
+                                '               <a href="work-select" class="link" onclick="handleReservationClick(\'' +
                                 bankData.bankId +
-                                "')\">예약하기</a></button>" +
+                                "')\">예약하기</a>" +
                                 "</div>" +
                                 "        </div>" +
                                 "    </div>" +

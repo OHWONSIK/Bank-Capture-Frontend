@@ -64,11 +64,13 @@ function DetailSelectPage(props) {
 
         // 예약 가능한 행원이 없을 때 알림창 띄우기
         if (filtered.length === 0) {
-            Swal.fire(
-                "예약 가능한 행원이 없습니다.",
-                "다른 시간을 선택하세요.",
-                "error"
-            );
+            Swal.fire({
+                title: "예약 가능한 행원이 없습니다.",
+                text: "다른 시간을 선택하세요.",
+                icon: "error",
+                confirmButtonColor: "black", // 원하는 색상으로 변경하세요
+                confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
+              });
         }
     };
 
@@ -96,11 +98,13 @@ function DetailSelectPage(props) {
 
         // 예약 가능한 행원이 없을 때 알림창 띄우기
         if (filtered.length === 0) {
-            Swal.fire(
-                "예약 가능한 행원이 없습니다.",
-                "다른 날짜를 선택하세요.",
-                "error"
-            );
+            Swal.fire({title: "예약 가능한 행원이 없습니다.",
+           text: "다른 날짜를 선택하세요.",
+            icon: "error",
+            confirmButtonColor: "black", // 원하는 색상으로 변경하세요
+            confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
+        }
+                );
         }
     };
 
@@ -109,9 +113,14 @@ function DetailSelectPage(props) {
     const moveToBankerSelect = (selectedBankerId) => {
         if (!isReserveActive) {
             Swal.fire(
-                "시간이 선택되지 않았습니다",
-                "원하는 시간을 선택해주세요",
-                "error"
+                {title:  "시간이 선택되지 않았습니다",
+                 text:  "원하는 시간을 선택해주세요",
+                icon: "error",
+                 confirmButtonColor: "black", // 원하는 색상으로 변경하세요
+                 confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
+        }
+               
+               
             );
             return;
         }

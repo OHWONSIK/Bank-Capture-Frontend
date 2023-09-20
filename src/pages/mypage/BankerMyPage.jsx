@@ -126,8 +126,9 @@ function BankerMyPage(props) {
                     url(../../../public/logo192.png)
                     rgba(5,5,5,0.2)
                     
-                    `
-                
+                    `,
+                    confirmButtonColor: "black", // 원하는 색상으로 변경하세요
+                    confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
                 
                 
 
@@ -186,7 +187,7 @@ function BankerMyPage(props) {
                             title: "취소완료",
                             text: "예약이 취소되었습니다.",
                             icon: "success",
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "black",
                             confirmButtonText: "확인",
                         }).then((result) => {
                             // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시
@@ -225,7 +226,7 @@ function BankerMyPage(props) {
                             title: "변경완료",
                             text: "예약이  방문완료로 변경되었습니다..",
                             icon: "success",
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "black",
                             confirmButtonText: "확인",
                         }).then((result) => {
                             // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시

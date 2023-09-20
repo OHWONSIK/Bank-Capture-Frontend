@@ -64,8 +64,8 @@ function ReviewPage(props) {
         icon: "info",
 
         showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-        confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
-        cancelButtonColor: "#d33", // cancel 버튼 색깔 지정
+        confirmButtonColor: "black", // confrim 버튼 색깔 지정
+        cancelButtonColor: "#696969", // cancel 버튼 색깔 지정
         confirmButtonText: "확인", // confirm 버튼 텍스트 지정
         cancelButtonText: "취소", // cancel 버튼 텍스트 지정
 
@@ -93,7 +93,7 @@ function ReviewPage(props) {
                 text: "확인을 누르시면 마이페이지로 돌아갑니다.",
                 icon: "success",
 
-                confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+                confirmButtonColor: "black", // confrim 버튼 색깔 지정
                 confirmButtonText: "확인", // confirm 버튼 텍스트 지정
             }).then((result) => {
                 // 리뷰작성 성공하면 고객 마이페이지로 이동합니다.
@@ -158,11 +158,11 @@ display: flex;
 flex-direction: column;
 align-items: center;
 
-margin-top: 100px;
+margin-top: 50px;
 `;
 const ReviewRating = styled.div`
-    margin-top: 100px;
-    margin-bottom: 200px;
+    margin-top: 20px;
+    margin-bottom: 100px;
     padding: 20px;
     background-color: white; // 원하는 배경색으로 변경 가능. 좀 더 연한 회색으로 설정했습니다.
     border-radius: 50px; // 둥근 테두리를 위한 속성, 값은 필요에 따라 조절 가능합니다.

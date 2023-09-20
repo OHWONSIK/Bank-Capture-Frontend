@@ -142,7 +142,7 @@ function CustomerMyPage(props) {
                             title: "취소완료",
                             text: "예약이 취소되었습니다.",
                             icon: "success",
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "black",
                             confirmButtonText: "확인",
                         }).then((result) => {
                             // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시

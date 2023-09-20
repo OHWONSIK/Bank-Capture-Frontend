@@ -2,18 +2,19 @@
   position: absolute;
   left: 0;
   bottom: 40px;
-  width: 400px; /* 원하는 크기로 조정 */
+  width: 500px; /* 원하는 크기로 조정 */
   margin-left: -200px;
   text-align: left;
   overflow: visible; /* overflow 속성을 visible로 변경 */
   font-size: 12px;
   font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
   line-height: 1.5;
+  
 }
 
 .info {
   width: 100%; /* 부모 요소 크기에 맞추기 위해 100% 설정 */
-  border-radius: 5px;
+  border-radius: 30px;
   border-bottom: 2px solid #ccc;
   border-right: 1px solid #ccc;
   background: #fff;
@@ -25,28 +26,28 @@
   padding: 5px 0 0 10px;
   background: #eee;
   border-bottom: 1px solid #ddd;
-  font-size: 18px;
+  font-size: 28px;
   font-weight: bold;
   height: auto; /* 높이 자동 조절 */
 }
 
 .info .img {
   position: absolute;
-  top: 6px;
+  top: 18px;
   left: 5px;
-  width: 73px;
-  height: 71px;
+  width: 83px;
+  height: 81px;
   border: 1px solid #ddd;
   color: #888;
-  overflow: hidden;
-  height: auto; /* 높이 자동 조절 */
+
+
 }
 
 .info .close {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: #888;
+  color: black;
   width: 17px;
   height: 17px;
   background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
@@ -62,7 +63,7 @@
 .info .desc {
   position: relative;
   margin: 13px 0 0 90px;
-  height: 75px;
+  height: 120px;
   
 }
 
@@ -70,18 +71,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 22px;
 
 }
 
 .desc .jibun {
-  font-size: 16px;
+  font-size: 22px;
   color: #888;
   margin-top: -2px;
 
 }
 .desc .phone {
-  font-size: 16px;
+  font-size: 22px;
   color: #288756;
   margin-top: -2px;
   
@@ -89,11 +90,12 @@
 
 .info .link {
   color: #5085BB;
-  font-size: 16px;
+  font-size: 24px;
   position: absolute;
   right: 10px;
   bottom: 10px;
   white-space: nowrap; /* 링크 텍스트가 넘칠 경우 줄 바꿈 방지 */
+ 
 }
 
 .stars {
