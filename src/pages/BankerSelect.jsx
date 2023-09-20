@@ -399,6 +399,8 @@ const Profile = styled.img`
     width: 100px;
     height: 100px;
     border-radius: 50px;
+    object-fit: cover; 
+    object-position: center center;
 `;
 
 const Name = styled.div`

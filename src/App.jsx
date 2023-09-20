@@ -12,7 +12,6 @@ import BankerSelect from './pages/BankerSelect';
 import CustomerMyPage from './pages/mypage/CustomerMyPage';
 import BankerMyPage from './pages/mypage/BankerMyPage';
 import ReviewPage from './pages/mypage/ReviewPage';
-import BankerMyPage from './pages/mypage/BankerMyPage';
 import DepositForm from './pages/form/DepositForm';
 import LoanForm from "./pages/form/LoanForm";
 
