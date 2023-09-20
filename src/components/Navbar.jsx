@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import logoImage from '../assets/image/kblogo.png'; // 로고 이미지 경로를 추가
+import logo from '../assets/image/logo.png';
+
 
 function Navbar(props) {
 
@@ -35,7 +36,7 @@ function Navbar(props) {
 
     return (
         <Container>
-            <Logo onClick={moveToMain}><img src={logoImage} alt="로고" /></Logo>
+            <Logo onClick={moveToMain}><img src={logo} alt={'로고'}/></Logo>
             <SubContainer>
                 {sessionStorage.getItem('bankerId') === null && (
                     <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
@@ -55,11 +56,11 @@ function Navbar(props) {
 
 const Container = styled.div`
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 500;
     /* width: 100vw; */
     height: 120px;
     /* background-color: #ffd500; */
-    border-bottom: 1px solid #bdb4b4;
+    /* border-bottom: 1px solid #bdb4b4; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -70,29 +71,29 @@ const SubContainer = styled.div`
     display: flex;
     width: 25vw;
     justify-content: space-between;
-    margin-right: 100px;
+    margin-right: 200px;
 `;
 
 
+const Logo = styled.div`
+    cursor: pointer;
+    margin-left: 100px;
+
+    img {
+        width: 350px;
+        height: auto;
+    }
+`;
 
 
 const Menu = styled(NavLink)`
     text-decoration: none;
-    color: black;
+    color: #4e5968;
 `;
 
 const LoginBtn = styled.div`
     cursor: pointer;
-`;
-const Logo = styled.div`
-    cursor: pointer;
-    margin-left: 50px;
-
-    // 로고 이미지 스타일 추가
-    img {
-        width: 350px; // 원하는 너비로 조절
-        height: auto; // 높이 자동 조절
-    }
+    color: #4e5968;
 `;
 
 
