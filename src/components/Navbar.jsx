@@ -21,6 +21,8 @@ function Navbar(props) {
         setIsLoggendIn(false);
         // 로그아웃시 sessionStorage 초기화
         sessionStorage.clear();
+            navigate('/'); // 로그아웃 후 홈페이지로 이동
+
     };
 
 
@@ -33,13 +35,15 @@ function Navbar(props) {
         navigate('/login');
     }
     const isCheckTimePage = window.location.pathname === '/check-time';
+    const isReservationPage = window.location.pathname === '/reservation';
+
 
     return (
         <Container>
             <Logo onClick={moveToMain}><img src={logo} alt={'로고'}/></Logo>
             <SubContainer>
                 {sessionStorage.getItem('bankerId') === null && (
-                    <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
+                    <Menu to={isLoggedIn ? (isReservationPage ? '/customer-mypage': '/reservation') : '/login'}>{isReservationPage ? '나의 예약 관리' : '예약하기'}</Menu>
                 )}
                 {sessionStorage.getItem('bankerId') !== null && (
                     <Menu to={isCheckTimePage ? '/banker-mypage' : '/check-time'}>
