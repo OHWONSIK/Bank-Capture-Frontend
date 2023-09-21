@@ -201,20 +201,21 @@ function LoanForm(props) {
                     .then((response) => {
                         console.log("예약 성공:", response.data);
 
-                        //성공이 날라오면 예약완료 확인창 띄워줌
-                        Swal.fire({
-                            title: "예약완료",
-                            text: "확인을 누르시면 마이페이지로 이동합니다.",
-                            icon: "success",
-                            confirmButtonColor: "#black", // confrim 버튼 색깔 지정
-                            confirmButtonText: "확인", // confirm 버튼 텍스트 지정
-                        }).then((result) => {
-                            // 예약 성공하면 마이 페이지로 이동
-                            navigate("/customer-mypage");
-                        });
+                       
                     })
                     .catch((error) => {
                         alert("예약 에러:", error);
+                    });
+                     //성공이 날라오면 예약완료 확인창 띄워줌
+                     Swal.fire({
+                        title: "예약완료",
+                        text: "확인을 누르시면 마이페이지로 이동합니다.",
+                        icon: "success",
+                        confirmButtonColor: "#black", // confrim 버튼 색깔 지정
+                        confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+                    }).then((result) => {
+                        // 예약 성공하면 마이 페이지로 이동
+                        navigate("/customer-mypage");
                     });
             }
         });

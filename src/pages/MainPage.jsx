@@ -1,4 +1,4 @@
-import React from 'react';
+import {React,useState,useEffect} from 'react';
 import { styled, keyframes } from 'styled-components';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
@@ -7,11 +7,39 @@ import MainContent from '../assets/image/MainContent';
 import mainiPhone from '../assets/image/mainiphone.png';
 
 function MainPage(props) {
+
+   
     const navigate = useNavigate();
 
     const moveToReservation = () => {
-        navigate('/reservation'); // 로그인 전역상태관리 통해서 로그인 유무 따라 다르게 렌더링해야됨
-    }
+        
+        sessionStorage.getItem("customerId")!==null?
+        navigate('/reservation', {
+          
+ // 로그인 전역상태관리 통해서 로그인 유무 따라 다르게 렌더링해야됨
+    }):navigate('/login') ;
+}
+    useEffect(() => {
+        
+        if (navigator.geolocation) {
+            // 브라우저에서 geolocation을 지원하는지 확인
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    
+                    sessionStorage.setItem('latitude', position.coords.latitude);
+                    sessionStorage.setItem('longitude', position.coords.longitude);
+              
+                },
+                (error) => {
+                    console.error("Error getting geolocation:", error);
+                }
+            );
+        } else {
+            console.error("Geolocation is not available in this browser.");
+        }
+        // 나머지 코드를 이어서 작성하세요.
+    }, []);
+
 
     return (
         <>

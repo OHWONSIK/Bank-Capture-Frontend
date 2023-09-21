@@ -305,7 +305,8 @@ function BankerMyPage(props) {
                                                 {timeMap[item.reservationTime]}:00 예약
                                             </Time>
                                             <Task><FiClipboard style={{marginRight: '10px'}}/>{item.taskName}</Task>
-                                            <Phone><FiPhone style={{marginRight: '10px'}}/>{item.customerPhone}</Phone>
+                                            <Phone><FiPhone style={{marginRight: '10px'}}/>{item.customerPhone.substring(0,3)+'-'+item.customerPhone.substring(3
+                                                ,7)+"-"+item.customerPhone.substring(7,)}</Phone>
                                             
                                             <BtnContainer>
                                                 <CheckBtn onClick={()=> checkFlag(item.reservationId)}>방문 완료</CheckBtn>
@@ -352,9 +353,12 @@ function BankerMyPage(props) {
                                                 <CustomerName>{item.customerName} 고객</CustomerName>
                                        
                                             </NameCustomer>
-                                            <Time><FiClock style={{marginRight: '10px'}}/>{item.reservationTime}:00 예약</Time>
+                                            <Time><FiClock style={{marginRight: '10px'}}/>                                                {timeMap[item.reservationTime]}:00 예약
+</Time>
                                             <Task><FiClipboard style={{marginRight: '10px'}}/>{item.taskName}</Task>
-                                            <Phone><FiPhone style={{marginRight: '10px'}}/>{item.customerPhone}</Phone>
+                                            <Phone><FiPhone style={{marginRight: '10px'}}/>{item.customerPhone.substring(0,3)+'-'+item.customerPhone.substring(3
+                                                ,7)+"-"+item.customerPhone.substring(7,)}
+                                                </Phone>
                                             {item.bankerReviewComment ? (
                                             <Review>
                                                 {item.bankerReviewComment}

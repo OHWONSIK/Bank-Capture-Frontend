@@ -4,7 +4,7 @@
   
 
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { markerdata } from "./markerdata";
 import "./Maps.css";
 import axios from "axios";
@@ -18,9 +18,20 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 const { kakao } = window;
 
 const Map = () => {
+  const location =useLocation();
   const [bankList, setBankList] = useState([]);
   const [kakaoMap, setKakaoMap] = useState(null);
   const container = useRef();
+  const { state } = location;
+
+
+  const latitude = sessionStorage.getItem("latitude")
+        ? sessionStorage.getItem("latitude")
+        : 37.50394613754275;
+    
+    const longitude = sessionStorage.getItem("longitude")
+        ? sessionStorage.getItem("longitude")
+        : 127.04852704708145;
     const navigate = useNavigate();
     
 
@@ -35,63 +46,27 @@ const Map = () => {
                 console.error("지점조회 에러:", error);
             });
 
-    }, []) 
+    }, []) ;
 
-  // 위치 정보를 가져와서 지도를 생성
-    useEffect(() => {
-    //     axios
-    //         .get(`${API.BANK_INQUIRY}`)
-    //         .then((response) => {
-    //             console.log("지점조회 성공:", response.data);
-    //             setBankList(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error("지점조회 에러:", error);
-    //         });
-
-        if (navigator.geolocation) {
-            // 브라우저에서 geolocation을 지원하는지 확인
-            console.log("지원함");
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    console.log("현위치 함수진입");
-
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-
-                    const options = {
-                        center: new kakao.maps.LatLng(latitude, longitude), // 현위치 좌표로 설정
-                        level: 4,
-                    };
-
-                    const map = new kakao.maps.Map(container.current, options);
-                    setKakaoMap(map);
-                    
-                },
-                (error) => {
-                    console.error("Error getting geolocation:", error);
-                }
-            );
-        } else {
-            console.error("Geolocation is not available in this browser.");
-        }
-        
-
-        // 나머지 코드를 이어서 작성하세요.
-
-
-    }, []);
-
-
-    
-
+    // 위치 정보를 가져와서 지도를 생성
     useEffect(() => {
 
-    const imageSize = new kakao.maps.Size(48, 48);
-  const imageOption = { offset: new kakao.maps.Point(10, 48) };
-  
+      const options = {
+          center: new kakao.maps.LatLng(latitude, longitude), // 현위치 좌표로 설정
+          level: 3,
+      };
+
+      const map = new kakao.maps.Map(container.current, options);
+      setKakaoMap(map);
+                  
+  }, [bankList]);
+
+
 
     useEffect(() => {
+      const imageSize = new kakao.maps.Size(48, 48);
+      const imageOption = { offset: new kakao.maps.Point(10, 48) };
+      
         if (kakaoMap === null) {
             return;
         }

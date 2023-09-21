@@ -84,7 +84,9 @@ function CustomerMyPage(props) {
 
     const [Visit, setVisit] = useState([]);
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
-
+    const openLinkInNewTab = (url) => {
+        window.open(url, '_blank'); // '_blank' 옵션을 사용하여 새 탭 또는 창에 열립니다.
+    };
 
     useEffect(() => {
         //고객Id로 해당 고객 예약조회
@@ -138,19 +140,20 @@ function CustomerMyPage(props) {
                     .then((response) => {
                         console.log("예약취소 성공:", response.data);
 
-                        Swal.fire({
-                            title: "취소완료",
-                            text: "예약이 취소되었습니다.",
-                            icon: "success",
-                            confirmButtonColor: "black",
-                            confirmButtonText: "확인",
-                        }).then((result) => {
-                            // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시
-                            setShouldRerender(!shouldRerender);
-                        });
                     })
                     .catch((error) => {
                         console.error("예약취소 에러:", error);
+                    });
+
+                    Swal.fire({
+                        title: "취소완료",
+                        text: "예약이 취소되었습니다.",
+                        icon: "success",
+                        confirmButtonColor: "black",
+                        confirmButtonText: "확인",
+                    }).then((result) => {
+                        // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시
+                        setShouldRerender(!shouldRerender);
                     });
             }
         });
@@ -257,16 +260,16 @@ function CustomerMyPage(props) {
                     </Note>
                     <Document>
                         <div style={{ marginRight: "210px" }} />
-                        <Link href="https://obank.kbstar.com/quics?page=C020003#loading">
-                            <img
-                                src={kb_img}
-                                alt="kb"
-                                width="200"
-                                height="200"
-                                align="center"
-                                border="0"
-                            />
-                        </Link>{" "}
+                        <Link onClick={() => openLinkInNewTab("https://obank.kbstar.com/quics?page=C020003#loading")}>
+    <img
+        src={kb_img}
+        alt="kb"
+        width="200"
+        height="200"
+        align="center"
+        border="0"
+    />
+</Link>
                     </Document>
 
                     <BtnContainer>

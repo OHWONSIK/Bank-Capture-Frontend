@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import { NavLink, useNavigate,useLocation} from 'react-router-dom';
 import { styled } from 'styled-components';
 import logo from '../assets/image/logo.png';
 
@@ -8,6 +8,10 @@ function Navbar(props) {
 
     // 로그인 상태변수 -> 상태관리툴 써서 전역관리 해주자
     const [isLoggedIn, setIsLoggendIn] = useState(true);
+  
+  const location = useLocation();
+
+
 
     // 로그인 버튼 눌렀을 때
     const handleLogin = () => {
@@ -34,6 +38,7 @@ function Navbar(props) {
     const moveToLogin = () => {
         navigate('/login');
     }
+
     const isCheckTimePage = window.location.pathname === '/check-time';
     const isReservationPage = window.location.pathname === '/reservation';
 
@@ -43,7 +48,8 @@ function Navbar(props) {
             <Logo onClick={moveToMain}><img src={logo} alt={'로고'}/></Logo>
             <SubContainer>
                 {sessionStorage.getItem('bankerId') === null && (
-                    <Menu to={isLoggedIn ? (isReservationPage ? '/customer-mypage': '/reservation') : '/login'}>{isReservationPage ? '나의 예약 관리' : '예약하기'}</Menu>
+                    
+                    <Menu to={isLoggedIn ? (isReservationPage ? '/customer-mypage':'/reservation') : '/login'}>{isReservationPage ? '나의 예약 관리' : '예약하기'}</Menu>
                 )}
                 {sessionStorage.getItem('bankerId') !== null && (
                     <Menu to={isCheckTimePage ? '/banker-mypage' : '/check-time'}>
@@ -95,10 +101,12 @@ const Menu = styled(NavLink)`
     color: #4e5968;
 `;
 
+
 const LoginBtn = styled.div`
     cursor: pointer;
     color: #4e5968;
 `;
+
 
 
 export default Navbar;
