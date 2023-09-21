@@ -83,7 +83,7 @@ function BankerMyPage(props) {
           axios
             .get(`${API.BANKER_TOP3}`, {
                 params: {
-                    bankId: 1,
+                    bankId: sessionStorage.getItem('bankId'),
                 },
             })
             .then((response) => {                
@@ -91,32 +91,33 @@ function BankerMyPage(props) {
               console.log('banker_top_3 데이터:', response.data);
               const bankerName1 = response.data.content[0].bankerName;
               const bankerImgPath1 = response.data.content[0].bankerImgPath;
+              console.log(bankerImgPath1);
               const bankerName2 = response.data.content[1].bankerName;
               const bankerImgPath2 = response.data.content[1].bankerImgPath;
               const bankerName3 = response.data.content[2].bankerName;
               const bankerImgPath3 = response.data.content[2].bankerImgPath;
             
               Swal.fire({
-                title: `<div style="margin-bottom: 20px; font-szie :24px"> 이달의 행원</div>`,
+                title: `<div style="margin-bottom: 20px; font-size :30px font-weight: 900;"> 이달의 행원</div>`,
                 html:
                     `<div style="display: flex; justify-content: space-between;">`+
                     `<div style="flex: 1; margin-right: 10px; text-align: center;">`+
                     `<div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">`+
-                    ` <img src="${bankerImgPath1}" alt="Custom image" width="200" height="200 style="object-fit: cover; object-position: center center;">`+
+                    ` <img src="${bankerImgPath1}" alt="Custom image" width="200" height="200" style="width: 100%; height: 100%; object-fit: cover; object-position: center center;">`+
                     `</div>`+
-                    `<div style="margin-top: 10px;" >${bankerName1} 행원</div>`+
+                    `<div style="margin-top: 40px; font-weight: bold; font-size: 23px;" >${bankerName1} 행원</div>`+
                     `</div>` +
                     `<div style="flex: 1; margin-right: 10px; text-align: center;">`+
                     ` <div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">`+
-                    ` <img src="${bankerImgPath1}" alt="Custom image" width="200" height="200" style="object-fit: cover; object-position: center center;">`+
+                    ` <img src="${bankerImgPath2}" alt="Custom image" width="200" height="200" style="width: 100%; height: 100%; object-fit: cover; object-position: center center;">`+
                     `</div>`+
-                    `<div style="margin-top: 10px;">${bankerName2} 행원</div>`+
+                    `<div style="margin-top: 40px; font-weight: bold; font-size: 23px;">${bankerName2} 행원</div>`+
                     `</div>`+
                     `<div style="flex: 1; margin-right: 10px; text-align: center;">`+
                     ` <div style="border-radius: 50%; overflow: hidden; width: 150px; height: 150px; margin: 0 auto;">`+
-                    ` <img src="${bankerImgPath1}" alt="Custom image" width="200" height="200" style="object-fit: cover; object-position: center center;">`+
+                    ` <img src="${bankerImgPath3}" alt="Custom image" width="200" height="200" style="width: 100%; height: 100%; object-fit: cover; object-position: center center;">`+
                     `</div>`+
-                    `<div style="margin-top: 10px;">${bankerName3} 행원</div>`+
+                    `<div style="margin-top: 40px; font-weight: bold; font-size: 23px; ">${bankerName3} 행원</div>`+
                     `</div>` +
                     `</div>`,
                 width :"800px",
@@ -125,8 +126,9 @@ function BankerMyPage(props) {
                     url(../../../public/logo192.png)
                     rgba(5,5,5,0.2)
                     
-                    `
-                
+                    `,
+                    confirmButtonColor: "black", // 원하는 색상으로 변경하세요
+                    confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
                 
                 
 
@@ -185,7 +187,7 @@ function BankerMyPage(props) {
                             title: "취소완료",
                             text: "예약이 취소되었습니다.",
                             icon: "success",
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "black",
                             confirmButtonText: "확인",
                         }).then((result) => {
                             // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시
@@ -224,7 +226,7 @@ function BankerMyPage(props) {
                             title: "변경완료",
                             text: "예약이  방문완료로 변경되었습니다..",
                             icon: "success",
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "black",
                             confirmButtonText: "확인",
                         }).then((result) => {
                             // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시

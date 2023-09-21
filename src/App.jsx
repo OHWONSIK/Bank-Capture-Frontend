@@ -24,7 +24,7 @@ function App() {
   const location = useLocation();
 
   // 로그인 or 회원가입 페이지에선 네브바 보이지 않음
-  const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
+  const hideNavbar = location.pathname === '/login' || location.pathname === '/signup' || location.pathname.startsWith('/reviewpage');
 
   return (
       <>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import logo from '../assets/image/logo.png';
+
 
 function Navbar(props) {
 
@@ -19,6 +21,8 @@ function Navbar(props) {
         setIsLoggendIn(false);
         // 로그아웃시 sessionStorage 초기화
         sessionStorage.clear();
+            navigate('/'); // 로그아웃 후 홈페이지로 이동
+
     };
 
 
@@ -31,13 +35,15 @@ function Navbar(props) {
         navigate('/login');
     }
     const isCheckTimePage = window.location.pathname === '/check-time';
+    const isReservationPage = window.location.pathname === '/reservation';
+
 
     return (
         <Container>
-            <Logo onClick={moveToMain}>로고자리</Logo>
+            <Logo onClick={moveToMain}><img src={logo} alt={'로고'}/></Logo>
             <SubContainer>
                 {sessionStorage.getItem('bankerId') === null && (
-                    <Menu to={isLoggedIn ? '/reservation' : '/login'}>예약하기</Menu>
+                    <Menu to={isLoggedIn ? (isReservationPage ? '/customer-mypage': '/reservation') : '/login'}>{isReservationPage ? '나의 예약 관리' : '예약하기'}</Menu>
                 )}
                 {sessionStorage.getItem('bankerId') !== null && (
                     <Menu to={isCheckTimePage ? '/banker-mypage' : '/check-time'}>
@@ -54,11 +60,11 @@ function Navbar(props) {
 
 const Container = styled.div`
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 500;
     /* width: 100vw; */
     height: 120px;
     /* background-color: #ffd500; */
-    border-bottom: 1px solid #bdb4b4;
+    /* border-bottom: 1px solid #bdb4b4; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -69,22 +75,29 @@ const SubContainer = styled.div`
     display: flex;
     width: 25vw;
     justify-content: space-between;
-    margin-right: 100px;
+    margin-right: 200px;
 `;
 
 
 const Logo = styled.div`
     cursor: pointer;
     margin-left: 100px;
+
+    img {
+        width: 350px;
+        height: auto;
+    }
 `;
+
 
 const Menu = styled(NavLink)`
     text-decoration: none;
-    color: black;
+    color: #4e5968;
 `;
 
 const LoginBtn = styled.div`
     cursor: pointer;
+    color: #4e5968;
 `;
 
 

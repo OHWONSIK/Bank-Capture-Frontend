@@ -121,7 +121,7 @@ function SignupPage(props) {
                     text: "확인을 누르시면 로그인 페이지로 이동합니다.",
                     icon: "success",
 
-                    confirmButtonColor: "#3085d6", // confrim 버튼 색깔 지정
+                    confirmButtonColor: "black", // confrim 버튼 색깔 지정
                     confirmButtonText: "확인", // confirm 버튼 텍스트 지정
                 }).then((result) => {
                     // 회원가입이 성공하면 로그인 페이지로 이동
@@ -132,9 +132,13 @@ function SignupPage(props) {
                 console.error("회원가입 에러:", error);
                 // 회원가입 실패시 에러메시지 출력
                 Swal.fire(
-                    "회원가입 실패",
-                    error.response.data.message,
-                    "error"
+                    {title:"회원가입 실패",
+                    text:error.response.data.message,
+                    icon:"error",
+                    confirmButtonColor: "black", // confrim 버튼 색깔 지정
+                    confirmButtonText: "확인", // confirm 버튼 텍스트 지정
+            
+                }
                 );
             });
     };
