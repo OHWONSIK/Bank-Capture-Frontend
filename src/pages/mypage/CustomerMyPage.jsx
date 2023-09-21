@@ -85,7 +85,7 @@ function CustomerMyPage(props) {
     const [Visit, setVisit] = useState([]);
     const [shouldRerender, setShouldRerender] = useState(false); //예약취소했을때 상태변화로 리랜더링하기
     const openLinkInNewTab = (url) => {
-        window.open(url, '_blank'); // '_blank' 옵션을 사용하여 새 탭 또는 창에 열립니다.
+        window.open(url, "_blank"); // '_blank' 옵션을 사용하여 새 탭 또는 창에 열립니다.
     };
 
     useEffect(() => {
@@ -97,7 +97,25 @@ function CustomerMyPage(props) {
                 },
             })
             .then((response) => {
-                console.log(response.data)
+                console.log(response.data);
+                setVisit(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error("조회 에러:", error);
+            });
+    }, []); // 랜더링 상태가 바뀔때마다 새로 조회함
+
+    useEffect(() => {
+        //고객Id로 해당 고객 예약조회
+        axios
+            .get(`${API.CUSTOMER_SCHEDULE_INQUIRY}`, {
+                params: {
+                    customerId: sessionStorage.getItem("customerId"),
+                },
+            })
+            .then((response) => {
+                console.log(response.data);
                 setVisit(response.data);
                 console.log(response.data);
             })
@@ -106,16 +124,14 @@ function CustomerMyPage(props) {
             });
     }, [shouldRerender]); // 랜더링 상태가 바뀔때마다 새로 조회함
 
+    const navigate = useNavigate();
 
- 
-
-    const navigate=useNavigate();
-
-       // 리뷰 작성 버튼을 클릭했을 때 Review 페이지로 이동
-       const handleOpenReviewPage = (reservationId, bankName, bankerName) => {
-        navigate(`/reviewpage/${reservationId}`, { state: { bankName, bankerName } });
-      };
-
+    // 리뷰 작성 버튼을 클릭했을 때 Review 페이지로 이동
+    const handleOpenReviewPage = (reservationId, bankName, bankerName) => {
+        navigate(`/reviewpage/${reservationId}`, {
+            state: { bankName, bankerName },
+        });
+    };
 
     function cancelReservation() {
         const reservationId = unfinishedReservations[0].reservationId;
@@ -139,22 +155,21 @@ function CustomerMyPage(props) {
                     })
                     .then((response) => {
                         console.log("예약취소 성공:", response.data);
-
                     })
                     .catch((error) => {
                         console.error("예약취소 에러:", error);
                     });
 
-                    Swal.fire({
-                        title: "취소완료",
-                        text: "예약이 취소되었습니다.",
-                        icon: "success",
-                        confirmButtonColor: "black",
-                        confirmButtonText: "확인",
-                    }).then((result) => {
-                        // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시
-                        setShouldRerender(!shouldRerender);
-                    });
+                Swal.fire({
+                    title: "취소완료",
+                    text: "예약이 취소되었습니다.",
+                    icon: "success",
+                    confirmButtonColor: "black",
+                    confirmButtonText: "확인",
+                }).then((result) => {
+                    // 취소 성공하면 다시 랜더링해서 방문전 예약 없어진거 표시
+                    setShouldRerender(!shouldRerender);
+                });
             }
         });
     }
@@ -178,8 +193,8 @@ function CustomerMyPage(props) {
                 navigate("/work-select", {
                     state: {
                         reservationId: reservationId,
-                        bankId: bankId
-                    }
+                        bankId: bankId,
+                    },
                 });
             }
         });
@@ -222,8 +237,6 @@ function CustomerMyPage(props) {
                 unfinishedReservations[0].reservationDate.substring(6, 8)
             );
 
-            
-
             return (
                 <>
                     <NameBankAndBanker>
@@ -260,16 +273,22 @@ function CustomerMyPage(props) {
                     </Note>
                     <Document>
                         <div style={{ marginRight: "210px" }} />
-                        <Link onClick={() => openLinkInNewTab("https://obank.kbstar.com/quics?page=C020003#loading")}>
-    <img
-        src={kb_img}
-        alt="kb"
-        width="200"
-        height="200"
-        align="center"
-        border="0"
-    />
-</Link>
+                        <Link
+                            onClick={() =>
+                                openLinkInNewTab(
+                                    "https://obank.kbstar.com/quics?page=C020003#loading"
+                                )
+                            }
+                        >
+                            <img
+                                src={kb_img}
+                                alt="kb"
+                                width="200"
+                                height="200"
+                                align="center"
+                                border="0"
+                            />
+                        </Link>
                     </Document>
 
                     <BtnContainer>
@@ -304,8 +323,14 @@ function CustomerMyPage(props) {
                                         {/* 한칸 띄우고 변환한 요일 표기 */}
                                         <br />
                                         {getDayOfWeek(
-                                            item.reservationDate.substring(0,4),
-                                            item.reservationDate.substring(4,6),
+                                            item.reservationDate.substring(
+                                                0,
+                                                4
+                                            ),
+                                            item.reservationDate.substring(
+                                                4,
+                                                6
+                                            ),
                                             item.reservationDate.substring(6, 8)
                                         )}
                                     </DayInfo>
@@ -342,7 +367,13 @@ function CustomerMyPage(props) {
                                             </Review>
                                         ) : (
                                             <ReviewBtn
-                                                onClick={() => handleOpenReviewPage(item.reservationId,item.bankName,item.bankerName)}
+                                                onClick={() =>
+                                                    handleOpenReviewPage(
+                                                        item.reservationId,
+                                                        item.bankName,
+                                                        item.bankerName
+                                                    )
+                                                }
                                             >
                                                 <FiEdit3
                                                     style={{
@@ -351,7 +382,7 @@ function CustomerMyPage(props) {
                                                     }}
                                                 />
                                                 리뷰 쓰기
-                                            </ReviewBtn >
+                                            </ReviewBtn>
                                         )}
                                     </SubInfo>
                                 </SubWrapper>

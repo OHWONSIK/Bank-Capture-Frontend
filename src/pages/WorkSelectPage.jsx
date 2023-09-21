@@ -51,27 +51,39 @@ function WorkSelectPage(props) {
         }
 
         //지점, 업무에 해당하는 행원 조회를 위해 통신
-        axios
-            .get(`${API.BANKER_INQUIRY}`, {
-                params: {
-                    bankId: bankId,
-                    taskId: taskId,
-                },
-            })
-            .then((response) => {
-                navigate("/detail-select", {
-                    state: {
-                        selectedBankers: response.data, //지점, 업무에 해당하는 행원들
-                        taskId: taskId, //예약하기할때 taskId 필요해서 같이 넘겨줌
-                        reservationId: reservationId, //예약변경일시 해당 예약ID 넘겨줌
-                        selectedWork: selectedWork,
-                        bankId: bankId,
-                    },
-                });
-            })
-            .catch((error) => {
-                console.error("조회 에러:", error);
-            });
+        // axios
+        //     .get(`${API.BANKER_INQUIRY}`, {
+        //         params: {
+        //             bankId: bankId,
+        //             taskId: taskId,
+        //         },
+        //     })
+        //     .then((response) => {
+        //         navigate("/detail-select", {
+        //             state: {
+        //                 selectedBankers: response.data, //지점, 업무에 해당하는 행원들
+        //                 taskId: taskId, //예약하기할때 taskId 필요해서 같이 넘겨줌
+        //                 reservationId: reservationId, //예약변경일시 해당 예약ID 넘겨줌
+        //                 selectedWork: selectedWork,
+        //                 bankId: bankId,
+        //             },
+        //         });
+        //     })
+        //     .catch((error) => {
+        //         console.error("조회 에러:", error);
+        //     });
+
+
+        
+        navigate("/detail-select", {
+            state: {
+                taskId: taskId, //예약하기할때 taskId 필요해서 같이 넘겨줌
+                reservationId: reservationId, //예약변경일시 해당 예약ID 넘겨줌
+                selectedWork: selectedWork,
+                bankId: bankId,
+            },
+        });
+
     };
 
     const moveToReservation = () => {

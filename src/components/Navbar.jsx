@@ -7,22 +7,22 @@ import logo from '../assets/image/logo.png';
 function Navbar(props) {
 
     // 로그인 상태변수 -> 상태관리툴 써서 전역관리 해주자
-    const [isLoggedIn, setIsLoggendIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
   
-  const location = useLocation();
-
-
-
-    // 로그인 버튼 눌렀을 때
-    const handleLogin = () => {
-        // 로그인 로직 -> 다른 파일에
-        setIsLoggendIn(true);
-    };
+    const location = useLocation();
+    
+    useEffect(() => {
+        if (sessionStorage.getItem("customerId"))
+            setIsLoggedIn(true);
+        else if (sessionStorage.getItem("bankerId"))
+            setIsLoggedIn(true);
+        
+    }, [isLoggedIn]);
 
     // 로그아웃 버튼 눌렀을 때
     const handleLogout = () => {
         // 로그아웃 로직 -> 다른 파일에
-        setIsLoggendIn(false);
+        setIsLoggedIn(false);
         // 로그아웃시 sessionStorage 초기화
         sessionStorage.clear();
             navigate('/'); // 로그아웃 후 홈페이지로 이동
@@ -45,21 +45,38 @@ function Navbar(props) {
 
     return (
         <Container>
-            <Logo onClick={moveToMain}><img src={logo} alt={'로고'}/></Logo>
+            <Logo onClick={moveToMain}>
+                <img src={logo} alt={"로고"} />
+            </Logo>
             <SubContainer>
-                {sessionStorage.getItem('bankerId') === null && (
-                    
-                    <Menu to={isLoggedIn ? (isReservationPage ? '/customer-mypage':'/reservation') : '/login'}>{isReservationPage ? '나의 예약 관리' : '예약하기'}</Menu>
-                )}
-                {sessionStorage.getItem('bankerId') !== null && (
-                    <Menu to={isCheckTimePage ? '/banker-mypage' : '/check-time'}>
-                        {isCheckTimePage ? '나의 방문 관리' : '나의 스케줄 관리'}
+                {sessionStorage.getItem("bankerId") === null && (
+                    <Menu
+                        to={
+                            isLoggedIn
+                                ? isReservationPage
+                                    ? "/customer-mypage"
+                                    : "/reservation"
+                                : "/login"
+                        }
+                    >
+                        {isReservationPage ? "나의 예약 관리" : "예약하기"}
                     </Menu>
                 )}
-                <LoginBtn onClick={isLoggedIn ? handleLogout : moveToLogin}>
-                    {isLoggedIn ? '로그아웃' : '로그인'}
-                </LoginBtn>
+                {sessionStorage.getItem("bankerId") !== null && (
+                    <Menu
+                        to={isCheckTimePage ? "/banker-mypage" : "/check-time"}
+                    >
+                        {isCheckTimePage
+                            ? "나의 방문 관리"
+                            : "나의 스케줄 관리"}
+                    </Menu>
+                )}
             </SubContainer>
+            <SubContainer2>
+                <LoginBtn onClick={isLoggedIn ? handleLogout : moveToLogin}>
+                    {isLoggedIn ? "로그아웃" : "로그인"}
+                </LoginBtn>
+            </SubContainer2>
         </Container>
     );
 }
@@ -81,7 +98,18 @@ const SubContainer = styled.div`
     display: flex;
     width: 25vw;
     justify-content: space-between;
-    margin-right: 200px;
+    
+    margin-left:900px;
+    
+`;
+
+const SubContainer2 = styled.div`
+    /* background-color: pink; */
+    display: flex;
+    width: 25vw;
+    justify-content: space-between;
+    margin-left: 40px;
+    margin-right: 60px;
 `;
 
 

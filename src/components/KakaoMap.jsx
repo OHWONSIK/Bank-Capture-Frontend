@@ -13,6 +13,7 @@ import marker_img from "../assets/image/marker_img.png";
 import bank_img from "../assets/image/location.png";
 import woorie_img from "../assets/image/location_woorie.png";
 import hana_img from "../assets/image/location_hanah.png";
+import location_xy from "../assets/image/location_xy.png";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 const { kakao } = window;
@@ -50,20 +51,45 @@ const Map = () => {
 
     // 위치 정보를 가져와서 지도를 생성
     useEffect(() => {
+        const options = {
+            center: new kakao.maps.LatLng(latitude, longitude), // 현위치 좌표로 설정
+            level: 3,
+        };
 
-      const options = {
-          center: new kakao.maps.LatLng(latitude, longitude), // 현위치 좌표로 설정
-          level: 3,
-      };
+        const map = new kakao.maps.Map(container.current, options);
+        setKakaoMap(map);
 
-      const map = new kakao.maps.Map(container.current, options);
-      setKakaoMap(map);
-                  
-  }, [bankList]);
+        // 현위치 마커 이미지 경로 설정
+        
+    }, [bankList]);
 
 
 
     useEffect(() => {
+const currentLocationImageSrc = location_xy;
+
+// 현위치 마커 이미지 크기 설정
+const currentLocationImageSize = new kakao.maps.Size(48, 48);
+
+// 현위치 마커 이미지 옵션 설정 (이미지 위치 조정)
+const currentLocationImageOption = {
+    offset: new kakao.maps.Point(10, 48),
+};
+
+// MarkerImage 객체 생성
+const currentLocationMarkerImage = new kakao.maps.MarkerImage(
+    currentLocationImageSrc,
+    currentLocationImageSize,
+    currentLocationImageOption
+);
+
+// 현위치 마커 생성
+const currentLocationMarker = new kakao.maps.Marker({
+    map: kakaoMap,
+    position: new kakao.maps.LatLng(latitude, longitude),
+    image: currentLocationMarkerImage,
+});
+
       const imageSize = new kakao.maps.Size(48, 48);
       const imageOption = { offset: new kakao.maps.Point(10, 48) };
       
@@ -85,6 +111,7 @@ const Map = () => {
                 bankList[i].locationX
             );
 
+            
             var imageSrc;
             if (bankList[i].bankName.startsWith('우리')) {
               imageSrc = woorie_img;
@@ -94,6 +121,8 @@ const Map = () => {
             {
               imageSrc = bank_img;
             }
+
+            
 
             var markerImage = new kakao.maps.MarkerImage(
               imageSrc,
@@ -196,6 +225,7 @@ const Map = () => {
                         //   );
                         infowindow.setMap(kakaoMap, marker);
                         kakaoMap.setCenter(marker.getPosition());
+                        
                     }
                 });
 

@@ -8,30 +8,60 @@ import { AiFillStar } from "react-icons/ai";
 import { BiSolidComment } from "react-icons/bi";
 import moment from "moment";
 import Swal from "sweetalert2";
+import { API } from "../config";
+import axios from "axios";
 
 function DetailSelectPage(props) {
     const [selectedDate, setSelectedDate] = useState(""); // 선택한 날짜
     const [selectedTime, setSelectedTime] = useState(""); // 선택한 시간
     const [isReserveActive, setIsReserveActive] = useState(false); // 예약이 활성화되었는지 여부
-    
+
     const location = useLocation();
 
-
+    const [selectedBankers, setSelectedBankers] = useState([]);
     // 날짜를 선택할 때 호출되는 함수
 
     const reservationId = location.state.reservationId || ""; //예약변경일시 해당 예약ID
-    const taskId = location.state.taskId || "";//예약하기를 위해 필요한 업무ID
-    const selectedBankers = location.state.selectedBankers || []; //지점, 업무에 맞는 모든 행원들
+    const taskId = location.state.taskId || ""; //예약하기를 위해 필요한 업무ID
+    // const selectedBankers = location.state.selectedBankers || []; //지점, 업무에 맞는 모든 행원들
     const selectedWork = location.state.selectedWork || "";
     const bankId = location.state.bankId || "";
     const time = location.state.time || "";
     const date = location.state.date || "";
 
+    useEffect(() => {
+        //고객Id로 해당 고객 예약조회
+        axios
+            .get(`${API.BANKER_INQUIRY}`, {
+                params: {
+                    bankId: bankId,
+                    taskId: taskId,
+                },
+            })
+            .then((response) => {
+                setSelectedBankers(response.data);
+            })
+            .catch((error) => {
+                console.error("조회 에러:", error);
+            });
+    }, []); // 랜더링 상태가 바뀔때마다 새로 조회함
+
+    useEffect(() => {
+        setFilteredBankers(selectedBankers);
+    }, [selectedBankers]); // 랜더링 상태가 바뀔때마다 새로 조회함
 
     const [filteredBankers, setFilteredBankers] = useState(selectedBankers);
 
     //시간매핑 배열
-    const times = ["10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+    const times = [
+        "10:00",
+        "11:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+    ];
 
     //시간변환 함수
     const getTimeSlot = (time) => {
@@ -57,7 +87,7 @@ function DetailSelectPage(props) {
                 return scheduleForDate[selectedTimeKey] === 1;
             }
 
-            return false; 
+            return false;
         });
 
         setFilteredBankers(filtered);
@@ -70,7 +100,7 @@ function DetailSelectPage(props) {
                 icon: "error",
                 confirmButtonColor: "black", // 원하는 색상으로 변경하세요
                 confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
-              });
+            });
         }
     };
 
@@ -98,13 +128,13 @@ function DetailSelectPage(props) {
 
         // 예약 가능한 행원이 없을 때 알림창 띄우기
         if (filtered.length === 0) {
-            Swal.fire({title: "예약 가능한 행원이 없습니다.",
-           text: "다른 날짜를 선택하세요.",
-            icon: "error",
-            confirmButtonColor: "black", // 원하는 색상으로 변경하세요
-            confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
-        }
-                );
+            Swal.fire({
+                title: "예약 가능한 행원이 없습니다.",
+                text: "다른 날짜를 선택하세요.",
+                icon: "error",
+                confirmButtonColor: "black", // 원하는 색상으로 변경하세요
+                confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
+            });
         }
     };
 
@@ -112,28 +142,24 @@ function DetailSelectPage(props) {
 
     const moveToBankerSelect = (selectedBankerId) => {
         if (!isReserveActive) {
-            Swal.fire(
-                {title:  "시간이 선택되지 않았습니다",
-                 text:  "원하는 시간을 선택해주세요",
+            Swal.fire({
+                title: "시간이 선택되지 않았습니다",
+                text: "원하는 시간을 선택해주세요",
                 icon: "error",
-                 confirmButtonColor: "black", // 원하는 색상으로 변경하세요
-                 confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
-        }
-               
-               
-            );
+                confirmButtonColor: "black", // 원하는 색상으로 변경하세요
+                confirmButtonText: "확인", // 버튼 텍스트도 변경 가능
+            });
             return;
         }
         const selectedBanker = selectedBankers.find(
             (banker) => banker.bankerId === selectedBankerId
         );
         if (selectedBanker) {
-            
             //캘린더 라이브러리 클릭시 선택되는 날짜포맷을 YYYYMMDD형식으로 변경해서 저장
             let reservationDate = moment(selectedDate).format("YYYYMMDD");
             let reservationTime = getTimeSlot(selectedTime);
             let bankerName = selectedBanker.bankerName;
-            
+
             navigate("/banker-select", {
                 state: {
                     reservationId: reservationId,
@@ -144,7 +170,7 @@ function DetailSelectPage(props) {
                     taskId: taskId,
                     bankerName: bankerName,
                     selectedWork: selectedWork,
-                    selectedTime: selectedTime
+                    selectedTime: selectedTime,
                 },
             });
         }
@@ -200,47 +226,45 @@ function DetailSelectPage(props) {
                                     </Comment> */}
                                 {/*별점 코멘트 없을 시 아이콘만 표시*/}
                                 <RatingAndComment>
-                                        {banker.bankerAvgStar > 0 && (
-                                            <Rating>
-                                                <AiFillStar
-                                                    style={{
-                                                        marginRight: "5px",
-                                                    }}
-                                                />
-                                                {banker.bankerAvgStar.toFixed(
-                                                    2
-                                                )}
-                                            </Rating>
-                                        )}
-                                        {banker.bankerAvgStar === 0 && (
-                                            <Rating>
-                                                <AiFillStar
-                                                    style={{
-                                                        marginRight: "5px",
-                                                    }}
-                                                />
-                                            </Rating>
-                                        )}
-                                        {banker.bankerCommentCnt !== null && (
-                                            <Comment>
-                                                <BiSolidComment
-                                                    style={{
-                                                        marginRight: "5px",
-                                                    }}
-                                                />
-                                                {banker.bankerCommentCnt}
-                                            </Comment>
-                                        )}
-                                        {banker.bankerCommentCnt === null && (
-                                            <Comment>
-                                                <BiSolidComment
-                                                    style={{
-                                                        marginRight: "5px",
-                                                    }}
-                                                />
-                                            </Comment>
-                                        )}
-                                    </RatingAndComment>
+                                    {banker.bankerAvgStar > 0 && (
+                                        <Rating>
+                                            <AiFillStar
+                                                style={{
+                                                    marginRight: "5px",
+                                                }}
+                                            />
+                                            {banker.bankerAvgStar.toFixed(2)}
+                                        </Rating>
+                                    )}
+                                    {banker.bankerAvgStar === 0 && (
+                                        <Rating>
+                                            <AiFillStar
+                                                style={{
+                                                    marginRight: "5px",
+                                                }}
+                                            />
+                                        </Rating>
+                                    )}
+                                    {banker.bankerCommentCnt !== null && (
+                                        <Comment>
+                                            <BiSolidComment
+                                                style={{
+                                                    marginRight: "5px",
+                                                }}
+                                            />
+                                            {banker.bankerCommentCnt}
+                                        </Comment>
+                                    )}
+                                    {banker.bankerCommentCnt === null && (
+                                        <Comment>
+                                            <BiSolidComment
+                                                style={{
+                                                    marginRight: "5px",
+                                                }}
+                                            />
+                                        </Comment>
+                                    )}
+                                </RatingAndComment>
                             </Text>
                         </BankerInfo>
                     ))}
