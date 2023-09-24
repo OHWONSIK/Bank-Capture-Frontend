@@ -1,11 +1,6 @@
-
-
-
-  
-
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
-import { markerdata } from "./markerdata";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import "./Maps.css";
 import axios from "axios";
 import { API } from "../config";
@@ -14,27 +9,87 @@ import bank_img from "../assets/image/location.png";
 import woorie_img from "../assets/image/location_woorie.png";
 import hana_img from "../assets/image/location_hanah.png";
 import location_xy from "../assets/image/location_xy.png";
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 const { kakao } = window;
 
 const Map = () => {
-  const location =useLocation();
-  const [bankList, setBankList] = useState([]);
-  const [kakaoMap, setKakaoMap] = useState(null);
-  const container = useRef();
-  const { state } = location;
+    const handleBankClick = (bankId) => {
+        // 클릭한 은행의 고유 ID를 사용하여 해당 은행 데이터를 찾습니다.
+        const bankData = bankList.find((data) => data.bankId === bankId);
 
+        if (bankData) {
+            // 클릭한 은행의 위도와 경도를 가져옵니다.
+            const bankLatitude = bankData.locationY;
+            const bankLongitude = bankData.locationX;
 
-  const latitude = sessionStorage.getItem("latitude")
+            // Kakao 지도의 setCenter 메서드를 사용하여 해당 위치로 지도를 이동합니다.
+            
+            kakaoMap.setCenter(
+                
+                new kakao.maps.LatLng(bankLatitude, bankLongitude)
+            );
+
+            
+        }
+
+        
+
+        
+    };
+    const location = useLocation();
+    const [bankList, setBankList] = useState([]);
+    const [kakaoMap, setKakaoMap] = useState(null);
+    const container = useRef();
+    const { state } = location;
+
+    //
+    const [selectedBank, setSelectedBank] = useState(null); // 선택한 은행 정보 상태 추가
+    //
+    const [searchText, setSearchText] = useState(""); // 검색어 상태 추가
+
+    //
+    useState(null); // 선택한 은행 정보 상태 추가
+
+    //
+    const handleSearch = () => {
+        // 검색어를 이용하여 bankList를 필터링
+        const filteredBanks = bankList.filter((bank) =>
+            bank.bankName.includes(searchText)
+        );
+        // 필터링된 결과를 setBankList로 설정
+        setBankList(filteredBanks);
+
+        
+
+        //
+    };
+
+    //
+    const handleReset = () => {
+        // 초기화 버튼을 누를 때 searchText를 빈 문자열로 설정하고 모든 지점을 보여줍니다.
+        setSearchText("");
+        axios
+            .get(`${API.BANK_INQUIRY}`)
+            .then((response) => {
+                console.log("지점조회 성공:", response.data);
+                setBankList(response.data);
+            })
+            .catch((error) => {
+                console.error("지점조회 에러:", error);
+            });
+    };
+
+    const latitude = sessionStorage.getItem("latitude")
         ? sessionStorage.getItem("latitude")
         : 37.50394613754275;
-    
+
     const longitude = sessionStorage.getItem("longitude")
         ? sessionStorage.getItem("longitude")
         : 127.04852704708145;
     const navigate = useNavigate();
-    
+
+     
 
     useEffect(() => {
         axios
@@ -46,8 +101,7 @@ const Map = () => {
             .catch((error) => {
                 console.error("지점조회 에러:", error);
             });
-
-    }, []) ;
+    }, []);
 
     // 위치 정보를 가져와서 지도를 생성
     useEffect(() => {
@@ -60,39 +114,36 @@ const Map = () => {
         setKakaoMap(map);
 
         // 현위치 마커 이미지 경로 설정
-        
     }, [bankList]);
 
-
-
     useEffect(() => {
-const currentLocationImageSrc = location_xy;
+        const currentLocationImageSrc = location_xy;
 
-// 현위치 마커 이미지 크기 설정
-const currentLocationImageSize = new kakao.maps.Size(48, 48);
+        // 현위치 마커 이미지 크기 설정
+        const currentLocationImageSize = new kakao.maps.Size(48, 48);
 
-// 현위치 마커 이미지 옵션 설정 (이미지 위치 조정)
-const currentLocationImageOption = {
-    offset: new kakao.maps.Point(10, 48),
-};
+        // 현위치 마커 이미지 옵션 설정 (이미지 위치 조정)
+        const currentLocationImageOption = {
+            offset: new kakao.maps.Point(10, 48),
+        };
 
-// MarkerImage 객체 생성
-const currentLocationMarkerImage = new kakao.maps.MarkerImage(
-    currentLocationImageSrc,
-    currentLocationImageSize,
-    currentLocationImageOption
-);
+        // MarkerImage 객체 생성
+        const currentLocationMarkerImage = new kakao.maps.MarkerImage(
+            currentLocationImageSrc,
+            currentLocationImageSize,
+            currentLocationImageOption
+        );
 
-// 현위치 마커 생성
-const currentLocationMarker = new kakao.maps.Marker({
-    map: kakaoMap,
-    position: new kakao.maps.LatLng(latitude, longitude),
-    image: currentLocationMarkerImage,
-});
+        // 현위치 마커 생성
+        const currentLocationMarker = new kakao.maps.Marker({
+            map: kakaoMap,
+            position: new kakao.maps.LatLng(latitude, longitude),
+            image: currentLocationMarkerImage,
+        });
 
-      const imageSize = new kakao.maps.Size(48, 48);
-      const imageOption = { offset: new kakao.maps.Point(10, 48) };
-      
+        const imageSize = new kakao.maps.Size(48, 48);
+        const imageOption = { offset: new kakao.maps.Point(10, 48) };
+
         if (kakaoMap === null) {
             return;
         }
@@ -111,32 +162,28 @@ const currentLocationMarker = new kakao.maps.Marker({
                 bankList[i].locationX
             );
 
-            
             var imageSrc;
-            if (bankList[i].bankName.startsWith('우리')) {
-              imageSrc = woorie_img;
-            } else if (bankList[i].bankName.startsWith('하나')) {
-              imageSrc = hana_img;
-            } else if (bankList[i].bankName.startsWith('KB'))
-            {
-              imageSrc = bank_img;
+            if (bankList[i].bankName.startsWith("우리")) {
+                imageSrc = woorie_img;
+            } else if (bankList[i].bankName.startsWith("하나")) {
+                imageSrc = hana_img;
+            } else if (bankList[i].bankName.startsWith("KB")) {
+                imageSrc = bank_img;
             }
 
-            
-
             var markerImage = new kakao.maps.MarkerImage(
-              imageSrc,
-              imageSize,
-              imageOption
+                imageSrc,
+                imageSize,
+                imageOption
             );
 
-        
             var marker = new kakao.maps.Marker({
                 map: kakaoMap,
                 position: markerpos,
                 image: markerImage,
                 id: bankId,
             });
+
             marker.id = bankId;
 
             var infowindow = new kakao.maps.CustomOverlay({
@@ -146,36 +193,31 @@ const currentLocationMarker = new kakao.maps.Marker({
                 removable: true,
             });
 
-          (function (marker, infowindow) {
-              
-            
+            (function (marker, infowindow) {
+                kakao.maps.event.addListener(marker, "click", function () {
 
-
-            kakao.maps.event.addListener(marker, "click", function () {
-                  
-              
-
-                    const bankData = markerdata.find(
+                    
+                    const bankData = bankList.find(
                         (data) => data.bankId === marker.id
                     );
-                    if (bankData) {
-                        const avgStar = bankData.avgstar; // 평균 평점
-                        const starRating = [];
+                        if (bankData) {
+                            const avgStar = bankData.avgstar; // 평균 평점
+                            const starRating = [];
 
-                        // 평점에 따라 별 아이콘을 생성
-                        for (let i = 1; i <= 5; i++) {
-                            if (i <= avgStar) {
-                                // 빨간색 별 아이콘
-                                starRating.push("⭐");
-                            } else {
-                                // 회색 별 아이콘
-                                starRating.push("☆");
+                            // 평점에 따라 별 아이콘을 생성
+                            for (let i = 1; i <= 5; i++) {
+                                if (i <= avgStar) {
+                                    // 빨간색 별 아이콘
+                                    starRating.push("⭐");
+                                } else {
+                                    // 회색 별 아이콘
+                                    starRating.push("☆");
+                                }
                             }
-                        }
-                      infowindow.setContent(
-                          
-                        
-                            '<div class="wrap">' +
+
+                            
+                            infowindow.setContent(
+                                '<div class="wrap">' +
                                 '    <div class="info">' +
                                 '        <div class="title">' +
                                 bankData.bankName +
@@ -202,7 +244,10 @@ const currentLocationMarker = new kakao.maps.Marker({
                                 "        </div>" +
                                 "    </div>" +
                                 "</div>"
-                        );
+
+                                
+                            );
+                        }
 
                         // infowindow.setContent(
                         //     '<div class="infoWindow">' +
@@ -224,26 +269,96 @@ const currentLocationMarker = new kakao.maps.Marker({
 
                         //   );
                         infowindow.setMap(kakaoMap, marker);
-                        kakaoMap.setCenter(marker.getPosition());
-                        
+                    kakaoMap.setCenter(marker.getPosition());
+                    
+                    
                     }
-                });
+                );
 
                 // 마커에 마우스아웃 이벤트를 등록합니다
                 kakao.maps.event.addListener(kakaoMap, "click", function () {
                     infowindow.setMap(null);
                 });
+
+                function closeOverlay(infowindow) {
+         // 닫기 버튼을 클릭했을 때 실행할 동작을 여기에 작성합니다.
+         // 예를 들어, infowindow를 닫는 코드를 추가할 수 있습니다.
+         infowindow.close();
+     }
             })(marker, infowindow);
             window.handleReservationClick = (bankId) => {
                 // bankId를 가지고 work-select 페이지로 이동
-              console.log(bankId)
-              navigate("/work-select", { state: { bankId: bankId } });
+                console.log(bankId);
+                navigate("/work-select", { state: { bankId: bankId } });
             };
         }
     }, [kakaoMap]);
 
+    // return (
+    //     <div>
+    //         <div
+    //             id="map"
+    //             style={{
+    //                 width: "100vw",
+    //                 height: "calc(100vh - 98px)",
+    //             }}
+    //             ref={container}
+    //         ></div>
+    //     </div>
+    // );
+
+    // };
+
     return (
-        <div>
+        <div className="map-container">
+            <div
+                className="search-container"
+                style={{
+                    position: "absolute",
+                    top: "120px",
+
+                    zIndex: "999", // 더 높은 z-index 값으로 설정
+                    background: "white", // 배경색 추가
+                    padding: "10px",
+                    borderRadius: "5px", // 모서리 둥글게
+                }}
+            >
+                <input
+                    type="text"
+                    placeholder="검색어를 입력하세요"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            searchText
+                                ? handleSearch()
+                                : setBankList([bankList]);
+                        }
+                    }}
+                />
+                <button className="search-button" onClick={handleSearch}>
+                    검색
+                </button>
+                <button className="search-button" onClick={handleReset}>초기화
+                </button>
+                <div className="content-container">
+                    <div
+                        className="bank-list"
+                        style={{ maxHeight: "400px", overflowY: "auto" }}
+                    >
+                        {bankList.map((bank) => (
+                            <div
+                                key={bank.bankId}
+                                className="bank-item"
+                                onClick={() => handleBankClick(bank.bankId)}
+                            >
+                                <h2>{bank.bankName}</h2>
+                                <p>{bank.bankAddr}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
             <div
                 id="map"
                 style={{

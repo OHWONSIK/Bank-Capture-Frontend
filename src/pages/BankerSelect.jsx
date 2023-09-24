@@ -155,7 +155,7 @@ function BankerSelect(props) {
                             <Name>행원 {selectedBanker.bankerName}</Name>
                             <PrAndCareer>
                                 <Pr>{selectedBanker.bankerInfo}</Pr>
-                                <Career>({selectedBanker.bankerCareer})년차</Career>
+                                <Career>({selectedBanker.bankerCareer}년차)</Career>
                             </PrAndCareer>
                             <RatingAndComment>
                                 {selectedBanker.bankerAvgStar > 0 && (
